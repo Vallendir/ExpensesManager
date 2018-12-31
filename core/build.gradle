@@ -1,0 +1,15 @@
+dependencies {
+    /** Javax **/
+    implementation "javax.validation:validation-api:$javaxValidationVersion"
+    implementation "javax.annotation:javax.annotation-api:$javaxAnnotationVersion"
+    implementation "javax.persistence:persistence-api:$javaxPersistenceVersion"
+    
+    /** Apache commons **/
+    implementation "org.apache.commons:commons-lang3:$apacheCommons3Version"
+
+    /** Jackson **/
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+
+    /** Spring logger **/
+    implementation "org.springframework.boot:spring-boot-starter-logging"
+}
