@@ -96,6 +96,9 @@ subprojects {
         
         /** Slf4j **/
         testCompile("org.slf4j:slf4j-simple:$slf4jVersion")
+
+        /** Spring logger **/
+        implementation "org.springframework.boot:spring-boot-starter-logging"
     }
 
     sourceCompatibility = JavaVersion.VERSION_1_10
