@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class BillOfSale extends BaseModel implements BillOfSaleApi {
+public class BillOfSale extends BaseModel implements BillOfSalePort {
 	
-	private List<ProductApi> productList;
+	private List<ProductPort> productList;
 	
 	private Instant boughtDate;
 	
@@ -24,7 +24,7 @@ public class BillOfSale extends BaseModel implements BillOfSaleApi {
 	@Override
 	public Double finalPrice() {
 		return productList.stream()
-		                  .mapToDouble(ProductApi::summaryPrice)
+		                  .mapToDouble(ProductPort::summaryPrice)
 		                  .summaryStatistics()
 		                  .getSum();
 	}

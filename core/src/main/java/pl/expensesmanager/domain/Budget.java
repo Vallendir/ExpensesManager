@@ -12,19 +12,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Budget extends BaseModel implements BudgetApi {
+public class Budget extends BaseModel implements BudgetPort {
 	
 	private String name;
 
 	@Setter(AccessLevel.NONE)
 	private Double budgetValue;
 	
-	private List<BillOfSaleApi> billsOfSaleList;
+	private List<BillOfSalePort> billsOfSaleList;
 	
 	@Override
 	public Double budgetSpent() {
 		return billsOfSaleList.stream()
-		                      .mapToDouble(BillOfSaleApi::finalPrice)
+		                      .mapToDouble(BillOfSalePort::finalPrice)
 		                      .summaryStatistics()
 		                      .getSum();
 	}

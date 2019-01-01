@@ -16,7 +16,7 @@ class BudgetTest {
 		Double expectedProductPrice_1 = 7.85;
 		Integer productQuanity_1 = 4;
 		
-		ProductApi expectedProduct_1 = new Product(expectedProductName_1, expectedProductPrice_1, productQuanity_1);
+		ProductPort expectedProduct_1 = new Product(expectedProductName_1, expectedProductPrice_1, productQuanity_1);
 		Double expectedSummaryPrice_1 = expectedProductPrice_1 * productQuanity_1;
 		
 		
@@ -24,20 +24,20 @@ class BudgetTest {
 		Double expectedProductPrice_2 = 4.30;
 		Integer productQuanity_2 = 6;
 		
-		ProductApi expectedProduct_2 = new Product(expectedProductName_2, expectedProductPrice_2, productQuanity_2);
+		ProductPort expectedProduct_2 = new Product(expectedProductName_2, expectedProductPrice_2, productQuanity_2);
 		Double expectedSummaryPrice_2 = expectedProductPrice_2 * productQuanity_2;
 		
 		
-		BillOfSaleApi expectedBillOfSale_1 = new BillOfSale(
+		BillOfSalePort expectedBillOfSale_1 = new BillOfSale(
 			List.of(expectedProduct_1, expectedProduct_2), Instant.now(), "Description test.");
 		Double expectedBillOfSaleFinalPrice_1 = ((expectedProductPrice_1 * productQuanity_1) +
 		                                         (expectedProductPrice_2 * productQuanity_2));
 		
-		BillOfSaleApi expectedBillOfSale_2 = new BillOfSale(
+		BillOfSalePort expectedBillOfSale_2 = new BillOfSale(
 			List.of(expectedProduct_1), Instant.now(), "Description test.");
 		Double expectedBillOfSaleFinalPrice_2 = expectedProductPrice_1 * productQuanity_1;
 		
-		BudgetApi expectedBudget = new Budget("Budget Name", 300.5, List.of(expectedBillOfSale_1, expectedBillOfSale_2));
+		BudgetPort expectedBudget = new Budget("Budget Name", 300.5, List.of(expectedBillOfSale_1, expectedBillOfSale_2));
 		Double expectedBudgetSpent = expectedBillOfSaleFinalPrice_1 + expectedBillOfSaleFinalPrice_2;
 		
 		// When
@@ -62,7 +62,7 @@ class BudgetTest {
 		Double expectedProductPrice_1 = 7.85;
 		Integer productQuanity_1 = 4;
 		
-		ProductApi expectedProduct_1 = new Product(expectedProductName_1, expectedProductPrice_1, productQuanity_1);
+		ProductPort expectedProduct_1 = new Product(expectedProductName_1, expectedProductPrice_1, productQuanity_1);
 		Double expectedSummaryPrice_1 = expectedProductPrice_1 * productQuanity_1;
 		
 		
@@ -70,20 +70,20 @@ class BudgetTest {
 		Double expectedProductPrice_2 = 4.30;
 		Integer productQuanity_2 = 6;
 		
-		ProductApi expectedProduct_2 = new Product(expectedProductName_2, expectedProductPrice_2, productQuanity_2);
+		ProductPort expectedProduct_2 = new Product(expectedProductName_2, expectedProductPrice_2, productQuanity_2);
 		Double expectedSummaryPrice_2 = expectedProductPrice_2 * productQuanity_2;
 		
 		
-		BillOfSaleApi expectedBillOfSale_1 = new BillOfSale(
+		BillOfSalePort expectedBillOfSale_1 = new BillOfSale(
 			List.of(expectedProduct_1, expectedProduct_2), Instant.now(), "Description test.");
 		Double expectedBillOfSaleFinalPrice_1 = ((expectedProductPrice_1 * productQuanity_1) +
 		                                         (expectedProductPrice_2 * productQuanity_2));
 		
-		BillOfSaleApi expectedBillOfSale_2 = new BillOfSale(
+		BillOfSalePort expectedBillOfSale_2 = new BillOfSale(
 			List.of(expectedProduct_1), Instant.now(), "Description test.");
 		Double expectedBillOfSaleFinalPrice_2 = expectedProductPrice_1 * productQuanity_1;
 		
-		BudgetApi expectedBudget = new Budget("Budget Name", 300.5, List.of(expectedBillOfSale_1, expectedBillOfSale_2));
+		BudgetPort expectedBudget = new Budget("Budget Name", 300.5, List.of(expectedBillOfSale_1, expectedBillOfSale_2));
 		Double expectedBudgetLeft = (expectedBudget.getBudgetValue() -
 		                             (expectedBillOfSaleFinalPrice_1 + expectedBillOfSaleFinalPrice_2));
 		

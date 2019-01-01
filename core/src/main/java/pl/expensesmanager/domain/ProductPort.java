@@ -3,7 +3,7 @@ package pl.expensesmanager.domain;
 /**
  * Interface repsentate Product. Should be implemented in any place where is created other representation of Product like DTOs etc.
  */
-public interface ProductApi {
+public interface ProductPort {
 	
 	/**
 	 * Method to get the name of product.

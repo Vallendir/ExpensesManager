@@ -1,12 +1,12 @@
 package pl.expensesmanager.storage;
 
-import pl.expensesmanager.domain.BudgetApi;
-import pl.expensesmanager.domain.ProductApi;
+import pl.expensesmanager.domain.BudgetPort;
+import pl.expensesmanager.domain.ProductPort;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BudgetStore extends BaseStorage<BudgetApi, String> {
+public interface BudgetStorePort extends BaseStorage<BudgetPort, String> {
 	
 	/**
 	 * Method to find budget by name.
@@ -14,7 +14,7 @@ public interface BudgetStore extends BaseStorage<BudgetApi, String> {
 	 * @param name - the name of budget
 	 * @return found budget as optional
 	 */
-	Optional<ProductApi> findByName(String name);
+	Optional<ProductPort> findByName(String name);
 	
 	/**
 	 * Method to find budgets by budget value.
@@ -22,7 +22,7 @@ public interface BudgetStore extends BaseStorage<BudgetApi, String> {
 	 * @param budgetValue - budget value
 	 * @return found budgets objects
 	 */
-	List<ProductApi> findByBudgetValue(Double budgetValue);
+	List<ProductPort> findByBudgetValue(Double budgetValue);
 	
 	/**
 	 * Method to find budgets between budget value range.
@@ -31,7 +31,7 @@ public interface BudgetStore extends BaseStorage<BudgetApi, String> {
 	 * @param max - maximal budget value
 	 * @return found budget objects
 	 */
-	List<ProductApi> findByBudgetValueBetween(Double min, Double max);
+	List<ProductPort> findByBudgetValueBetween(Double min, Double max);
 	
 	/**
 	 * Method to find budgets bigger than value.
@@ -39,7 +39,7 @@ public interface BudgetStore extends BaseStorage<BudgetApi, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<ProductApi> findByBudgetValueGreaterThan(Double budgetValue);
+	List<ProductPort> findByBudgetValueGreaterThan(Double budgetValue);
 	
 	/**
 	 * Method to find budgets less than value.
@@ -47,7 +47,7 @@ public interface BudgetStore extends BaseStorage<BudgetApi, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<ProductApi> findByBudgetValueLessThan(Double budgetValue);
+	List<ProductPort> findByBudgetValueLessThan(Double budgetValue);
 	
 	
 }

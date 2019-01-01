@@ -13,7 +13,7 @@ class ProductTest {
 		Double expectedProductPrice = 5.75;
 		Integer productQuanity = 4;
 		
-		ProductApi expectedProduct = new Product(expectedProductName, expectedProductPrice, productQuanity);
+		ProductPort expectedProduct = new Product(expectedProductName, expectedProductPrice, productQuanity);
 		Double expectedSummaryPrice = expectedProductPrice * productQuanity;
 		
 		// When

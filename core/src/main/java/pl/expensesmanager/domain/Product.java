@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Product extends BaseModel implements ProductApi {
+public class Product extends BaseModel implements ProductPort {
 	
 	private String name;
 	

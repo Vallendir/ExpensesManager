@@ -6,21 +6,21 @@ import java.util.List;
 /**
  * Interface repsentate Bill Of Sale. Should be implemented in any place where is created other representation of Bill Of Sale like DTOs etc.
  */
-public interface BillOfSaleApi {
+public interface BillOfSalePort {
 	
 	/**
 	 * Method to get the products list.
 	 *
 	 * @return products list
 	 */
-	List<ProductApi> getProductList();
+	List<ProductPort> getProductList();
 	
 	/**
 	 * Method to set the products list.
 	 *
 	 * @param productList products list
 	 */
-	void setProductList(List<ProductApi> productList);
+	void setProductList(List<ProductPort> productList);
 	
 	/**
 	 * Method to get the bought date of bill of sale.

@@ -3,7 +3,7 @@ package pl.expensesmanager.domain;
 /**
  * Interface repsentate Budget. Should be implemented in any place where is created other representation of Budget like DTOs etc.
  */
-public interface BudgetApi {
+public interface BudgetPort {
 	
 	/**
 	 * Method to get the name of budget.

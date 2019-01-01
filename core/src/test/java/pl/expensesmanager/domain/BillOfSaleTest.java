@@ -16,7 +16,7 @@ class BillOfSaleTest {
 		Double expectedProductPrice_1 = 3.25;
 		Integer productQuanity_1 = 7;
 		
-		ProductApi expectedProduct_1 = new Product(expectedProductName_1, expectedProductPrice_1, productQuanity_1);
+		ProductPort expectedProduct_1 = new Product(expectedProductName_1, expectedProductPrice_1, productQuanity_1);
 		Double expectedSummaryPrice_1 = expectedProductPrice_1 * productQuanity_1;
 		
 		
@@ -24,11 +24,11 @@ class BillOfSaleTest {
 		Double expectedProductPrice_2 = 8.17;
 		Integer productQuanity_2 = 3;
 		
-		ProductApi expectedProduct_2 = new Product(expectedProductName_2, expectedProductPrice_2, productQuanity_2);
+		ProductPort expectedProduct_2 = new Product(expectedProductName_2, expectedProductPrice_2, productQuanity_2);
 		Double expectedSummaryPrice_2 = expectedProductPrice_2 * productQuanity_2;
 		
 		
-		BillOfSaleApi expectedBillOfSale = new BillOfSale(
+		BillOfSalePort expectedBillOfSale = new BillOfSale(
 			List.of(expectedProduct_1, expectedProduct_2), Instant.now(), "Description test.");
 		Double expectedBillOfSaleFinalPrice = ((expectedProductPrice_1 * productQuanity_1) +
 		                                       (expectedProductPrice_2 * productQuanity_2));
