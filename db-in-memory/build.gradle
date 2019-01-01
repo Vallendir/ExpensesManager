@@ -1,0 +1,7 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    implementation("org.springframework:spring-context")
+
+    compile project(':core')
+}

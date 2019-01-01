@@ -1,3 +1,4 @@
 rootProject.name = 'ExpensesManager'
 
 include 'core'
+include 'db-in-memory'
