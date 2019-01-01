@@ -1,6 +1,7 @@
 package pl.expensesmanager.domain;
 
 import lombok.*;
+import pl.expensesmanager.util.FieldsUtil;
 
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -18,5 +19,10 @@ abstract class BaseModel {
 	@NotNull
 	@Id
 	private String id;
+	
+	@Override
+	public String toString() {
+		return FieldsUtil.readFormatedNotNullFields(this, String.format("%s::", getClass().getSimpleName()));
+	}
 	
 }

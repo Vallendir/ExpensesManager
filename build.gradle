@@ -95,7 +95,11 @@ subprojects {
         }
         
         /** Slf4j **/
-        testCompile("org.slf4j:slf4j-simple:$slf4jVersion")
+        testimplementation("org.slf4j:slf4j-simple:$slf4jVersion")
+        implementation "org.slf4j:slf4j-api:$slf4jVersion"
+
+        /** Apache commons **/
+        implementation("org.apache.commons:commons-lang3:$apacheCommons3Version")
     }
 
     sourceCompatibility = JavaVersion.VERSION_1_10
