@@ -9,7 +9,4 @@ dependencies {
 
     /** Jackson **/
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
-
-    /** Spring logger **/
-    implementation "org.springframework.boot:spring-boot-starter-logging"
 }
