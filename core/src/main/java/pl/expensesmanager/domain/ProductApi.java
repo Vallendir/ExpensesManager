@@ -33,4 +33,25 @@ public interface ProductApi {
 	 */
 	void setPrice(Double price);
 	
+	/**
+	 * Method to get the quanity of product.
+	 *
+	 * @return product quanity
+	 */
+	Integer getQuanity();
+	
+	/**
+	 * Method to set the quanity of product.
+	 *
+	 * @param quanity the quanity of product
+	 */
+	void setQuanity(Integer quanity);
+	
+	/**
+	 * Method to get the summary price of all products.
+	 *
+	 * @return product summary price
+	 */
+	Double summaryPrice();
+	
 }

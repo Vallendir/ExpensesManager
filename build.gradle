@@ -1,7 +1,7 @@
 buildscript {
     ext {
         /** Spring **/
-        springBootVersion = '2.1.1.RELEASE'
+        springBootVersion = '2.1.0.RELEASE'
         springLoadedVersion = '1.2.8.RELEASE'
         
         /** Mockito **/
@@ -76,11 +76,11 @@ subprojects {
         implementation "org.projectlombok:lombok:$lombokVersion"
         
         /** JUnit **/
-        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+        testCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitVersion"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
         
         /** AssertJ **/
-        testImplementation "org.assertj:assertj-core:$assertjVersion"
+        testCompileOnly "org.assertj:assertj-core:$assertjVersion"
         
         /** Mockito **/
         testImplementation("org.mockito:mockito-core:$mockitoCoreVersion") {
@@ -96,9 +96,6 @@ subprojects {
         
         /** Slf4j **/
         testCompile("org.slf4j:slf4j-simple:$slf4jVersion")
-
-        /** Spring logger **/
-        implementation "org.springframework.boot:spring-boot-starter-logging"
     }
 
     sourceCompatibility = JavaVersion.VERSION_1_10

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProductQuanityTest {
+class ProductTest {
 	
 	@Test
 	void testSummaryPrice() {
@@ -13,13 +13,11 @@ class ProductQuanityTest {
 		Double expectedProductPrice = 5.75;
 		Integer productQuanity = 4;
 		
-		ProductApi expectedProduct = new Product(expectedProductName, expectedProductPrice);
-		
-		ProductQuanityApi expectedProductQuanity = new ProductQuanity(expectedProduct, productQuanity);
+		ProductApi expectedProduct = new Product(expectedProductName, expectedProductPrice, productQuanity);
 		Double expectedSummaryPrice = expectedProductPrice * productQuanity;
 		
 		// When
-		Double actualSummaryPrice = expectedProductQuanity.summaryPrice();
+		Double actualSummaryPrice = expectedProduct.summaryPrice();
 		
 		// Then
 		assertThat(actualSummaryPrice).isEqualTo(expectedSummaryPrice);

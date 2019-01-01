@@ -26,4 +26,18 @@ public interface BudgetApi {
 	 */
 	Double getBudgetValue();
 	
+	/**
+	 * Method to get the budget spent.
+	 *
+	 * @return budget spent
+	 */
+	Double budgetSpent();
+	
+	/**
+	 * Method to get the budget left.
+	 *
+	 * @return budget left
+	 */
+	Double budgetLeft();
+	
 }

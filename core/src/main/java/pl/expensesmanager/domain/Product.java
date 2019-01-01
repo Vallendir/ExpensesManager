@@ -16,4 +16,11 @@ public class Product extends BaseModel implements ProductApi {
 	
 	private Double price;
 	
+	private Integer quanity;
+	
+	@Override
+	public Double summaryPrice() {
+		return price * quanity;
+	}
+	
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class BillOfSale extends BaseModel implements BillOfSaleApi {
 	
-	private List<ProductQuanityApi> productList;
+	private List<ProductApi> productList;
 	
 	private Instant boughtDate;
 	
@@ -24,7 +24,7 @@ public class BillOfSale extends BaseModel implements BillOfSaleApi {
 	@Override
 	public Double finalPrice() {
 		return productList.stream()
-		                  .mapToDouble(ProductQuanityApi::summaryPrice)
+		                  .mapToDouble(ProductApi::summaryPrice)
 		                  .summaryStatistics()
 		                  .getSum();
 	}

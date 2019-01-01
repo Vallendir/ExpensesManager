@@ -1,0 +1,53 @@
+package pl.expensesmanager.storage;
+
+import pl.expensesmanager.domain.BudgetApi;
+import pl.expensesmanager.domain.ProductApi;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface BudgetStore extends BaseStorage<BudgetApi, String> {
+	
+	/**
+	 * Method to find budget by name.
+	 *
+	 * @param name - the name of budget
+	 * @return found budget as optional
+	 */
+	Optional<ProductApi> findByName(String name);
+	
+	/**
+	 * Method to find budgets by budget value.
+	 *
+	 * @param budgetValue - budget value
+	 * @return found budgets objects
+	 */
+	List<ProductApi> findByBudgetValue(Double budgetValue);
+	
+	/**
+	 * Method to find budgets between budget value range.
+	 *
+	 * @param min - minimal budget value
+	 * @param max - maximal budget value
+	 * @return found budget objects
+	 */
+	List<ProductApi> findByBudgetValueBetween(Double min, Double max);
+	
+	/**
+	 * Method to find budgets bigger than value.
+	 *
+	 * @param budgetValue - budget value
+	 * @return found budget objects
+	 */
+	List<ProductApi> findByBudgetValueGreaterThan(Double budgetValue);
+	
+	/**
+	 * Method to find budgets less than value.
+	 *
+	 * @param budgetValue - budget value
+	 * @return found budget objects
+	 */
+	List<ProductApi> findByBudgetValueLessThan(Double budgetValue);
+	
+	
+}

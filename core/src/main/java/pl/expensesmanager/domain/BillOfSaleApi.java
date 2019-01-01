@@ -13,14 +13,14 @@ public interface BillOfSaleApi {
 	 *
 	 * @return products list
 	 */
-	List<ProductQuanityApi> getProductList();
+	List<ProductApi> getProductList();
 	
 	/**
 	 * Method to set the products list.
 	 *
 	 * @param productList products list
 	 */
-	void setProductList(List<ProductQuanityApi> productList);
+	void setProductList(List<ProductApi> productList);
 	
 	/**
 	 * Method to get the bought date of bill of sale.
