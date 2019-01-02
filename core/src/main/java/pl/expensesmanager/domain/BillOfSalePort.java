@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Interface repsentate Bill Of Sale. Should be implemented in any place where is created other representation of Bill Of Sale like DTOs etc.
  */
-public interface BillOfSalePort {
+public interface BillOfSalePort extends BaseModelPort {
 	
 	/**
 	 * Method to get the products list.

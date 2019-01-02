@@ -1,6 +1,7 @@
 package pl.expensesmanager.domain;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 import pl.expensesmanager.util.FieldsUtil;
 
 import javax.persistence.Id;
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-abstract class BaseModel {
+abstract class BaseModel implements BaseModelPort {
 	
 	@NotNull
 	@Id

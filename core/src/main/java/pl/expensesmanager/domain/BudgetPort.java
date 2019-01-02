@@ -1,9 +1,11 @@
 package pl.expensesmanager.domain;
 
+import java.util.List;
+
 /**
  * Interface repsentate Budget. Should be implemented in any place where is created other representation of Budget like DTOs etc.
  */
-public interface BudgetPort {
+public interface BudgetPort extends BaseModelPort {
 	
 	/**
 	 * Method to get the name of budget.
@@ -39,5 +41,19 @@ public interface BudgetPort {
 	 * @return budget left
 	 */
 	Double budgetLeft();
+	
+	/**
+	 * Method to get the bills of sale list of budget.
+	 *
+	 * @return products list
+	 */
+	List<BillOfSalePort> getBillsOfSaleList();
+	
+	/**
+	 * Method to set the bills of sale list of budget.
+	 *
+	 * @param billsOfSaleList products list
+	 */
+	void setBillsOfSaleList(List<BillOfSalePort> billsOfSaleList);
 	
 }
