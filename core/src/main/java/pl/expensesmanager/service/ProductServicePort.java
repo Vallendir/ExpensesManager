@@ -13,7 +13,7 @@ public interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param name - the name of product
 	 * @return found product as optional
 	 */
-	Optional<ProductPort> searchOfName(String name);
+	Optional<ProductPort> searchForName(String name);
 	
 	/**
 	 * Method to search products between price range.

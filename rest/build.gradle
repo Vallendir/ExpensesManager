@@ -1,0 +1,17 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    /** Spring boot **/
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: 'org.mockito', module: 'mockito-core'
+    }
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    implementation project(':core')
+    implementation project(':db-in-memory')
+    implementation project(':documentation')
+}
+
+bootJar {
+    mainClassName = 'pl.expensesmanager.AppRestStartup'
+}

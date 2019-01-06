@@ -14,7 +14,7 @@ public interface BillOfSaleServicePort extends BaseService<BillOfSalePort, Strin
 	 * @param description - the description of bill of sale
 	 * @return found bill of sale as optional
 	 */
-	Optional<BillOfSalePort> searchOfDescription(String description);
+	Optional<BillOfSalePort> searchForDescription(String description);
 	
 	/**
 	 * Method to search bill of sale by bought date.
@@ -22,7 +22,7 @@ public interface BillOfSaleServicePort extends BaseService<BillOfSalePort, Strin
 	 * @param boughtDate - the bought date of bill of sale
 	 * @return found bills of sale list
 	 */
-	List<BillOfSalePort> searchOfBoughtDate(Instant boughtDate);
+	List<BillOfSalePort> searchForBoughtDate(Instant boughtDate);
 	
 	/**
 	 * Method to search bill of sale by bought date range.

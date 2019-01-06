@@ -14,7 +14,7 @@ public interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param name - the name of budget
 	 * @return found budget as optional
 	 */
-	Optional<ProductPort> searchOfName(String name);
+	Optional<ProductPort> searchForName(String name);
 	
 	/**
 	 * Method to search budgets by budget value.

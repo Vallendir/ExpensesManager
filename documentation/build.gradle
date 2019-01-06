@@ -1,0 +1,32 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    /** Swagger **/
+    api("io.springfox:springfox-swagger2:$swaggerVersion") {
+        exclude group: "net.bytebuddy", module: "byte-buddy"
+        exclude group: "net.bytebuddy", module: "byte-buddy-agent"
+        exclude group: "org.springframework"
+        exclude group: "io.swagger", module: "swagger-annotations"
+        exclude group: "io.swagger", module: "swagger-models"
+    }
+    implementation("io.springfox.ui:springfox-swagger-ui-rfc6570:1.0.0") {
+        exclude group: "net.bytebuddy", module: "byte-buddy"
+        exclude group: "net.bytebuddy", module: "byte-buddy-agent"
+        exclude group: "org.springframework"
+    }
+    api "io.swagger:swagger-annotations:1.5.21"
+    api "io.swagger:swagger-models:1.5.21"
+
+    /** Spring **/
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    implementation project(':core')
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
