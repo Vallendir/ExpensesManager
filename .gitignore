@@ -25,6 +25,7 @@
 *.js
 *.html
 *.css
+*.kotlin_module
 /target/
 /out/
 /core/out/
