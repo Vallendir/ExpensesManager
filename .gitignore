@@ -1,6 +1,7 @@
 ### Gradle ###
 .gradle
 /build/
+/rest/build/
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
@@ -29,3 +30,4 @@
 /target/
 /out/
 /core/out/
+/documentation/docs/asciidoc/doc
