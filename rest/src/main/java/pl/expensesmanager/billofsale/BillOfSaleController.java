@@ -1,5 +1,6 @@
 package pl.expensesmanager.billofsale;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,45 +8,42 @@ import java.time.Instant;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	
-	public BillOfSale add(BillOfSale billOfSale) {
-		return null;
+	private final BillOfSaleService service;
+	
+	public BillOfSalePort add(BillOfSale billOfSale) {
+		return service.create(billOfSale);
 	}
 	
 	public BillOfSale update(BillOfSale billOfSale) {
-		return null;
+		return (BillOfSale) service.update(billOfSale);
 	}
 	
-	public BillOfSale update(String id, BillOfSale billOfSale) {
-		return null;
+	public BillOfSalePort update(String id, BillOfSale billOfSale) {
+		return service.update(billOfSale, id);
 	}
 	
 	public void delete(String id) {
-	
+		service.delete(id);
 	}
 	
-	public BillOfSale searchForId(String id) {
-		return null;
+	public BillOfSalePort searchForId(String id) {
+		return service.searchForId(id);
 	}
 	
-	public BillOfSale searchForName(String name) {
-		return null;
+	public BillOfSalePort searchForDescription(String description) {
+		return service.searchForDescription(description);
 	}
 	
-	public BillOfSale searchForDescription(String description) {
-		return null;
+	public List<BillOfSalePort> searchForBoughtDate(Instant boughtDate) {
+		return service.searchForBoughtDate(boughtDate);
 	}
 	
-	public List<BillOfSale> searchForBoughtDate(Instant boughtDate) {
-		return null;
-	}
-	
-	public List<BillOfSale> searchAllForBoughtDateRange(
-		Instant min, Instant max
-	) {
-		return null;
+	public List<BillOfSalePort> searchAllForBoughtDateRange(Instant min, Instant max) {
+		return service.searchAllForBoughtDateRange(min, max);
 	}
 	
 }

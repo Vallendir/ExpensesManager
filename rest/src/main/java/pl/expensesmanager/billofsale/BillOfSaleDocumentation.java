@@ -13,7 +13,7 @@ public interface BillOfSaleDocumentation {
 	@ApiOperation(value = "POST-endpoint to create BillOfSale.", nickname = "add", notes = "Method allow to create a new bill of sale.", tags = {
 		"BillOfSale",
 	})
-	BillOfSale add(
+	BillOfSalePort add(
 		@ApiParam(value = "BillOfSale object which will be created.", required = true) BillOfSale billOfSale
 	);
 	
@@ -27,7 +27,7 @@ public interface BillOfSaleDocumentation {
 	@ApiOperation(value = "PUT-endpoint to update BillOfSale of id.", nickname = "update", notes = "Method allow to update a bill of sale by id.", tags = {
 		"BillOfSale",
 	})
-	BillOfSale update(
+	BillOfSalePort update(
 		@ApiParam(value = "ID of BillOfSale to update.", required = true) String id,
 		@ApiParam(value = "BillOfSale object changes to update.", required = true) BillOfSale billOfSale
 	);
@@ -40,33 +40,26 @@ public interface BillOfSaleDocumentation {
 	@ApiOperation(value = "GET-endpoint to find BillOfSale by id.", nickname = "searchForId", notes = "Method allow to find a bill of sale by id.", tags = {
 		"BillOfSale",
 	})
-	BillOfSale searchForId(@ApiParam(value = "ID of BillOfSale to find.", required = true) String id);
-	
-	@ApiOperation(value = "GET-endpoint to find BillOfSale by name.", nickname = "searchForName", notes = "Method allow to find a bill of sale by name.", tags = {
-		"BillOfSale",
-	})
-	BillOfSale searchForName(
-		@ApiParam(value = "Name of BillOfSale to find.", required = true) String name
-	);
+	BillOfSalePort searchForId(@ApiParam(value = "ID of BillOfSale to find.", required = true) String id);
 	
 	@ApiOperation(value = "GET-endpoint to find BillOfSale by description.", nickname = "searchForDescription", notes = "Method allow to find a bill of sale by description.", tags = {
 		"BillOfSale",
 	})
-	BillOfSale searchForDescription(
+	BillOfSalePort searchForDescription(
 		@ApiParam(value = "Description of BillOfSale to find.", required = true) String description
 	);
 	
 	@ApiOperation(value = "GET-endpoint to find BillOfSale by bought date.", nickname = "searchForBoughtDate", notes = "Method allow to find a bill of sale by bought date.", tags = {
 		"BillOfSale",
 	})
-	List<BillOfSale> searchForBoughtDate(
+	List<BillOfSalePort> searchForBoughtDate(
 		@ApiParam(value = "Bought date of BillOfSale to find.", required = true) Instant boughtDate
 	);
 	
 	@ApiOperation(value = "GET-endpoint to find BillOfSale by bought date range.", nickname = "searchForBoughtDate", notes = "Method allow to find a bill of sale by bought date range.", tags = {
 		"BillOfSale",
 	})
-	List<BillOfSale> searchAllForBoughtDateRange(
+	List<BillOfSalePort> searchAllForBoughtDateRange(
 		@ApiParam(value = "Start bought date.", required = true) Instant min,
 		@ApiParam(value = "End bought date.", required = true) Instant max
 	);
