@@ -3,7 +3,6 @@ package pl.expensesmanager.product;
 import pl.expensesmanager.base.BaseService;
 
 import java.util.List;
-import java.util.Optional;
 
 interface ProductServicePort extends BaseService<ProductPort, String> {
 	
@@ -13,7 +12,7 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param name - the name of product
 	 * @return found product as optional
 	 */
-	Optional<ProductPort> searchForName(String name);
+	ProductPort searchForName(String name);
 	
 	/**
 	 * Method to search products between price range.

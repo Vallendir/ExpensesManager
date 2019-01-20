@@ -55,7 +55,7 @@ public interface ProductStorePort extends BaseStorage<ProductPort, String> {
 	 * @param max - maximal quanity
 	 * @return found product objects
 	 */
-	List<ProductPort> findByQuanityBetween(Double min, Double max);
+	List<ProductPort> findByQuanityBetween(Integer min, Integer max);
 	
 	/**
 	 * Method to find product which have more quanity than value.
@@ -63,7 +63,7 @@ public interface ProductStorePort extends BaseStorage<ProductPort, String> {
 	 * @param quanity - quanity
 	 * @return found product objects
 	 */
-	List<ProductPort> findByQuanityGreaterThan(Double quanity);
+	List<ProductPort> findByQuanityGreaterThan(Integer quanity);
 	
 	/**
 	 * Method to find product which have more quanity than value.
@@ -71,6 +71,6 @@ public interface ProductStorePort extends BaseStorage<ProductPort, String> {
 	 * @param quanity - quanity
 	 * @return found product objects
 	 */
-	List<ProductPort> findByQuanityLessThan(Double quanity);
+	List<ProductPort> findByQuanityLessThan(Integer quanity);
 	
 }

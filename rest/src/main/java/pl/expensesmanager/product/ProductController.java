@@ -1,60 +1,64 @@
 package pl.expensesmanager.product;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 class ProductController implements ProductApi, ProductDocumentation {
 	
-	public Product add(Product product) {
-		return null;
+	private final ProductService service;
+	
+	public ProductPort add(Product product) {
+		return service.create(product);
 	}
 	
-	public Product update(Product product) {
-		return null;
+	public ProductPort update(Product product) {
+		return service.update(product);
 	}
 	
-	public Product update(String id, Product product) {
-		return null;
+	public ProductPort update(String id, Product product) {
+		return service.update(product, id);
 	}
 	
 	public void delete(String id) {
-	
+		service.delete(id);
 	}
 	
-	public Product searchForId(String id) {
-		return null;
+	public ProductPort searchForId(String id) {
+		return service.searchForId(id);
 	}
 	
-	public Product searchForName(String name) {
-		return null;
+	public ProductPort searchForName(String name) {
+		return service.searchForName(name);
 	}
 	
-	public List<Product> searchAllForPriceRange(Double min, Double max) {
-		return null;
+	public List<ProductPort> searchAllForPriceRange(Double min, Double max) {
+		return service.searchAllForPriceRange(min, max);
 	}
 	
-	public List<Product> searchAllForPriceGreater(Double price) {
-		return null;
+	public List<ProductPort> searchAllForPriceGreater(Double price) {
+		return service.searchAllForPriceGreater(price);
 	}
 	
-	public List<Product> searchAllForPriceLower(Double price) {
-		return null;
+	public List<ProductPort> searchAllForPriceLower(Double price) {
+		return service.searchAllForPriceLower(price);
 	}
 	
-	public List<Product> searchAllForQuanityRange(Integer min, Integer max) {
-		return null;
+	public List<ProductPort> searchAllForQuanityRange(Integer min, Integer max) {
+		return service.searchAllForQuanityRange(min, max);
 	}
 	
-	public List<Product> searchAllForQuanityGreater(Integer quanity) {
-		return null;
+	public List<ProductPort> searchAllForQuanityGreater(Integer quanity) {
+		return service.searchAllForQuanityGreater(quanity);
 	}
 	
-	public List<Product> searchAllForQuanityLower(Integer quanity) {
-		return null;
+	public List<ProductPort> searchAllForQuanityLower(Integer quanity) {
+		return service.searchAllForQuanityLower(quanity);
 	}
 	
 }
