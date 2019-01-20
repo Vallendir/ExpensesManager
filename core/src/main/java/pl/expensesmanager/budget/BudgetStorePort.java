@@ -1,7 +1,6 @@
 package pl.expensesmanager.budget;
 
 import pl.expensesmanager.base.BaseStorage;
-import pl.expensesmanager.product.ProductPort;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,7 @@ public interface BudgetStorePort extends BaseStorage<BudgetPort, String> {
 	 * @param name - the name of budget
 	 * @return found budget as optional
 	 */
-	Optional<ProductPort> findByName(String name);
+	Optional<BudgetPort> findByName(String name);
 	
 	/**
 	 * Method to find budgets by budget value.
@@ -22,7 +21,7 @@ public interface BudgetStorePort extends BaseStorage<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budgets objects
 	 */
-	List<ProductPort> findByBudgetValue(Double budgetValue);
+	List<BudgetPort> findByBudgetValue(Double budgetValue);
 	
 	/**
 	 * Method to find budgets between budget value range.
@@ -31,7 +30,7 @@ public interface BudgetStorePort extends BaseStorage<BudgetPort, String> {
 	 * @param max - maximal budget value
 	 * @return found budget objects
 	 */
-	List<ProductPort> findByBudgetValueBetween(Double min, Double max);
+	List<BudgetPort> findByBudgetValueBetween(Double min, Double max);
 	
 	/**
 	 * Method to find budgets bigger than value.
@@ -39,7 +38,7 @@ public interface BudgetStorePort extends BaseStorage<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<ProductPort> findByBudgetValueGreaterThan(Double budgetValue);
+	List<BudgetPort> findByBudgetValueGreaterThan(Double budgetValue);
 	
 	/**
 	 * Method to find budgets less than value.
@@ -47,7 +46,7 @@ public interface BudgetStorePort extends BaseStorage<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<ProductPort> findByBudgetValueLessThan(Double budgetValue);
+	List<BudgetPort> findByBudgetValueLessThan(Double budgetValue);
 	
 	
 }

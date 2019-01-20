@@ -1,10 +1,8 @@
 package pl.expensesmanager.budget;
 
 import pl.expensesmanager.base.BaseService;
-import pl.expensesmanager.product.ProductPort;
 
 import java.util.List;
-import java.util.Optional;
 
 interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	
@@ -14,7 +12,7 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param name - the name of budget
 	 * @return found budget as optional
 	 */
-	Optional<ProductPort> searchForName(String name);
+	BudgetPort searchForName(String name);
 	
 	/**
 	 * Method to search budgets by budget value.
@@ -22,7 +20,7 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budgets objects
 	 */
-	List<ProductPort> searchAllForBudgetValue(Double budgetValue);
+	List<BudgetPort> searchAllForBudgetValue(Double budgetValue);
 	
 	/**
 	 * Method to search budgets between budget value range.
@@ -31,7 +29,7 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param max - maximal budget value
 	 * @return found budget objects
 	 */
-	List<ProductPort> searchAllForBudgetValueRange(Double min, Double max);
+	List<BudgetPort> searchAllForBudgetValueRange(Double min, Double max);
 	
 	/**
 	 * Method to search budgets bigger than value.
@@ -39,7 +37,7 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<ProductPort> searchAllForBudgetValueGreater(Double budgetValue);
+	List<BudgetPort> searchAllForBudgetValueGreater(Double budgetValue);
 	
 	/**
 	 * Method to search budgets less than value.
@@ -47,6 +45,6 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<ProductPort> searchAllForBudgetValueLower(Double budgetValue);
+	List<BudgetPort> searchAllForBudgetValueLower(Double budgetValue);
 	
 }
