@@ -74,7 +74,7 @@ class ProductService implements ProductServicePort {
 	
 	@Override
 	public ProductPort searchForId(String id) {
-		return storage.findByName(id)
+		return storage.findById(id)
 		              .orElse(new ProductNullObject());
 	}
 	
