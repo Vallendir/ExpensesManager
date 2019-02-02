@@ -32,6 +32,13 @@ public interface BudgetPort extends BaseModelPort {
 	Double getBudgetValue();
 	
 	/**
+	 * Method to set the budget value.
+	 *
+	 * @param budgetValue budget value
+	 */
+	void setBudgetValue(Double budgetValue);
+	
+	/**
 	 * Method to get the budget spent.
 	 *
 	 * @return budget spent

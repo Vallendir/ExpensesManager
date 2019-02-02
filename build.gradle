@@ -52,7 +52,7 @@ buildscript {
     }
 }
 
-List toExcludeFromMockito = ["net.bytebuddy<>byte-buddy", "net.bytebuddy<>byte-buddy-agent", "org.junit.platform<>junit-platform-commons"]
+List toExcludeFromMockito = ["org.junit.platform<>junit-platform-commons"]
 
 allprojects {
     version = project.property('pl.expensesmanager.project.version')

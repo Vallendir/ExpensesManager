@@ -1,20 +1,21 @@
 package pl.expensesmanager.budget;
 
 import lombok.NoArgsConstructor;
+import pl.expensesmanager.base.BaseModelNullObject;
 import pl.expensesmanager.billofsale.BillOfSalePort;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Representation of Budget null object.
+ * Representation of Budget null object pattern.
  */
 @NoArgsConstructor
-public class BudgetNullObject implements BudgetPort {
+final class BudgetNullObject extends BaseModelNullObject implements BudgetPort {
 	
 	@Override
 	public String getName() {
-		return "NAME_null";
+		return "NAME_of_null_object";
 	}
 	
 	@Override
@@ -25,6 +26,11 @@ public class BudgetNullObject implements BudgetPort {
 	@Override
 	public Double getBudgetValue() {
 		return 0.0;
+	}
+	
+	@Override
+	public void setBudgetValue(Double budgetValue) {
+	
 	}
 	
 	@Override
@@ -45,21 +51,6 @@ public class BudgetNullObject implements BudgetPort {
 	@Override
 	public void setBillsOfSaleList(List<BillOfSalePort> billsOfSaleList) {
 	
-	}
-	
-	@Override
-	public String getId() {
-		return "ID_null";
-	}
-	
-	@Override
-	public void setId(String id) {
-	
-	}
-	
-	@Override
-	public String toString() {
-		return "NULL object.";
 	}
 	
 }

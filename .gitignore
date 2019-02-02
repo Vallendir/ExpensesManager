@@ -1,7 +1,6 @@
 ### Gradle ###
 .gradle
-/build/
-/rest/build/
+*/build/
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
@@ -28,6 +27,5 @@
 *.css
 *.kotlin_module
 /target/
-/out/
-/core/out/
+*/out/
 /documentation/docs/asciidoc/doc

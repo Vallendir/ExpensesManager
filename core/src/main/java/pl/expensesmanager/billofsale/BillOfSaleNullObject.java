@@ -1,20 +1,22 @@
 package pl.expensesmanager.billofsale;
 
 import lombok.NoArgsConstructor;
+import pl.expensesmanager.base.BaseModelNullObject;
 import pl.expensesmanager.product.ProductPort;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Representation of Bill of sale null object.
+ * Representation of Bill of sale null object pattern.
  */
 @NoArgsConstructor
-final class BillOfSaleNullObject implements BillOfSalePort {
+final class BillOfSaleNullObject extends BaseModelNullObject implements BillOfSalePort {
 	
 	@Override
 	public List<ProductPort> getProductList() {
-		return null;
+		return Collections.emptyList();
 	}
 	
 	@Override
@@ -34,7 +36,7 @@ final class BillOfSaleNullObject implements BillOfSalePort {
 	
 	@Override
 	public String getDescription() {
-		return "DESCRIPTION_null";
+		return "DESCRIPTION_of_null_object";
 	}
 	
 	@Override
@@ -45,21 +47,6 @@ final class BillOfSaleNullObject implements BillOfSalePort {
 	@Override
 	public Double finalPrice() {
 		return 0.0;
-	}
-	
-	@Override
-	public String getId() {
-		return "ID_null";
-	}
-	
-	@Override
-	public void setId(String id) {
-	
-	}
-	
-	@Override
-	public String toString() {
-		return "NULL object.";
 	}
 	
 }

@@ -1,23 +1,16 @@
 package pl.expensesmanager.product;
 
 import lombok.NoArgsConstructor;
+import pl.expensesmanager.base.BaseModelNullObject;
 
 /**
  * Representation of Product null object pattern.
  */
 @NoArgsConstructor
-final class ProductNullObject implements ProductPort {
-	
-	public String getId() {
-		return "ID_null";
-	}
-	
-	public void setId(String id) {
-	
-	}
+final class ProductNullObject extends BaseModelNullObject implements ProductPort {
 	
 	public String getName() {
-		return "NAME_null";
+		return "NAME_of_null_object";
 	}
 	
 	
@@ -48,11 +41,6 @@ final class ProductNullObject implements ProductPort {
 	
 	public Double summaryPrice() {
 		return 0.0;
-	}
-	
-	@Override
-	public String toString() {
-		return "NULL object.";
 	}
 	
 }

@@ -17,7 +17,6 @@ public class Budget extends BudgetPort.BaseModel implements BudgetPort {
 	
 	private String name;
 	
-	@Setter(AccessLevel.NONE)
 	private Double budgetValue;
 	
 	private List<BillOfSalePort> billsOfSaleList;
