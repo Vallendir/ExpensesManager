@@ -1,7 +1,7 @@
 package pl.expensesmanager.billofsale;
 
 import pl.expensesmanager.base.BaseModelPort;
-import pl.expensesmanager.product.ProductPort;
+import pl.expensesmanager.product.ProductOrderPort;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,14 +16,14 @@ public interface BillOfSalePort extends BaseModelPort {
 	 *
 	 * @return products list
 	 */
-	List<ProductPort> getProductList();
+	List<ProductOrderPort> getProductList();
 	
 	/**
 	 * Method to set the products list.
 	 *
 	 * @param productList products list
 	 */
-	void setProductList(List<ProductPort> productList);
+	void setProductList(List<ProductOrderPort> productList);
 	
 	/**
 	 * Method to get the bought date of bill of sale.

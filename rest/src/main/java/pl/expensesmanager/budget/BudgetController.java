@@ -30,11 +30,11 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 	}
 	
 	public BudgetPort searchForId(String id) {
-		return service.searchForId(id);
+		return service.searchForId(id).get();
 	}
 	
 	public BudgetPort searchForName(String name) {
-		return service.searchForName(name);
+		return service.searchForName(name).get();
 	}
 	
 	public List<BudgetPort> searchAllForBudgetValue(Double budgetValue) {

@@ -4,17 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 class ProductService implements ProductServicePort {
 	
 	private final ProductStorePort storage;
 	
 	@Override
-	public ProductPort searchForName(String name) {
-		return storage.findByName(name)
-		              .orElse(new ProductNullObject());
+	public Optional<ProductPort> searchForName(String name) {
+		return storage.findByName(name);
 	}
 	
 	@Override
@@ -30,21 +30,6 @@ class ProductService implements ProductServicePort {
 	@Override
 	public List<ProductPort> searchAllForPriceLower(Double price) {
 		return storage.findByPriceLessThan(price);
-	}
-	
-	@Override
-	public List<ProductPort> searchAllForQuanityRange(Integer min, Integer max) {
-		return storage.findByQuanityBetween(min, max);
-	}
-	
-	@Override
-	public List<ProductPort> searchAllForQuanityGreater(Integer quanity) {
-		return storage.findByQuanityGreaterThan(quanity);
-	}
-	
-	@Override
-	public List<ProductPort> searchAllForQuanityLower(Integer quanity) {
-		return storage.findByQuanityLessThan(quanity);
 	}
 	
 	@Override
@@ -73,9 +58,8 @@ class ProductService implements ProductServicePort {
 	}
 	
 	@Override
-	public ProductPort searchForId(String id) {
-		return storage.findById(id)
-		              .orElse(new ProductNullObject());
+	public Optional<ProductPort> searchForId(String id) {
+		return storage.findById(id);
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package pl.expensesmanager.product;
 import pl.expensesmanager.base.BaseService;
 
 import java.util.List;
+import java.util.Optional;
 
 interface ProductServicePort extends BaseService<ProductPort, String> {
 	
@@ -12,7 +13,7 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param name - the name of product
 	 * @return found product as optional
 	 */
-	ProductPort searchForName(String name);
+	Optional<ProductPort> searchForName(String name);
 	
 	/**
 	 * Method to search products between price range.
@@ -38,30 +39,5 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @return found product objects
 	 */
 	List<ProductPort> searchAllForPriceLower(Double price);
-	
-	/**
-	 * Method to search product between quanity range.
-	 *
-	 * @param min - minimal quanity
-	 * @param max - maximal quanity
-	 * @return found product objects
-	 */
-	List<ProductPort> searchAllForQuanityRange(Integer min, Integer max);
-	
-	/**
-	 * Method to search product which have more quanity than value.
-	 *
-	 * @param quanity - quanity
-	 * @return found product objects
-	 */
-	List<ProductPort> searchAllForQuanityGreater(Integer quanity);
-	
-	/**
-	 * Method to search product which have more quanity than value.
-	 *
-	 * @param quanity - quanity
-	 * @return found product objects
-	 */
-	List<ProductPort> searchAllForQuanityLower(Integer quanity);
 	
 }

@@ -18,14 +18,16 @@ public class ProductStorage implements ProductStorePort {
 	@Override
 	public Optional<ProductPort> findByName(String name) {
 		return ProductSimulatedData.LIST.stream()
-		                                .filter(product -> product.getName().equals(name))
+		                                .filter(product -> product.getName()
+		                                                          .equals(name))
 		                                .findFirst();
 	}
 	
 	@Override
 	public List<ProductPort> findByPrice(Double price) {
 		return ProductSimulatedData.LIST.stream()
-		                                .filter(product -> product.getPrice().equals(price))
+		                                .filter(product -> product.getPrice()
+		                                                          .equals(price))
 		                                .collect(Collectors.toList());
 	}
 	
@@ -51,27 +53,6 @@ public class ProductStorage implements ProductStorePort {
 	}
 	
 	@Override
-	public List<ProductPort> findByQuanityBetween(Integer min, Integer max) {
-		return ProductSimulatedData.LIST.stream()
-		                                .filter(product -> product.getQuanity() > min && product.getQuanity() < max)
-		                                .collect(Collectors.toList());
-	}
-	
-	@Override
-	public List<ProductPort> findByQuanityGreaterThan(Integer quanity) {
-		return ProductSimulatedData.LIST.stream()
-		                                .filter(product -> product.getQuanity() > quanity)
-		                                .collect(Collectors.toList());
-	}
-	
-	@Override
-	public List<ProductPort> findByQuanityLessThan(Integer quanity) {
-		return ProductSimulatedData.LIST.stream()
-		                                .filter(product -> product.getQuanity() < quanity)
-		                                .collect(Collectors.toList());
-	}
-	
-	@Override
 	public ProductPort add(ProductPort object) {
 		if (ProductSimulatedData.LIST.add(object)) {
 			return object;
@@ -83,7 +64,8 @@ public class ProductStorage implements ProductStorePort {
 	@Override
 	public ProductPort update(ProductPort object) {
 		Optional<ProductPort> result = ProductSimulatedData.LIST.stream()
-		                                                        .filter(product -> product.getId().equals(object.getId()))
+		                                                        .filter(product -> product.getId()
+		                                                                                  .equals(object.getId()))
 		                                                        .findFirst();
 		
 		if (result.isPresent()) {
@@ -101,7 +83,9 @@ public class ProductStorage implements ProductStorePort {
 	@Override
 	public ProductPort update(ProductPort originalObject, ProductPort changes) {
 		Optional<ProductPort> result = ProductSimulatedData.LIST.stream()
-		                                                        .filter(product -> product.getId().equals(originalObject.getId()))
+		                                                        .filter(product -> product.getId()
+		                                                                                  .equals(
+			                                                                                  originalObject.getId()))
 		                                                        .findFirst();
 		
 		if (result.isPresent()) {
@@ -119,7 +103,8 @@ public class ProductStorage implements ProductStorePort {
 	@Override
 	public ProductPort update(String id, ProductPort changes) {
 		Optional<ProductPort> result = ProductSimulatedData.LIST.stream()
-		                                                        .filter(product -> product.getId().equals(id))
+		                                                        .filter(product -> product.getId()
+		                                                                                  .equals(id))
 		                                                        .findFirst();
 		
 		if (result.isPresent()) {
@@ -143,7 +128,8 @@ public class ProductStorage implements ProductStorePort {
 	@Override
 	public Optional<ProductPort> findById(String id) {
 		return ProductSimulatedData.LIST.stream()
-		                                .filter(product -> product.getId().equals(id))
+		                                .filter(product -> product.getId()
+		                                                          .equals(id))
 		                                .findFirst();
 	}
 	

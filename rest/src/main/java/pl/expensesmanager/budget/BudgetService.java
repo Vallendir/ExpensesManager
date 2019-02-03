@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -12,9 +13,8 @@ class BudgetService implements BudgetServicePort {
 	private final BudgetStorePort storage;
 	
 	@Override
-	public BudgetPort searchForName(String name) {
-		return storage.findByName(name)
-		              .orElse(new BudgetNullObject());
+	public Optional<BudgetPort> searchForName(String name) {
+		return storage.findByName(name);
 	}
 	
 	@Override
@@ -63,9 +63,8 @@ class BudgetService implements BudgetServicePort {
 	}
 	
 	@Override
-	public BudgetPort searchForId(String id) {
-		return storage.findById(id)
-		              .orElse(new BudgetNullObject());
+	public Optional<BudgetPort> searchForId(String id) {
+		return storage.findById(id);
 	}
 	
 	@Override

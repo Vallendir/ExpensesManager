@@ -2,6 +2,7 @@ package pl.expensesmanager.base;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Basic services port.
@@ -59,7 +60,7 @@ public interface BaseService<T, I extends Serializable> {
 	 * @param id identificator of object to find
 	 * @return found object
 	 */
-	T searchForId(I id);
+	Optional<T> searchForId(I id);
 	
 	/**
 	 * Method to search all objects.

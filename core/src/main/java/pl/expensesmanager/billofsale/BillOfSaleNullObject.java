@@ -2,6 +2,7 @@ package pl.expensesmanager.billofsale;
 
 import lombok.NoArgsConstructor;
 import pl.expensesmanager.base.BaseModelNullObject;
+import pl.expensesmanager.product.ProductOrderPort;
 import pl.expensesmanager.product.ProductPort;
 
 import java.time.Instant;
@@ -15,12 +16,12 @@ import java.util.List;
 final class BillOfSaleNullObject extends BaseModelNullObject implements BillOfSalePort {
 	
 	@Override
-	public List<ProductPort> getProductList() {
+	public List<ProductOrderPort> getProductList() {
 		return Collections.emptyList();
 	}
 	
 	@Override
-	public void setProductList(List<ProductPort> productList) {
+	public void setProductList(List<ProductOrderPort> productList) {
 	
 	}
 	

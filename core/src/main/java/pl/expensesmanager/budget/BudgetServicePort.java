@@ -3,6 +3,7 @@ package pl.expensesmanager.budget;
 import pl.expensesmanager.base.BaseService;
 
 import java.util.List;
+import java.util.Optional;
 
 interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	
@@ -12,7 +13,7 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param name - the name of budget
 	 * @return found budget as optional
 	 */
-	BudgetPort searchForName(String name);
+	Optional<BudgetPort> searchForName(String name);
 	
 	/**
 	 * Method to search budgets by budget value.

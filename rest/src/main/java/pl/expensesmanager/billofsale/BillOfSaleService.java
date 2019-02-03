@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -13,9 +14,8 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	private final BillOfSaleStorePort storage;
 	
 	@Override
-	public BillOfSalePort searchForDescription(String description) {
-		return storage.findByDescription(description)
-		              .orElse(new BillOfSaleNullObject());
+	public Optional<BillOfSalePort> searchForDescription(String description) {
+		return storage.findByDescription(description);
 	}
 	
 	@Override
@@ -54,9 +54,8 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	}
 	
 	@Override
-	public BillOfSalePort searchForId(String id) {
-		return storage.findById(id)
-		              .orElse(new BillOfSaleNullObject());
+	public Optional<BillOfSalePort> searchForId(String id) {
+		return storage.findById(id);
 	}
 	
 	@Override

@@ -31,11 +31,11 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	}
 	
 	public BillOfSalePort searchForId(String id) {
-		return service.searchForId(id);
+		return service.searchForId(id).get();
 	}
 	
 	public BillOfSalePort searchForDescription(String description) {
-		return service.searchForDescription(description);
+		return service.searchForDescription(description).get();
 	}
 	
 	public List<BillOfSalePort> searchForBoughtDate(Instant boughtDate) {

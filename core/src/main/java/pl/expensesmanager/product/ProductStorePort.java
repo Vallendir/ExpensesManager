@@ -48,29 +48,4 @@ public interface ProductStorePort extends BaseStorage<ProductPort, String> {
 	 */
 	List<ProductPort> findByPriceLessThan(Double price);
 	
-	/**
-	 * Method to find product between quanity range.
-	 *
-	 * @param min - minimal quanity
-	 * @param max - maximal quanity
-	 * @return found product objects
-	 */
-	List<ProductPort> findByQuanityBetween(Integer min, Integer max);
-	
-	/**
-	 * Method to find product which have more quanity than value.
-	 *
-	 * @param quanity - quanity
-	 * @return found product objects
-	 */
-	List<ProductPort> findByQuanityGreaterThan(Integer quanity);
-	
-	/**
-	 * Method to find product which have more quanity than value.
-	 *
-	 * @param quanity - quanity
-	 * @return found product objects
-	 */
-	List<ProductPort> findByQuanityLessThan(Integer quanity);
-	
 }

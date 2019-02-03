@@ -1,12 +1,10 @@
 package pl.expensesmanager.product;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Slf4j
 @RequiredArgsConstructor
 @RestController
 class ProductController implements ProductApi, ProductDocumentation {
@@ -30,11 +28,15 @@ class ProductController implements ProductApi, ProductDocumentation {
 	}
 	
 	public ProductPort searchForId(String id) {
-		return service.searchForId(id);
+		// FIXME
+		return service.searchForId(id)
+		              .get();
 	}
 	
 	public ProductPort searchForName(String name) {
-		return service.searchForName(name);
+		// FIXME
+		return service.searchForName(name)
+		              .get();
 	}
 	
 	public List<ProductPort> searchAllForPriceRange(Double min, Double max) {
@@ -47,18 +49,6 @@ class ProductController implements ProductApi, ProductDocumentation {
 	
 	public List<ProductPort> searchAllForPriceLower(Double price) {
 		return service.searchAllForPriceLower(price);
-	}
-	
-	public List<ProductPort> searchAllForQuanityRange(Integer min, Integer max) {
-		return service.searchAllForQuanityRange(min, max);
-	}
-	
-	public List<ProductPort> searchAllForQuanityGreater(Integer quanity) {
-		return service.searchAllForQuanityGreater(quanity);
-	}
-	
-	public List<ProductPort> searchAllForQuanityLower(Integer quanity) {
-		return service.searchAllForQuanityLower(quanity);
 	}
 	
 }
