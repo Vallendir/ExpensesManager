@@ -2,9 +2,10 @@ package pl.expensesmanager.billofsale;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.expensesmanager.AbstractDBInMemoryTest;
+import pl.expensesmanager.AbstractCoreTest;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,13 +15,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
+class BillOfSaleServiceTest extends AbstractCoreTest {
 	
 	@Mock
-	private BillOfSaleStorage storage;
+	private BillOfSaleStorePort storage;
+	
+	@InjectMocks
+	private BillOfSaleService service;
 	
 	@Test
-	void findByDescription() {
+	void searchForDescription() {
 		// Given
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
 		
@@ -28,7 +32,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 			Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.findByDescription(expectedBillOfSale_1.getDescription())
+		BillOfSalePort actualBillOfSale = service.searchForDescription(expectedBillOfSale_1.getDescription())
 		                                         .get();
 		
 		// Then
@@ -36,7 +40,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 	}
 	
 	@Test
-	void findByBoughtDate() {
+	void searchForBoughtDate() {
 		// Given
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
 		
@@ -45,14 +49,14 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		when(storage.findByBoughtDate(BOUGHT_DATE)).thenReturn(List.of(expectedBillOfSale_1));
 		
 		// When
-		List<BillOfSalePort> actualBillOfSale = storage.findByBoughtDate(BOUGHT_DATE);
+		List<BillOfSalePort> actualBillOfSale = service.searchForBoughtDate(BOUGHT_DATE);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
 	}
 	
 	@Test
-	void findByBoughtDateBetween() {
+	void searchAllForBoughtDateRange() {
 		// Given
 		Instant dateMax = Instant.now();
 		
@@ -63,14 +67,14 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		when(storage.findByBoughtDateBetween(BOUGHT_DATE, dateMax)).thenReturn(List.of(expectedBillOfSale_1));
 		
 		// When
-		List<BillOfSalePort> actualBillOfSale = storage.findByBoughtDateBetween(BOUGHT_DATE, dateMax);
+		List<BillOfSalePort> actualBillOfSale = service.searchAllForBoughtDateRange(BOUGHT_DATE, dateMax);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSaleList);
 	}
 	
 	@Test
-	void add() {
+	void create() {
 		// Given
 		BillOfSalePort expectedToAdd = createBillOfSale();
 		
@@ -79,7 +83,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		when(storage.add(expectedToAdd)).thenReturn(expectedBillOfSale);
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.add(expectedToAdd);
+		BillOfSalePort actualBillOfSale = service.create(expectedToAdd);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
@@ -99,7 +103,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		when(storage.update(expectedToChange)).thenReturn(expectedBillOfSale);
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.update(expectedToChange);
+		BillOfSalePort actualBillOfSale = service.update(expectedToChange);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
@@ -120,7 +124,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		when(storage.update(expectedToChange.getId(), expectedChanges)).thenReturn(expectedBillOfSale);
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.update(expectedToChange.getId(), expectedChanges);
+		BillOfSalePort actualBillOfSale = service.update(expectedChanges, expectedToChange.getId());
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
@@ -140,35 +144,35 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedBillOfSale);
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.update(expectedToChange, expectedChanges);
+		BillOfSalePort actualBillOfSale = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
 	}
 	
 	@Test
-	void remove() {
+	void delete() {
 		// Given
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
 		
 		when(storage.remove(expectedBillOfSale_1.getId())).thenReturn(true);
 		
 		// When
-		boolean actualBillOfSales = storage.remove(expectedBillOfSale_1.getId());
+		boolean actualBillOfSales = service.delete(expectedBillOfSale_1.getId());
 		
 		// Then
 		assertThat(actualBillOfSales).isTrue();
 	}
 	
 	@Test
-	void findById() {
+	void searchForId() {
 		// Given
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
 		
 		when(storage.findById(expectedBillOfSale_1.getId())).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.findById(expectedBillOfSale_1.getId())
+		BillOfSalePort actualBillOfSale = service.searchForId(expectedBillOfSale_1.getId())
 		                                         .get();
 		
 		// Then
@@ -176,7 +180,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 	}
 	
 	@Test
-	void findAll() {
+	void searchAll() {
 		// Given
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
 		BillOfSalePort expectedBillOfSale_2 = createBillOfSale();
@@ -184,7 +188,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		when(storage.findAll()).thenReturn(List.of(expectedBillOfSale_1, expectedBillOfSale_2));
 		
 		// When
-		List<BillOfSalePort> actualBillOfSales = storage.findAll();
+		List<BillOfSalePort> actualBillOfSales = service.searchAll();
 		
 		// Then
 		assertThat(actualBillOfSales).isEqualTo(List.of(expectedBillOfSale_1, expectedBillOfSale_2));

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.expensesmanager.AbstractDBInMemoryTest;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,13 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProductStorageTest {
-	
-	private static final String PRODUCT_ID = "ID_TEST";
-	
-	private static final String PRODUCT_NAME = "NAME_TEST";
-	
-	private static final Double PRODUCT_PRICE = 5.75;
+class ProductStorageTest extends AbstractDBInMemoryTest {
 	
 	@Mock
 	private ProductStorage storage;
@@ -225,23 +220,6 @@ class ProductStorageTest {
 		assertThat(actualProducts).isEqualTo(List.of(expectedProduct_1, expectedProduct_2));
 		assertThat(actualProducts.size()).isEqualTo(2);
 		assertThat(actualProducts).containsExactlyInAnyOrder(expectedProduct_1, expectedProduct_2);
-	}
-	
-	private ProductPort createProduct(String id, String name, Double price) {
-		ProductPort expectedProduct = new Product();
-		expectedProduct.setId(id);
-		expectedProduct.setName(name);
-		expectedProduct.setPrice(price);
-		
-		return expectedProduct;
-	}
-	
-	private ProductPort createProduct(Double price) {
-		return createProduct(PRODUCT_ID, PRODUCT_NAME, price);
-	}
-	
-	private ProductPort createProduct() {
-		return createProduct(PRODUCT_ID, PRODUCT_NAME, PRODUCT_PRICE);
 	}
 	
 }

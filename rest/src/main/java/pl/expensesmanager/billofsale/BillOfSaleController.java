@@ -31,10 +31,12 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	}
 	
 	public BillOfSalePort searchForId(String id) {
+		// FIXME
 		return service.searchForId(id).get();
 	}
 	
 	public BillOfSalePort searchForDescription(String description) {
+		// FIXME
 		return service.searchForDescription(description).get();
 	}
 	

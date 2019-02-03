@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.expensesmanager.AbstractCoreTest;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,13 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProductServiceTest {
-	
-	private static final String PRODUCT_ID = "PRODUCT_ID_TEST";
-	
-	private static final String PRODUCT_NAME = "PRODUCT_NAME_TEST";
-	
-	private static final Double PRODUCT_PRICE = 10.25;
+class ProductServiceTest extends AbstractCoreTest {
 	
 	@Mock
 	private ProductStorePort storage;
@@ -213,23 +208,6 @@ class ProductServiceTest {
 		assertThat(actualProducts).isEqualTo(List.of(expectedProduct, secondEpectedProduct));
 		assertThat(actualProducts.size()).isEqualTo(2);
 		assertThat(actualProducts).containsExactlyInAnyOrder(expectedProduct, secondEpectedProduct);
-	}
-	
-	private ProductPort createProduct(String id, String name, Double price) {
-		ProductPort expectedProduct = new Product();
-		expectedProduct.setId(id);
-		expectedProduct.setName(name);
-		expectedProduct.setPrice(price);
-		
-		return expectedProduct;
-	}
-	
-	private ProductPort createProduct(Double price) {
-		return createProduct(PRODUCT_ID, PRODUCT_NAME, price);
-	}
-	
-	private ProductPort createProduct() {
-		return createProduct(PRODUCT_ID, PRODUCT_NAME, PRODUCT_PRICE);
 	}
 	
 }

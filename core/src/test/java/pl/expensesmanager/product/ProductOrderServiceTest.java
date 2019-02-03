@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.expensesmanager.AbstractCoreTest;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,13 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProductOrderServiceTest {
-	
-	private static final Integer PRODUCT_ORDER_QUANITY = 10;
-	
-	private static final String PRODUCT_NAME = "Test name";
-	
-	private static final Double PRODUCT_PRICE = 13.2;
+class ProductOrderServiceTest extends AbstractCoreTest {
 	
 	@Mock
 	private ProductOrderStorePort storage;
@@ -134,7 +129,7 @@ class ProductOrderServiceTest {
 		
 		ProductOrderPort expectedProduct = createProductOrder();
 		
-		expectedToChange.setQuanity(PRODUCT_ORDER_QUANITY);
+		expectedToChange.setQuanity(PRODUCT_QUANITY);
 		
 		when(storage.update(expectedToChange)).thenReturn(expectedProduct);
 		
@@ -151,7 +146,7 @@ class ProductOrderServiceTest {
 		ProductOrderPort expectedToChange = createProductOrder(null);
 		
 		ProductOrderPort expectedChanges = new ProductOrder();
-		expectedChanges.setQuanity(PRODUCT_ORDER_QUANITY);
+		expectedChanges.setQuanity(PRODUCT_QUANITY);
 		
 		ProductOrderPort expectedProduct = createProductOrder();
 		
@@ -170,7 +165,7 @@ class ProductOrderServiceTest {
 		ProductOrderPort expectedToChange = createProductOrder(null);
 		
 		ProductOrderPort expectedChanges = new ProductOrder();
-		expectedChanges.setQuanity(PRODUCT_ORDER_QUANITY);
+		expectedChanges.setQuanity(PRODUCT_QUANITY);
 		
 		ProductOrderPort expectedProduct = createProductOrder();
 		
@@ -227,18 +222,6 @@ class ProductOrderServiceTest {
 		assertThat(actualOrders).isEqualTo(List.of(expectedOrder, secondExpectedOrder));
 		assertThat(actualOrders.size()).isEqualTo(2);
 		assertThat(actualOrders).containsExactlyInAnyOrder(expectedOrder, secondExpectedOrder);
-	}
-	
-	private ProductOrderPort createProductOrder(Integer quanity) {
-		ProductPort product = new Product();
-		product.setName(PRODUCT_NAME);
-		product.setPrice(PRODUCT_PRICE);
-		
-		return new ProductOrder(product, quanity);
-	}
-	
-	private ProductOrderPort createProductOrder() {
-		return createProductOrder(PRODUCT_ORDER_QUANITY);
 	}
 	
 }

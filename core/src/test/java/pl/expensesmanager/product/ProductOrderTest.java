@@ -1,22 +1,20 @@
 package pl.expensesmanager.product;
 
 import org.junit.jupiter.api.Test;
+import pl.expensesmanager.AbstractCoreTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProductOrderTest {
+class ProductOrderTest extends AbstractCoreTest {
 	
 	@Test
 	void testSummaryPrice() {
 		// Given
-		String expectedProductName = "Product 1";
-		Double expectedProductPrice = 5.75;
-		ProductPort expectedProduct = new Product(expectedProductName, expectedProductPrice);
+		ProductPort expectedProduct = createProduct();
 		
-		Integer productQuanity = 4;
-		ProductOrderPort expectedProductOrder = new ProductOrder(expectedProduct, productQuanity);
+		ProductOrderPort expectedProductOrder = new ProductOrder(expectedProduct, PRODUCT_QUANITY);
 		
-		Double expectedSummaryPrice = expectedProductPrice * productQuanity;
+		Double expectedSummaryPrice = PRODUCT_PRICE * PRODUCT_QUANITY;
 		
 		// When
 		Double actualSummaryPrice = expectedProductOrder.summaryPrice();
