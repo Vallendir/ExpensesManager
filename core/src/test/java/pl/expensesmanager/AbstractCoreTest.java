@@ -2,6 +2,7 @@ package pl.expensesmanager;
 
 import pl.expensesmanager.billofsale.BillOfSale;
 import pl.expensesmanager.billofsale.BillOfSalePort;
+import pl.expensesmanager.budget.Budget;
 import pl.expensesmanager.product.Product;
 import pl.expensesmanager.product.ProductOrder;
 import pl.expensesmanager.product.ProductOrderPort;
@@ -23,6 +24,10 @@ public abstract class AbstractCoreTest {
 	protected static final Instant BOUGHT_DATE = Instant.now();
 	
 	protected static final String BILL_OF_SALE_DESCRIPTION = "Description test";
+	
+	protected static final String BUDGET_NAME = "Budget name";
+	
+	protected static final Double BUDGET_VALUE = 350.0;
 	
 	
 	protected ProductPort createProduct(String id, String name, Double price) {
@@ -66,6 +71,26 @@ public abstract class AbstractCoreTest {
 		billOfSale.setProductList(List.of(createOrder()));
 		
 		return billOfSale;
+	}
+	
+	protected Budget createBudget() {
+		Budget budget = new Budget();
+		budget.setId(PRODUCT_ID);
+		budget.setName(BUDGET_NAME);
+		budget.setBillsOfSaleList(List.of(createBillOfSale()));
+		budget.setBudgetValue(BUDGET_VALUE);
+		
+		return budget;
+	}
+	
+	protected Budget createBudget(Double value) {
+		Budget budget = new Budget();
+		budget.setId(PRODUCT_ID);
+		budget.setName(BUDGET_NAME);
+		budget.setBillsOfSaleList(List.of(createBillOfSale()));
+		budget.setBudgetValue(value);
+		
+		return budget;
 	}
 	
 }

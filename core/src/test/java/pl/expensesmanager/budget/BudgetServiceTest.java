@@ -2,9 +2,10 @@ package pl.expensesmanager.budget;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.expensesmanager.AbstractDBInMemoryTest;
+import pl.expensesmanager.AbstractCoreTest;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,20 +14,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BudgetStorageTest extends AbstractDBInMemoryTest {
+class BudgetServiceTest extends AbstractCoreTest {
 	
 	@Mock
-	private BudgetStorage storage;
+	private BudgetStorePort storage;
+	
+	@InjectMocks
+	private BudgetService service;
 	
 	@Test
-	void findByName() {
+	void searchForName() {
 		// Given
 		BudgetPort expectedBudget_1 = createBudget();
 		
 		when(storage.findByName(expectedBudget_1.getName())).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		BudgetPort actualBudget = storage.findByName(expectedBudget_1.getName())
+		BudgetPort actualBudget = service.searchForName(expectedBudget_1.getName())
 		                                 .get();
 		
 		// Then
@@ -34,7 +38,7 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 	}
 	
 	@Test
-	void findByBudgetValue() {
+	void searchAllForBudgetValue() {
 		// Given
 		BudgetPort expectedBudget_1 = createBudget();
 		List<BudgetPort> expectedBudgets = List.of(expectedBudget_1);
@@ -42,14 +46,14 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		when(storage.findByBudgetValue(expectedBudget_1.getBudgetValue())).thenReturn(List.of(expectedBudget_1));
 		
 		// When
-		List<BudgetPort> actualBudget = storage.findByBudgetValue(expectedBudget_1.getBudgetValue());
+		List<BudgetPort> actualBudget = service.searchAllForBudgetValue(expectedBudget_1.getBudgetValue());
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudgets);
 	}
 	
 	@Test
-	void findByBudgetValueBetween() {
+	void searchAllForBudgetValueRange() {
 		// Given
 		double budgetMin = BUDGET_VALUE - 3.5;
 		double budgetMax = BUDGET_VALUE + 13.5;
@@ -61,14 +65,14 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		when(storage.findByBudgetValueBetween(budgetMin, budgetMax)).thenReturn(List.of(expectedBudget_1));
 		
 		// When
-		List<BudgetPort> actualBudget = storage.findByBudgetValueBetween(budgetMin, budgetMax);
+		List<BudgetPort> actualBudget = service.searchAllForBudgetValueRange(budgetMin, budgetMax);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudgetList);
 	}
 	
 	@Test
-	void findByBudgetValueGreaterThan() {
+	void searchAllForBudgetValueGreater() {
 		// Given
 		double budget = BUDGET_VALUE - 3.5;
 		
@@ -79,14 +83,14 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		when(storage.findByBudgetValueGreaterThan(budget)).thenReturn(List.of(expectedBudget_1));
 		
 		// When
-		List<BudgetPort> actualBudget = storage.findByBudgetValueGreaterThan(budget);
+		List<BudgetPort> actualBudget = service.searchAllForBudgetValueGreater(budget);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudgetList);
 	}
 	
 	@Test
-	void findByBudgetValueLessThan() {
+	void searchAllForBudgetValueLower() {
 		// Given
 		double budget = BUDGET_VALUE + 6.25;
 		
@@ -94,17 +98,17 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		
 		List<BudgetPort> expectedBudgetList = List.of(expectedBudget_1);
 		
-		when(storage.findByBudgetValueGreaterThan(budget)).thenReturn(List.of(expectedBudget_1));
+		when(storage.findByBudgetValueLessThan(budget)).thenReturn(expectedBudgetList);
 		
 		// When
-		List<BudgetPort> actualBudget = storage.findByBudgetValueGreaterThan(budget);
+		List<BudgetPort> actualBudget = service.searchAllForBudgetValueLower(budget);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudgetList);
 	}
 	
 	@Test
-	void add() {
+	void create() {
 		// Given
 		BudgetPort expectedToAdd = createBudget();
 		
@@ -113,7 +117,7 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		when(storage.add(expectedToAdd)).thenReturn(expectedBudget);
 		
 		// When
-		BudgetPort actualBudget = storage.add(expectedToAdd);
+		BudgetPort actualBudget = service.create(expectedToAdd);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
@@ -129,7 +133,7 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		when(storage.update(expectedToChange)).thenReturn(expectedBudget);
 		
 		// When
-		BudgetPort actualBudget = storage.update(expectedToChange);
+		BudgetPort actualBudget = service.update(expectedToChange);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
@@ -147,7 +151,7 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		when(storage.update(expectedToChange.getId(), expectedChanges)).thenReturn(expectedBudget);
 		
 		// When
-		BudgetPort actualBudget = storage.update(expectedToChange.getId(), expectedChanges);
+		BudgetPort actualBudget = service.update(expectedChanges, expectedToChange.getId());
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
@@ -165,35 +169,35 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedBudget);
 		
 		// When
-		BudgetPort actualBudget = storage.update(expectedToChange, expectedChanges);
+		BudgetPort actualBudget = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
 	}
 	
 	@Test
-	void remove() {
+	void delete() {
 		// Given
 		BudgetPort expectedBudget_1 = createBudget();
 		
 		when(storage.remove(expectedBudget_1.getId())).thenReturn(true);
 		
 		// When
-		boolean actualBudgets = storage.remove(expectedBudget_1.getId());
+		boolean actualBudgets = service.delete(expectedBudget_1.getId());
 		
 		// Then
 		assertThat(actualBudgets).isTrue();
 	}
 	
 	@Test
-	void findById() {
+	void searchForId() {
 		// Given
 		BudgetPort expectedBudget_1 = createBudget();
 		
 		when(storage.findById(expectedBudget_1.getId())).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		BudgetPort actualBudget = storage.findById(expectedBudget_1.getId())
+		BudgetPort actualBudget = service.searchForId(expectedBudget_1.getId())
 		                                 .get();
 		
 		// Then
@@ -201,7 +205,7 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 	}
 	
 	@Test
-	void findAll() {
+	void searchAll() {
 		// Given
 		BudgetPort expectedBudget_1 = createBudget();
 		BudgetPort expectedBudget_2 = createBudget();
@@ -209,7 +213,7 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		when(storage.findAll()).thenReturn(List.of(expectedBudget_1, expectedBudget_2));
 		
 		// When
-		List<BudgetPort> actualBudgets = storage.findAll();
+		List<BudgetPort> actualBudgets = service.searchAll();
 		
 		// Then
 		assertThat(actualBudgets).isEqualTo(List.of(expectedBudget_1, expectedBudget_2));
