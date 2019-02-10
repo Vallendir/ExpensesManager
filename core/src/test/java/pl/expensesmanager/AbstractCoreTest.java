@@ -1,8 +1,13 @@
 package pl.expensesmanager;
 
+import org.assertj.core.api.ThrowableAssert;
 import pl.expensesmanager.billofsale.BillOfSale;
 import pl.expensesmanager.billofsale.BillOfSalePort;
 import pl.expensesmanager.budget.Budget;
+import pl.expensesmanager.exception.validation.ValidateDateException;
+import pl.expensesmanager.exception.validation.ValidateNumberException;
+import pl.expensesmanager.exception.validation.ValidateObjectException;
+import pl.expensesmanager.exception.validation.ValidateTextException;
 import pl.expensesmanager.product.Product;
 import pl.expensesmanager.product.ProductOrder;
 import pl.expensesmanager.product.ProductOrderPort;
@@ -10,6 +15,8 @@ import pl.expensesmanager.product.ProductPort;
 
 import java.time.Instant;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public abstract class AbstractCoreTest {
 	
@@ -28,6 +35,16 @@ public abstract class AbstractCoreTest {
 	protected static final String BUDGET_NAME = "Budget name";
 	
 	protected static final Double BUDGET_VALUE = 350.0;
+	
+	protected static final String TEXT_WITH_HTML4_TO_ESCAPE = "<span> Test text to escape ";
+	
+	protected static final String TEXT_WITH_HTML4_AFTER_ESCAPE = "&lt;span&gt; Test text to escape";
+	
+	protected static final String BLANK_TEXT = "";
+	
+	protected static final String EMPTY_SPACE_TEXT = "";
+	
+	protected static final Double DOUBLE_VALUE_NAN = Double.NaN;
 	
 	
 	protected ProductPort createProduct() {
@@ -94,6 +111,34 @@ public abstract class AbstractCoreTest {
 		budget.setBudgetValue(value);
 		
 		return budget;
+	}
+	
+	protected void assertThatThrownByValidateTextException(
+		ThrowableAssert.ThrowingCallable throwable, String hasMessage
+	) {
+		assertThatThrownBy(throwable).isInstanceOf(ValidateTextException.class)
+		                             .hasMessage(hasMessage);
+	}
+	
+	protected void assertThatThrownByValidateNumberException(
+		ThrowableAssert.ThrowingCallable throwable, String hasMessage
+	) {
+		assertThatThrownBy(throwable).isInstanceOf(ValidateNumberException.class)
+		                             .hasMessage(hasMessage);
+	}
+	
+	protected void assertThatThrownByValidateDateException(
+		ThrowableAssert.ThrowingCallable throwable, String hasMessage
+	) {
+		assertThatThrownBy(throwable).isInstanceOf(ValidateDateException.class)
+		                             .hasMessage(hasMessage);
+	}
+	
+	protected void assertThatThrownByValidateObjectException(
+		ThrowableAssert.ThrowingCallable throwable, String hasMessage
+	) {
+		assertThatThrownBy(throwable).isInstanceOf(ValidateObjectException.class)
+		                             .hasMessage(hasMessage);
 	}
 	
 }

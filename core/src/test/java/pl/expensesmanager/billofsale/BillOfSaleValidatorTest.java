@@ -1,66 +1,52 @@
 package pl.expensesmanager.billofsale;
 
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
-import pl.expensesmanager.product.Product;
-import pl.expensesmanager.product.ProductOrder;
-import pl.expensesmanager.product.ProductOrderPort;
-import pl.expensesmanager.product.ProductPort;
-
-import java.time.Instant;
-import java.util.List;
+import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.exception.ValidationExceptionFactory;
+import pl.expensesmanager.exception.validation.ValidateObjectException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class BillOfSaleValidatorTest {
+class BillOfSaleValidatorTest extends AbstractCoreTest {
 	
 	@Test
 	void validateDescription() {
 		// Given
-		String blankString_1 = "";
-		String blankString_2 = " ";
-		
-		String textToEscapeHTML = "<span> Bill Of Sale ";
-		String expectedTextToEscapeHTML = "&lt;span&gt; Bill Of Sale";
+		ThrowableAssert.ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateDescription(BLANK_TEXT);
+		ThrowableAssert.ThrowingCallable throwable_2 = () -> BillOfSaleValidator.validateDescription(EMPTY_SPACE_TEXT);
 		
 		// Then
-		assertThrows(RuntimeException.class, () -> BillOfSaleValidator.validateDescription(blankString_1));
-		assertThrows(RuntimeException.class, () -> BillOfSaleValidator.validateDescription(blankString_2));
-		assertThat(BillOfSaleValidator.validateDescription(textToEscapeHTML)).isEqualTo(expectedTextToEscapeHTML);
+		assertThatThrownByValidateTextException(
+			throwable_1, ValidationExceptionFactory.ExceptionMessage.BILL_OF_SALE_DESCRIPTION);
+		assertThatThrownByValidateTextException(
+			throwable_2, ValidationExceptionFactory.ExceptionMessage.BILL_OF_SALE_DESCRIPTION);
+		assertThat(BillOfSaleValidator.validateDescription(TEXT_WITH_HTML4_TO_ESCAPE)).isEqualTo(
+			TEXT_WITH_HTML4_AFTER_ESCAPE);
 	}
 	
 	@Test
 	void validateBoughtDate() {
 		// Given
-		Instant date = Instant.now();
-		Instant dateNull = null;
+		ThrowableAssert.ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateBoughtDate(null);
 		
 		// Then
-		assertThrows(RuntimeException.class, () -> BillOfSaleValidator.validateBoughtDate(dateNull));
-		assertThat(BillOfSaleValidator.validateBoughtDate(date)).isEqualTo(date);
+		assertThatThrownByValidateDateException(throwable_1, ValidationExceptionFactory.ExceptionMessage.DATE_NULL);
+		assertThat(BillOfSaleValidator.validateBoughtDate(BOUGHT_DATE)).isEqualTo(BOUGHT_DATE);
 	}
 	
 	@Test
 	void validateBillOfSale() {
 		// Given
 		BillOfSalePort billOfSale = createBillOfSale();
-		BillOfSalePort billOfSaleNull = null;
+		
+		ThrowableAssert.ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateBillOfSale(null);
 		
 		// Then
-		assertThrows(RuntimeException.class, () -> BillOfSaleValidator.validateBillOfSale(billOfSaleNull));
+		assertThatThrownBy(throwable_1).isInstanceOf(ValidateObjectException.class)
+		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.BILL_OF_SALE_NULL);
 		assertThat(BillOfSaleValidator.validateBillOfSale(billOfSale)).isEqualTo(billOfSale);
-	}
-	
-	private ProductPort createProduct() {
-		return new Product("name", 7.3);
-	}
-	
-	private ProductOrderPort createProductOrder() {
-		return new ProductOrder(createProduct(), 13);
-	}
-	
-	private BillOfSalePort createBillOfSale() {
-		return new BillOfSale(List.of(createProductOrder()), Instant.now(), "description");
 	}
 	
 }
