@@ -6,6 +6,7 @@ ext {
 
     /** Apache commons **/
     apacheCommons3Version = '3.8.1'
+    apacheCommonsTextVersion = '1.6'
 
     /** Jackson **/
     jacksonVersion = '2.9.0'
@@ -19,6 +20,7 @@ dependencies {
 
     /** Apache commons **/
     implementation "org.apache.commons:commons-lang3:$apacheCommons3Version"
+    implementation "org.apache.commons:commons-text:$apacheCommonsTextVersion"
 
     /** Jackson **/
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
