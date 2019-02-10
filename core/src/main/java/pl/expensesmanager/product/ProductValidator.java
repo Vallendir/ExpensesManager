@@ -1,35 +1,24 @@
 package pl.expensesmanager.product;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
+import pl.expensesmanager.util.BasicValidator;
 
+/**
+ * Validator of product and product orders
+ */
 @UtilityClass
 class ProductValidator {
 	
-	static String validateProductName(String name) {
-		if (StringUtils.isBlank(name)) {
-			throw new RuntimeException();
-		}
-		
-		return StringEscapeUtils.escapeHtml4(name)
-		                        .trim();
+	static String validateName(String name) {
+		return BasicValidator.validateText(name);
 	}
 	
 	static Double validatePrice(Double price) {
-		if (price.isNaN() || price == null) {
-			throw new RuntimeException();
-		}
-		
-		return price;
+		return BasicValidator.validateDouble(price);
 	}
 	
 	static Integer validateQuanity(Integer quanity) {
-		if (quanity == null) {
-			throw new RuntimeException();
-		}
-		
-		return quanity;
+		return BasicValidator.validateInteger(quanity);
 	}
 	
 	static ProductPort validateProduct(ProductPort product) {
@@ -37,7 +26,7 @@ class ProductValidator {
 			throw new RuntimeException();
 		}
 		
-		validateProductName(product.getName());
+		validateName(product.getName());
 		validatePrice(product.getPrice());
 		
 		return product;

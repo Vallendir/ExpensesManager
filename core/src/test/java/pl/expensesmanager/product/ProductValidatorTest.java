@@ -8,18 +8,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ProductValidatorTest {
 	
 	@Test
-	void validateProductName() {
+	void validateName() {
 		// Given
 		String blankString_1 = "";
 		String blankString_2 = " ";
 		
-		String textToEscapeHTML = "<span> Tekst ";
-		String expectedTextToEscapeHTML = "&lt;span&gt; Tekst";
+		String textToEscapeHTML = "<span> Name Tekst ";
+		String expectedTextToEscapeHTML = "&lt;span&gt; Name Tekst";
 		
 		// Then
-		assertThrows(RuntimeException.class, () -> ProductValidator.validateProductName(blankString_1));
-		assertThrows(RuntimeException.class, () -> ProductValidator.validateProductName(blankString_2));
-		assertThat(ProductValidator.validateProductName(textToEscapeHTML)).isEqualTo(expectedTextToEscapeHTML);
+		assertThrows(RuntimeException.class, () -> ProductValidator.validateName(blankString_1));
+		assertThrows(RuntimeException.class, () -> ProductValidator.validateName(blankString_2));
+		assertThat(ProductValidator.validateName(textToEscapeHTML)).isEqualTo(expectedTextToEscapeHTML);
 	}
 	
 	@Test

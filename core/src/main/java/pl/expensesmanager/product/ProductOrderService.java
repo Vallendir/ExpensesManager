@@ -14,13 +14,13 @@ class ProductOrderService implements ProductOrderServicePort {
 	
 	@Override
 	public List<ProductOrderPort> searchAllForProductName(String name) {
-		return storage.findByProductName(ProductValidator.validateProductName(name));
+		return storage.findByProductName(ProductValidator.validateName(name));
 	}
 	
 	@Override
 	public List<ProductOrderPort> searchAllForProductNameAndProductPrice(String name, Double price) {
 		return storage.findByProductNameAndProductPrice(
-			ProductValidator.validateProductName(name), ProductValidator.validatePrice(price));
+			ProductValidator.validateName(name), ProductValidator.validatePrice(price));
 	}
 	
 	@Override

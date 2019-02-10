@@ -1,29 +1,22 @@
 package pl.expensesmanager.billofsale;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
+import pl.expensesmanager.util.BasicValidator;
 
 import java.time.Instant;
 
+/**
+ * Validator of bill of sale
+ */
 @UtilityClass
 class BillOfSaleValidator {
 	
 	static String validateDescription(String description) {
-		if (StringUtils.isBlank(description)) {
-			throw new RuntimeException();
-		}
-		
-		return StringEscapeUtils.escapeHtml4(description)
-		                        .trim();
+		return BasicValidator.validateText(description);
 	}
 	
 	static Instant validateBoughtDate(Instant boughtDate) {
-		if (boughtDate == null) {
-			throw new RuntimeException();
-		}
-		
-		return boughtDate;
+		return BasicValidator.validateInstantDate(boughtDate);
 	}
 	
 	static BillOfSalePort validateBillOfSale(BillOfSalePort billOfSale) {

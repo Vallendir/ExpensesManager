@@ -1,27 +1,20 @@
 package pl.expensesmanager.budget;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
+import pl.expensesmanager.util.BasicValidator;
 
+/**
+ * Validator of budget
+ */
 @UtilityClass
 class BudgetValidator {
 	
 	static String validateName(String name) {
-		if (StringUtils.isBlank(name)) {
-			throw new RuntimeException();
-		}
-		
-		return StringEscapeUtils.escapeHtml4(name)
-		                        .trim();
+		return BasicValidator.validateText(name);
 	}
 	
 	static Double validateBudgetValue(Double budgetValue) {
-		if (budgetValue.isNaN() || budgetValue == null) {
-			throw new RuntimeException();
-		}
-		
-		return budgetValue;
+		return BasicValidator.validateDouble(budgetValue);
 	}
 	
 	static BudgetPort validateBudget(BudgetPort budget) {

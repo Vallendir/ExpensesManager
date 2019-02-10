@@ -14,7 +14,7 @@ class ProductService implements ProductServicePort {
 	
 	@Override
 	public Optional<ProductPort> searchForName(String name) {
-		return storage.findByName(ProductValidator.validateProductName(name));
+		return storage.findByName(ProductValidator.validateName(name));
 	}
 	
 	@Override
@@ -81,7 +81,7 @@ class ProductService implements ProductServicePort {
 	
 	private void checkChangesInProduct(ProductPort changes) {
 		if (changes.getName() != null) {
-			ProductValidator.validateProductName(changes.getName());
+			ProductValidator.validateName(changes.getName());
 		}
 		
 		if (changes.getPrice() != null) {
