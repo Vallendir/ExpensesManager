@@ -10,11 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductOrderStorageTest extends AbstractDBInMemoryTest {
+	
+	private static final Integer QUANITY_MIN = PRODUCT_QUANITY - 4;
+	
+	private static final Integer QUANITY_MAX = PRODUCT_QUANITY + 4;
 	
 	@Mock
 	private ProductOrderStorage storage;
@@ -22,83 +25,87 @@ class ProductOrderStorageTest extends AbstractDBInMemoryTest {
 	@Test
 	void findByProductName() {
 		// Given
-		ProductOrderPort expectedProduct_1 = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByProductName(any())).thenReturn(List.of(expectedProduct_1));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByProductName(PRODUCT_NAME)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualProducts = storage.findByProductName(PRODUCT_NAME);
+		List<ProductOrderPort> actualOrderList = storage.findByProductName(PRODUCT_NAME);
 		
 		// Then
-		assertThat(actualProducts).isEqualTo(List.of(expectedProduct_1));
-		assertThat(actualProducts.size()).isEqualTo(1);
-		assertThat(actualProducts).containsExactlyInAnyOrder(expectedProduct_1);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
 	void findByProductNameAndProductPrice() {
 		// Given
-		ProductOrderPort expectedProduct_1 = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByProductNameAndProductPrice(any(), any())).thenReturn(List.of(expectedProduct_1));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualProducts = storage.findByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE);
+		List<ProductOrderPort> actualOrderList = storage.findByProductNameAndProductPrice(
+			PRODUCT_NAME, PRODUCT_PRICE);
 		
 		// Then
-		assertThat(actualProducts).isEqualTo(List.of(expectedProduct_1));
-		assertThat(actualProducts.size()).isEqualTo(1);
-		assertThat(actualProducts).containsExactlyInAnyOrder(expectedProduct_1);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
 	void findByQuanityBetween() {
 		// Given
-		ProductOrderPort expectedProduct_1 = createProductOrder();
-		ProductOrderPort expectedProduct_2 = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByQuanityBetween(any(), any())).thenReturn(List.of(expectedProduct_1, expectedProduct_2));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByQuanityBetween(QUANITY_MIN, QUANITY_MAX)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualProducts = storage.findByQuanityBetween(1, 3);
+		List<ProductOrderPort> actualOrderList = storage.findByQuanityBetween(QUANITY_MIN, QUANITY_MAX);
 		
 		// Then
-		assertThat(actualProducts).isEqualTo(List.of(expectedProduct_1, expectedProduct_2));
-		assertThat(actualProducts.size()).isEqualTo(2);
-		assertThat(actualProducts).containsExactlyInAnyOrder(expectedProduct_1, expectedProduct_2);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
 	void findByQuanityGreaterThan() {
 		// Given
-		ProductOrderPort expectedProduct_1 = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByQuanityGreaterThan(any())).thenReturn(List.of(expectedProduct_1));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByQuanityGreaterThan(QUANITY_MIN)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualProducts = storage.findByQuanityGreaterThan(1);
+		List<ProductOrderPort> actualOrderList = storage.findByQuanityGreaterThan(QUANITY_MIN);
 		
 		// Then
-		assertThat(actualProducts).isEqualTo(List.of(expectedProduct_1));
-		assertThat(actualProducts.size()).isEqualTo(1);
-		assertThat(actualProducts).containsExactlyInAnyOrder(expectedProduct_1);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
 	void findByQuanityLessThan() {
 		// Given
-		ProductOrderPort expectedProduct_1 = createProductOrder();
-		ProductOrderPort expectedProduct_2 = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByQuanityLessThan(any())).thenReturn(List.of(expectedProduct_1, expectedProduct_2));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByQuanityLessThan(QUANITY_MAX)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualProducts = storage.findByQuanityLessThan(6);
+		List<ProductOrderPort> actualOrderList = storage.findByQuanityLessThan(QUANITY_MAX);
 		
 		// Then
-		assertThat(actualProducts).isEqualTo(List.of(expectedProduct_1, expectedProduct_2));
-		assertThat(actualProducts.size()).isEqualTo(2);
-		assertThat(actualProducts).containsExactlyInAnyOrder(expectedProduct_1, expectedProduct_2);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
@@ -176,12 +183,10 @@ class ProductOrderStorageTest extends AbstractDBInMemoryTest {
 	@Test
 	void remove() {
 		// Given
-		ProductOrderPort expectedProduct_1 = createProductOrder();
-		
-		when(storage.remove(expectedProduct_1.getId())).thenReturn(true);
+		when(storage.remove(ID)).thenReturn(true);
 		
 		// When
-		boolean actualProducts = storage.remove(expectedProduct_1.getId());
+		boolean actualProducts = storage.remove(ID);
 		
 		// Then
 		assertThat(actualProducts).isTrue();
@@ -190,33 +195,53 @@ class ProductOrderStorageTest extends AbstractDBInMemoryTest {
 	@Test
 	void findById() {
 		// Given
-		ProductOrderPort expectedProduct_1 = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
 		
-		when(storage.findById(expectedProduct_1.getId())).thenReturn(Optional.of(expectedProduct_1));
+		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder_1));
 		
 		// When
-		ProductOrderPort actualProduct = storage.findById(expectedProduct_1.getId())
+		ProductOrderPort actualProduct = storage.findById(ID)
 		                                        .get();
 		
 		// Then
-		assertThat(actualProduct).isEqualTo(expectedProduct_1);
+		assertThat(actualProduct).isEqualTo(expectedOrder_1);
 	}
 	
 	@Test
 	void findAll() {
 		// Given
-		ProductOrderPort expectedProduct_1 = createProductOrder();
-		ProductOrderPort expectedProduct_2 = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findAll()).thenReturn(List.of(expectedProduct_1, expectedProduct_2));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findAll()).thenReturn(expectedOrderList);
 		
 		// When
 		List<ProductOrderPort> actualProducts = storage.findAll();
 		
 		// Then
-		assertThat(actualProducts).isEqualTo(List.of(expectedProduct_1, expectedProduct_2));
+		assertThat(actualProducts).isEqualTo(expectedOrderList);
 		assertThat(actualProducts.size()).isEqualTo(2);
-		assertThat(actualProducts).containsExactlyInAnyOrder(expectedProduct_1, expectedProduct_2);
+		assertThat(actualProducts).containsExactlyInAnyOrder(expectedOrder_1, expectedOrder_2);
+	}
+	
+	private void productOrderListAssertions(
+		List<ProductOrderPort> actualOrderList, List<ProductOrderPort> expectedOrderList,
+		ProductOrderPort expectedOrder_1, ProductOrderPort expectedOrder_2
+	) {
+		assertThat(actualOrderList).isEqualTo(expectedOrderList);
+		assertThat(actualOrderList.size()).isEqualTo(expectedOrderList.size());
+		assertThat(actualOrderList).containsExactlyInAnyOrder(expectedOrder_1, expectedOrder_2);
+		assertThat(
+			actualOrderList.stream()
+			               .mapToDouble(ProductOrderPort::summaryPrice)
+			               .sum()
+		).isEqualTo(
+			expectedOrderList.stream()
+			                 .mapToDouble(ProductOrderPort::summaryPrice)
+			                 .sum()
+		);
 	}
 	
 }

@@ -10,9 +10,7 @@ class ProductOrderTest extends AbstractCoreTest {
 	@Test
 	void testSummaryPrice() {
 		// Given
-		ProductPort expectedProduct = createProduct();
-		
-		ProductOrderPort expectedProductOrder = new ProductOrder(expectedProduct, PRODUCT_QUANITY);
+		ProductOrderPort expectedProductOrder = createProductOrder();
 		
 		Double expectedSummaryPrice = PRODUCT_PRICE * PRODUCT_QUANITY;
 		

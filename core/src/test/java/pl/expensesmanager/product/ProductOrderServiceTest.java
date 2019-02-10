@@ -11,11 +11,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductOrderServiceTest extends AbstractCoreTest {
+	
+	private static final Integer QUANITY_MIN = PRODUCT_QUANITY - 2;
+	
+	private static final Integer QUANITY_MAX = PRODUCT_QUANITY + 2;
 	
 	@Mock
 	private ProductOrderStorePort storage;
@@ -26,202 +29,215 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForProductName() {
 		// Given
-		ProductOrderPort expectedOrder = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByProductName(any())).thenReturn(List.of(expectedOrder));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByProductName(PRODUCT_NAME)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrders = service.searchAllForProductName(PRODUCT_NAME);
+		List<ProductOrderPort> actualOrderList = service.searchAllForProductName(PRODUCT_NAME);
 		
 		// Then
-		assertThat(actualOrders).isEqualTo(List.of(expectedOrder));
-		assertThat(actualOrders.size()).isEqualTo(1);
-		assertThat(actualOrders).containsExactlyInAnyOrder(expectedOrder);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
 	void searchAllForProductNameAndProductPrice() {
 		// Given
-		ProductOrderPort expectedOrder = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByProductNameAndProductPrice(any(), any())).thenReturn(List.of(expectedOrder));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrders = service.searchAllForProductNameAndProductPrice(
+		List<ProductOrderPort> actualOrderList = service.searchAllForProductNameAndProductPrice(
 			PRODUCT_NAME, PRODUCT_PRICE);
 		
 		// Then
-		assertThat(actualOrders).isEqualTo(List.of(expectedOrder));
-		assertThat(actualOrders.size()).isEqualTo(1);
-		assertThat(actualOrders).containsExactlyInAnyOrder(expectedOrder);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
 	void searchAllForQuanityRange() {
 		// Given
-		ProductOrderPort expectedOrder = createProductOrder();
-		ProductOrderPort secondExpectedOrder = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByQuanityBetween(any(), any())).thenReturn(List.of(expectedOrder, secondExpectedOrder));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByQuanityBetween(QUANITY_MIN, QUANITY_MAX)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrders = service.searchAllForQuanityRange(1, 3);
+		List<ProductOrderPort> actualOrderList = service.searchAllForQuanityRange(QUANITY_MIN, QUANITY_MAX);
 		
 		// Then
-		assertThat(actualOrders).isEqualTo(List.of(expectedOrder, secondExpectedOrder));
-		assertThat(actualOrders.size()).isEqualTo(2);
-		assertThat(actualOrders).containsExactlyInAnyOrder(expectedOrder, secondExpectedOrder);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
 	void searchAllForQuanityGreater() {
 		// Given
-		ProductOrderPort expectedOrder = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByQuanityGreaterThan(any())).thenReturn(List.of(expectedOrder));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByQuanityGreaterThan(QUANITY_MIN)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrders = service.searchAllForQuanityGreater(1);
+		List<ProductOrderPort> actualOrderList = service.searchAllForQuanityGreater(QUANITY_MIN);
 		
 		// Then
-		assertThat(actualOrders).isEqualTo(List.of(expectedOrder));
-		assertThat(actualOrders.size()).isEqualTo(1);
-		assertThat(actualOrders).containsExactlyInAnyOrder(expectedOrder);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
 	void searchAllForQuanityLower() {
 		// Given
-		ProductOrderPort expectedOrder = createProductOrder();
-		ProductOrderPort secondExpectedOrder = createProductOrder();
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
 		
-		when(storage.findByQuanityLessThan(any())).thenReturn(List.of(expectedOrder, secondExpectedOrder));
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findByQuanityLessThan(QUANITY_MAX)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrders = service.searchAllForQuanityLower(6);
+		List<ProductOrderPort> actualOrderList = service.searchAllForQuanityLower(QUANITY_MAX);
 		
 		// Then
-		assertThat(actualOrders).isEqualTo(List.of(expectedOrder, secondExpectedOrder));
-		assertThat(actualOrders.size()).isEqualTo(2);
-		assertThat(actualOrders).containsExactlyInAnyOrder(expectedOrder, secondExpectedOrder);
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	@Test
 	void create() {
 		// Given
 		ProductOrderPort expectedToAdd = createProductOrder();
+		ProductOrderPort expectedOrder = createProductOrder();
 		
-		ProductOrderPort expectedProduct = createProductOrder();
-		
-		when(storage.add(expectedToAdd)).thenReturn(expectedProduct);
+		when(storage.add(expectedToAdd)).thenReturn(expectedOrder);
 		
 		// When
 		ProductOrderPort actualOrder = service.create(expectedToAdd);
-		
-		// Then
-		assertThat(actualOrder).isEqualTo(expectedProduct);
-	}
-	
-	@Test
-	void updateByObject() {
-		// Given
-		ProductOrderPort expectedToChange = createProductOrder(null);
-		
-		ProductOrderPort expectedProduct = createProductOrder();
-		
-		expectedToChange.setQuanity(PRODUCT_QUANITY);
-		
-		when(storage.update(expectedToChange)).thenReturn(expectedProduct);
-		
-		// When
-		ProductOrderPort actualOrder = service.update(expectedToChange);
-		
-		// Then
-		assertThat(actualOrder).isEqualTo(expectedProduct);
-	}
-	
-	@Test
-	void updateById() {
-		// Given
-		ProductOrderPort expectedToChange = createProductOrder(null);
-		
-		ProductOrderPort expectedChanges = new ProductOrder();
-		expectedChanges.setQuanity(PRODUCT_QUANITY);
-		
-		ProductOrderPort expectedProduct = createProductOrder();
-		
-		when(storage.update(expectedToChange.getId(), expectedChanges)).thenReturn(expectedProduct);
-		
-		// When
-		ProductOrderPort actualOrder = service.update(expectedChanges, expectedToChange.getId());
-		
-		// Then
-		assertThat(actualOrder).isEqualTo(expectedProduct);
-	}
-	
-	@Test
-	void updateOriginalAndChanges() {
-		// Given
-		ProductOrderPort expectedToChange = createProductOrder(null);
-		
-		ProductOrderPort expectedChanges = new ProductOrder();
-		expectedChanges.setQuanity(PRODUCT_QUANITY);
-		
-		ProductOrderPort expectedProduct = createProductOrder();
-		
-		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedProduct);
-		
-		// When
-		ProductOrderPort actualOrder = service.update(expectedToChange, expectedChanges);
-		
-		// Then
-		assertThat(actualOrder).isEqualTo(expectedProduct);
-	}
-	
-	@Test
-	void delete() {
-		// Given
-		ProductOrderPort expectedOrder = createProductOrder();
-		
-		when(storage.remove(expectedOrder.getId())).thenReturn(true);
-		
-		// When
-		boolean actualOrders = service.delete(expectedOrder.getId());
-		
-		// Then
-		assertThat(actualOrders).isTrue();
-	}
-	
-	@Test
-	void searchForId() {
-		// Given
-		ProductOrderPort expectedOrder = createProductOrder();
-		
-		when(storage.findById(expectedOrder.getId())).thenReturn(Optional.of(expectedOrder));
-		
-		// When
-		ProductOrderPort actualOrder = service.searchForId(expectedOrder.getId())
-		                                      .get();
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder);
 	}
 	
 	@Test
-	void searchAll() {
+	void updateByObject() {
 		// Given
+		ProductOrderPort expectedToChange = createProductOrder(null);
 		ProductOrderPort expectedOrder = createProductOrder();
-		ProductOrderPort secondExpectedOrder = createProductOrder();
+		expectedToChange.setQuanity(PRODUCT_QUANITY);
 		
-		when(storage.findAll()).thenReturn(List.of(expectedOrder, secondExpectedOrder));
+		when(storage.update(expectedToChange)).thenReturn(expectedOrder);
 		
 		// When
-		List<ProductOrderPort> actualOrders = service.searchAll();
+		ProductOrderPort actualOrder = service.update(expectedToChange);
 		
 		// Then
-		assertThat(actualOrders).isEqualTo(List.of(expectedOrder, secondExpectedOrder));
-		assertThat(actualOrders.size()).isEqualTo(2);
-		assertThat(actualOrders).containsExactlyInAnyOrder(expectedOrder, secondExpectedOrder);
+		assertThat(actualOrder).isEqualTo(expectedOrder);
+	}
+	
+	@Test
+	void updateById() {
+		// Given
+		ProductOrderPort expectedToChange = createProductOrder(null);
+		ProductOrderPort expectedChanges = new ProductOrder();
+		expectedChanges.setQuanity(PRODUCT_QUANITY);
+		
+		ProductOrderPort expectedOrder = createProductOrder();
+		
+		when(storage.update(expectedToChange.getId(), expectedChanges)).thenReturn(expectedOrder);
+		
+		// When
+		ProductOrderPort actualOrder = service.update(expectedChanges, expectedToChange.getId());
+		
+		// Then
+		assertThat(actualOrder).isEqualTo(expectedOrder);
+	}
+	
+	@Test
+	void updateOriginalAndChanges() {
+		// Given
+		ProductOrderPort expectedToChange = createProductOrder(null);
+		ProductOrderPort expectedChanges = new ProductOrder();
+		expectedChanges.setQuanity(PRODUCT_QUANITY);
+		ProductOrderPort expectedOrder = createProductOrder();
+		
+		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedOrder);
+		
+		// When
+		ProductOrderPort actualOrder = service.update(expectedToChange, expectedChanges);
+		
+		// Then
+		assertThat(actualOrder).isEqualTo(expectedOrder);
+	}
+	
+	@Test
+	void delete() {
+		// Given
+		when(storage.remove(ID)).thenReturn(true);
+		
+		// When
+		boolean actualOrderList = service.delete(ID);
+		
+		// Then
+		assertThat(actualOrderList).isTrue();
+	}
+	
+	@Test
+	void searchForId() {
+		// Given
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		
+		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder_1));
+		
+		// When
+		ProductOrderPort actualOrder = service.searchForId(ID)
+		                                      .get();
+		
+		// Then
+		assertThat(actualOrder).isEqualTo(expectedOrder_1);
+	}
+	
+	@Test
+	void searchAll() {
+		// Given
+		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrderPort expectedOrder_2 = createProductOrder();
+		
+		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		
+		when(storage.findAll()).thenReturn(expectedOrderList);
+		
+		// When
+		List<ProductOrderPort> actualOrderList = service.searchAll();
+		
+		// Then
+		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
+	}
+	
+	private void productOrderListAssertions(
+		List<ProductOrderPort> actualOrderList, List<ProductOrderPort> expectedOrderList,
+		ProductOrderPort expectedOrder_1, ProductOrderPort expectedOrder_2
+	) {
+		assertThat(actualOrderList).isEqualTo(expectedOrderList);
+		assertThat(actualOrderList.size()).isEqualTo(expectedOrderList.size());
+		assertThat(actualOrderList).containsExactlyInAnyOrder(expectedOrder_1, expectedOrder_2);
+		assertThat(
+			actualOrderList.stream()
+			               .mapToDouble(ProductOrderPort::summaryPrice)
+			               .sum()
+		).isEqualTo(
+			expectedOrderList.stream()
+			                 .mapToDouble(ProductOrderPort::summaryPrice)
+			                 .sum()
+		);
 	}
 	
 }

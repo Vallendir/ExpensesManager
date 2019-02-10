@@ -16,6 +16,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 	
+	private static final Instant BOUGHT_DATE_MAX = Instant.now();
+	
 	@Mock
 	private BillOfSaleStorage storage;
 	
@@ -24,11 +26,10 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		// Given
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
 		
-		when(storage.findByDescription(expectedBillOfSale_1.getDescription())).thenReturn(
-			Optional.of(expectedBillOfSale_1));
+		when(storage.findByDescription(BILL_OF_SALE_DESCRIPTION)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.findByDescription(expectedBillOfSale_1.getDescription())
+		BillOfSalePort actualBillOfSale = storage.findByDescription(BILL_OF_SALE_DESCRIPTION)
 		                                         .get();
 		
 		// Then
@@ -39,34 +40,36 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 	void findByBoughtDate() {
 		// Given
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
+		BillOfSalePort expectedBillOfSale_2 = createBillOfSale();
 		
-		List<BillOfSalePort> expectedBillOfSale = List.of(expectedBillOfSale_1);
+		List<BillOfSalePort> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
 		
-		when(storage.findByBoughtDate(BOUGHT_DATE)).thenReturn(List.of(expectedBillOfSale_1));
+		when(storage.findByBoughtDate(BOUGHT_DATE)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSalePort> actualBillOfSale = storage.findByBoughtDate(BOUGHT_DATE);
+		List<BillOfSalePort> actualBillOfSaleList = storage.findByBoughtDate(BOUGHT_DATE);
 		
 		// Then
-		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
+		billOfSaleListAssertions(
+			actualBillOfSaleList, expectedBillOfSaleList, expectedBillOfSale_1, expectedBillOfSale_2);
 	}
 	
 	@Test
 	void findByBoughtDateBetween() {
 		// Given
-		Instant dateMax = Instant.now();
-		
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
+		BillOfSalePort expectedBillOfSale_2 = createBillOfSale();
 		
-		List<BillOfSalePort> expectedBillOfSaleList = List.of(expectedBillOfSale_1);
+		List<BillOfSalePort> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
 		
-		when(storage.findByBoughtDateBetween(BOUGHT_DATE, dateMax)).thenReturn(List.of(expectedBillOfSale_1));
+		when(storage.findByBoughtDateBetween(BOUGHT_DATE, BOUGHT_DATE_MAX)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSalePort> actualBillOfSale = storage.findByBoughtDateBetween(BOUGHT_DATE, dateMax);
+		List<BillOfSalePort> actualBillOfSaleList = storage.findByBoughtDateBetween(BOUGHT_DATE, BOUGHT_DATE_MAX);
 		
 		// Then
-		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSaleList);
+		billOfSaleListAssertions(
+			actualBillOfSaleList, expectedBillOfSaleList, expectedBillOfSale_1, expectedBillOfSale_2);
 	}
 	
 	@Test
@@ -89,7 +92,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 	void updateByObject() {
 		// Given
 		BillOfSalePort expectedToChange = new BillOfSale();
-		expectedToChange.setId(PRODUCT_ID);
+		expectedToChange.setId(ID);
 		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
 		
 		BillOfSalePort expectedBillOfSale = createBillOfSale();
@@ -109,7 +112,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 	void updateById() {
 		// Given
 		BillOfSalePort expectedToChange = new BillOfSale();
-		expectedToChange.setId(PRODUCT_ID);
+		expectedToChange.setId(ID);
 		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
 		
 		BillOfSalePort expectedChanges = new BillOfSale();
@@ -117,10 +120,10 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		
 		BillOfSalePort expectedBillOfSale = createBillOfSale();
 		
-		when(storage.update(expectedToChange.getId(), expectedChanges)).thenReturn(expectedBillOfSale);
+		when(storage.update(ID, expectedChanges)).thenReturn(expectedBillOfSale);
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.update(expectedToChange.getId(), expectedChanges);
+		BillOfSalePort actualBillOfSale = storage.update(ID, expectedChanges);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
@@ -149,15 +152,13 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 	@Test
 	void remove() {
 		// Given
-		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
-		
-		when(storage.remove(expectedBillOfSale_1.getId())).thenReturn(true);
+		when(storage.remove(ID)).thenReturn(true);
 		
 		// When
-		boolean actualBillOfSales = storage.remove(expectedBillOfSale_1.getId());
+		boolean actualBillOfSale = storage.remove(ID);
 		
 		// Then
-		assertThat(actualBillOfSales).isTrue();
+		assertThat(actualBillOfSale).isTrue();
 	}
 	
 	@Test
@@ -165,10 +166,10 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		// Given
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
 		
-		when(storage.findById(expectedBillOfSale_1.getId())).thenReturn(Optional.of(expectedBillOfSale_1));
+		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.findById(expectedBillOfSale_1.getId())
+		BillOfSalePort actualBillOfSale = storage.findById(ID)
 		                                         .get();
 		
 		// Then
@@ -181,15 +182,34 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
 		BillOfSalePort expectedBillOfSale_2 = createBillOfSale();
 		
-		when(storage.findAll()).thenReturn(List.of(expectedBillOfSale_1, expectedBillOfSale_2));
+		List<BillOfSalePort> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
+		
+		when(storage.findAll()).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSalePort> actualBillOfSales = storage.findAll();
+		List<BillOfSalePort> actualBillOfSaleList = storage.findAll();
 		
 		// Then
-		assertThat(actualBillOfSales).isEqualTo(List.of(expectedBillOfSale_1, expectedBillOfSale_2));
-		assertThat(actualBillOfSales.size()).isEqualTo(2);
-		assertThat(actualBillOfSales).containsExactlyInAnyOrder(expectedBillOfSale_1, expectedBillOfSale_2);
+		billOfSaleListAssertions(
+			actualBillOfSaleList, expectedBillOfSaleList, expectedBillOfSale_1, expectedBillOfSale_2);
+	}
+	
+	private void billOfSaleListAssertions(
+		List<BillOfSalePort> actualBillOfSaleList, List<BillOfSalePort> expectedBillOfSaleList,
+		BillOfSalePort expectedBillOfSale_1, BillOfSalePort expectedBillOfSale_2
+	) {
+		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
+		assertThat(actualBillOfSaleList.size()).isEqualTo(expectedBillOfSaleList.size());
+		assertThat(actualBillOfSaleList).containsExactlyInAnyOrder(expectedBillOfSale_1, expectedBillOfSale_2);
+		assertThat(
+			actualBillOfSaleList.stream()
+			                    .mapToDouble(BillOfSalePort::finalPrice)
+			                    .sum()
+		).isEqualTo(
+			expectedBillOfSaleList.stream()
+			                      .mapToDouble(BillOfSalePort::finalPrice)
+			                      .sum()
+		);
 	}
 	
 }
