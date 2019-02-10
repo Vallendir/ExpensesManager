@@ -28,4 +28,3 @@
 *.kotlin_module
 /target/
 */out/
-/documentation/docs/asciidoc/doc
