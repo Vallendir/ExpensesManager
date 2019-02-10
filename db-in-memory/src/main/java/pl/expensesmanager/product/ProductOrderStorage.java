@@ -58,11 +58,9 @@ public class ProductOrderStorage implements ProductOrderStorePort {
 	
 	@Override
 	public ProductOrderPort add(ProductOrderPort object) {
-		if (ProductOrderSimulatedData.LIST.add(object)) {
-			return object;
-		} else {
-			throw new RuntimeException();
-		}
+		ProductOrderSimulatedData.LIST.add(object);
+		return object;
+		
 	}
 	
 	@Override
@@ -73,16 +71,16 @@ public class ProductOrderStorage implements ProductOrderStorePort {
 			                                                                                            object.getId()))
 		                                                                  .findFirst();
 		
-		if (result.isPresent()) {
-			ProductOrderPort updatedProduct = MergeUtil.merge(result.get(), object);
-			
-			ProductOrderSimulatedData.LIST.remove(ProductOrderSimulatedData.LIST.indexOf(result.get()));
-			ProductOrderSimulatedData.LIST.add(updatedProduct);
-			
-			return updatedProduct;
-		} else {
-			throw new RuntimeException();
+		if (!result.isPresent()) {
+			return null;
 		}
+		
+		ProductOrderPort updatedProduct = MergeUtil.merge(result.get(), object);
+		ProductOrderSimulatedData.LIST.remove(result.get());
+		ProductOrderSimulatedData.LIST.add(updatedProduct);
+		
+		return updatedProduct;
+		
 	}
 	
 	@Override
@@ -93,16 +91,17 @@ public class ProductOrderStorage implements ProductOrderStorePort {
 			                                                                                            originalObject.getId()))
 		                                                                  .findFirst();
 		
-		if (result.isPresent()) {
-			ProductOrderPort updatedProduct = MergeUtil.merge(result.get(), changes);
-			
-			ProductOrderSimulatedData.LIST.remove(ProductOrderSimulatedData.LIST.indexOf(result.get()));
-			ProductOrderSimulatedData.LIST.add(updatedProduct);
-			
-			return updatedProduct;
-		} else {
-			throw new RuntimeException();
+		if (!result.isPresent()) {
+			return null;
 		}
+		
+		ProductOrderPort updatedProduct = MergeUtil.merge(result.get(), changes);
+		
+		ProductOrderSimulatedData.LIST.remove(result.get());
+		ProductOrderSimulatedData.LIST.add(updatedProduct);
+		
+		return updatedProduct;
+		
 	}
 	
 	@Override
@@ -112,16 +111,16 @@ public class ProductOrderStorage implements ProductOrderStorePort {
 		                                                                                            .equals(id))
 		                                                                  .findFirst();
 		
-		if (result.isPresent()) {
-			ProductOrderPort updatedProduct = MergeUtil.merge(result.get(), changes);
-			
-			ProductOrderSimulatedData.LIST.remove(ProductOrderSimulatedData.LIST.indexOf(result.get()));
-			ProductOrderSimulatedData.LIST.add(updatedProduct);
-			
-			return updatedProduct;
-		} else {
-			throw new RuntimeException();
+		if (!result.isPresent()) {
+			return null;
 		}
+		
+		ProductOrderPort updatedProduct = MergeUtil.merge(result.get(), changes);
+		ProductOrderSimulatedData.LIST.remove(result.get());
+		ProductOrderSimulatedData.LIST.add(updatedProduct);
+		
+		return updatedProduct;
+		
 	}
 	
 	@Override
