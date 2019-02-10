@@ -27,4 +27,6 @@ dependencies {
     
     /** Spring context **/
     compileOnly "org.springframework:spring-context:$springContextVersion"
+
+    implementation project(':exception')
 }
