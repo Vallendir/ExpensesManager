@@ -1,7 +1,11 @@
 package pl.expensesmanager.product;
 
 import lombok.experimental.UtilityClass;
+import pl.expensesmanager.exception.validation.ValidateNumberException;
+import pl.expensesmanager.exception.validation.ValidateTextException;
 import pl.expensesmanager.util.BasicValidator;
+
+import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
 
 /**
  * Validator of product and product orders
@@ -10,20 +14,32 @@ import pl.expensesmanager.util.BasicValidator;
 class ProductValidator {
 	
 	static String validateName(String name) {
-		return BasicValidator.validateText(name);
+		try {
+			return BasicValidator.validateText(name);
+		} catch (ValidateTextException exception) {
+			throw productNameException();
+		}
 	}
 	
 	static Double validatePrice(Double price) {
-		return BasicValidator.validateDouble(price);
+		try {
+			return BasicValidator.validateDouble(price);
+		} catch (ValidateNumberException exception) {
+			throw productPriceException();
+		}
 	}
 	
 	static Integer validateQuanity(Integer quanity) {
-		return BasicValidator.validateInteger(quanity);
+		try {
+			return BasicValidator.validateInteger(quanity);
+		} catch (ValidateNumberException exception) {
+			throw productQuanityException();
+		}
 	}
 	
 	static ProductPort validateProduct(ProductPort product) {
 		if (product == null) {
-			throw new RuntimeException();
+			throw productException();
 		}
 		
 		validateName(product.getName());
@@ -34,7 +50,7 @@ class ProductValidator {
 	
 	static ProductOrderPort validateOrder(ProductOrderPort order) {
 		if (order == null) {
-			throw new RuntimeException();
+			throw orderException();
 		}
 		
 		validateProduct(order.getProduct());

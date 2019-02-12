@@ -1,9 +1,12 @@
 package pl.expensesmanager.billofsale;
 
 import lombok.experimental.UtilityClass;
+import pl.expensesmanager.exception.validation.ValidateTextException;
 import pl.expensesmanager.util.BasicValidator;
 
 import java.time.Instant;
+
+import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
 
 /**
  * Validator of bill of sale
@@ -12,16 +15,24 @@ import java.time.Instant;
 class BillOfSaleValidator {
 	
 	static String validateDescription(String description) {
-		return BasicValidator.validateText(description);
+		try {
+			return BasicValidator.validateText(description);
+		} catch (ValidateTextException exception) {
+			throw billOfSaleDescriptionException();
+		}
 	}
 	
 	static Instant validateBoughtDate(Instant boughtDate) {
-		return BasicValidator.validateInstantDate(boughtDate);
+		try {
+			return BasicValidator.validateInstantDate(boughtDate);
+		} catch (ValidateTextException exception) {
+			throw dateNullException();
+		}
 	}
 	
 	static BillOfSalePort validateBillOfSale(BillOfSalePort billOfSale) {
 		if (billOfSale == null) {
-			throw new RuntimeException();
+			throw billOfSaleException();
 		}
 		
 		validateDescription(billOfSale.getDescription());

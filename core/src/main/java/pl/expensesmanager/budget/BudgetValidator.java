@@ -1,7 +1,11 @@
 package pl.expensesmanager.budget;
 
 import lombok.experimental.UtilityClass;
+import pl.expensesmanager.exception.validation.ValidateNumberException;
+import pl.expensesmanager.exception.validation.ValidateTextException;
 import pl.expensesmanager.util.BasicValidator;
+
+import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
 
 /**
  * Validator of budget
@@ -10,16 +14,24 @@ import pl.expensesmanager.util.BasicValidator;
 class BudgetValidator {
 	
 	static String validateName(String name) {
-		return BasicValidator.validateText(name);
+		try {
+			return BasicValidator.validateText(name);
+		} catch (ValidateTextException exception) {
+			throw budgetNameException();
+		}
 	}
 	
 	static Double validateBudgetValue(Double budgetValue) {
-		return BasicValidator.validateDouble(budgetValue);
+		try {
+			return BasicValidator.validateDouble(budgetValue);
+		} catch (ValidateNumberException exception) {
+			throw budgetValueException();
+		}
 	}
 	
 	static BudgetPort validateBudget(BudgetPort budget) {
 		if (budget == null) {
-			throw new RuntimeException();
+			throw budgetException();
 		}
 		
 		validateName(budget.getName());

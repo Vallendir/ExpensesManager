@@ -45,6 +45,7 @@ dependencies {
 
     implementation project(':core')
     implementation project(':db-in-memory')
+    implementation project(':exception')
 }
 
 bootJar {
