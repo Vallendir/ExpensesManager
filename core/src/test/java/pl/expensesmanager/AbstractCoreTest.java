@@ -1,6 +1,6 @@
 package pl.expensesmanager;
 
-import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import pl.expensesmanager.billofsale.BillOfSale;
 import pl.expensesmanager.billofsale.BillOfSalePort;
 import pl.expensesmanager.budget.Budget;
@@ -42,9 +42,11 @@ public abstract class AbstractCoreTest {
 	
 	protected static final String BLANK_TEXT = "";
 	
-	protected static final String EMPTY_SPACE_TEXT = "";
+	protected static final String EMPTY_SPACE_TEXT = " ";
 	
 	protected static final Double DOUBLE_VALUE_NAN = Double.NaN;
+	
+	private static final String ERROR_CODE_FIELD_TO_EXTRACT = "errorCode";
 	
 	
 	protected ProductPort createProduct() {
@@ -114,31 +116,41 @@ public abstract class AbstractCoreTest {
 	}
 	
 	protected void assertThatThrownByValidateTextException(
-		ThrowableAssert.ThrowingCallable throwable, String hasMessage
+		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
-		assertThatThrownBy(throwable).isInstanceOf(ValidateTextException.class)
-		                             .hasMessage(hasMessage);
+		assertException(ValidateTextException.class, throwable, hasMessage, errorCode);
 	}
 	
 	protected void assertThatThrownByValidateNumberException(
-		ThrowableAssert.ThrowingCallable throwable, String hasMessage
+		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
-		assertThatThrownBy(throwable).isInstanceOf(ValidateNumberException.class)
-		                             .hasMessage(hasMessage);
+		assertException(ValidateNumberException.class, throwable, hasMessage, errorCode);
 	}
 	
 	protected void assertThatThrownByValidateDateException(
-		ThrowableAssert.ThrowingCallable throwable, String hasMessage
+		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
-		assertThatThrownBy(throwable).isInstanceOf(ValidateDateException.class)
-		                             .hasMessage(hasMessage);
+		assertException(ValidateDateException.class, throwable, hasMessage, errorCode);
 	}
 	
 	protected void assertThatThrownByValidateObjectException(
-		ThrowableAssert.ThrowingCallable throwable, String hasMessage
+		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
-		assertThatThrownBy(throwable).isInstanceOf(ValidateObjectException.class)
+		assertException(ValidateObjectException.class, throwable, hasMessage, errorCode);
+	}
+	
+	private void assertException(
+		Class<?> exceptionType, ThrowingCallable throwable, String hasMessage, String errorCode
+	) {
+		assertThatThrownBy(throwable).isInstanceOf(exceptionType)
 		                             .hasMessage(hasMessage);
+		assertExtractedErrorCode(exceptionType, throwable, errorCode);
+	}
+	
+	private void assertExtractedErrorCode(Class<?> exceptionType, ThrowingCallable throwable, String errorCode) {
+		assertThatThrownBy(throwable).isInstanceOf(exceptionType)
+		                             .extracting(ERROR_CODE_FIELD_TO_EXTRACT)
+		                             .isEqualTo(List.of(errorCode));
 	}
 	
 }

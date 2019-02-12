@@ -3,11 +3,12 @@ package pl.expensesmanager.budget;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import pl.expensesmanager.AbstractCoreTest;
-import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.exception.validation.ValidateObjectException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.ErrorCode;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.ExceptionMessage;
 
 class BudgetValidatorTest extends AbstractCoreTest {
 	
@@ -18,8 +19,8 @@ class BudgetValidatorTest extends AbstractCoreTest {
 		ThrowingCallable throwable_2 = () -> BudgetValidator.validateName(EMPTY_SPACE_TEXT);
 		
 		// Then
-		assertThatThrownByValidateTextException(throwable_1, ValidationExceptionFactory.ExceptionMessage.BUDGET_NAME);
-		assertThatThrownByValidateTextException(throwable_2, ValidationExceptionFactory.ExceptionMessage.BUDGET_NAME);
+		assertThatThrownByValidateTextException(throwable_1, ExceptionMessage.BUDGET_NAME, ErrorCode.BUDGET_NAME);
+		assertThatThrownByValidateTextException(throwable_2, ExceptionMessage.BUDGET_NAME, ErrorCode.BUDGET_NAME);
 		assertThat(BudgetValidator.validateName(TEXT_WITH_HTML4_TO_ESCAPE)).isEqualTo(TEXT_WITH_HTML4_AFTER_ESCAPE);
 	}
 	
@@ -30,10 +31,8 @@ class BudgetValidatorTest extends AbstractCoreTest {
 		ThrowingCallable throwable_2 = () -> BudgetValidator.validateBudgetValue(DOUBLE_VALUE_NAN);
 		
 		// Then
-		assertThatThrownByValidateNumberException(
-			throwable_1, ValidationExceptionFactory.ExceptionMessage.BUDGET_VALUE);
-		assertThatThrownByValidateNumberException(
-			throwable_2, ValidationExceptionFactory.ExceptionMessage.BUDGET_VALUE);
+		assertThatThrownByValidateNumberException(throwable_1, ExceptionMessage.BUDGET_VALUE, ErrorCode.BUDGET_VALUE);
+		assertThatThrownByValidateNumberException(throwable_2, ExceptionMessage.BUDGET_VALUE, ErrorCode.BUDGET_VALUE);
 		assertThat(BudgetValidator.validateBudgetValue(BUDGET_VALUE)).isEqualTo(BUDGET_VALUE);
 	}
 	
@@ -46,7 +45,7 @@ class BudgetValidatorTest extends AbstractCoreTest {
 		
 		// Then
 		assertThatThrownBy(throwable_1).isInstanceOf(ValidateObjectException.class)
-		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.BUDGET_NULL);
+		                               .hasMessage(ExceptionMessage.NULL_BUDGET);
 		assertThat(BudgetValidator.validateBudget(budget)).isEqualTo(budget);
 	}
 	

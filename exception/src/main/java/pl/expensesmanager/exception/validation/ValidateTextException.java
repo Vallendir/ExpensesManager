@@ -8,7 +8,7 @@ import pl.expensesmanager.exception.ValidationException;
 public class ValidateTextException extends ValidationException {
 	
 	public ValidateTextException(String message, String errorCode) {
-		super(message, EXCEPTION_ERROR_CODE_PREFIX + errorCode);
+		super(message, errorCode);
 	}
 	
 }

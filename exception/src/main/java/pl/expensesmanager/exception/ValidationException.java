@@ -5,8 +5,6 @@ package pl.expensesmanager.exception;
  */
 public class ValidationException extends BasicException {
 	
-	protected static final String EXCEPTION_ERROR_CODE_PREFIX = "validation.";
-	
 	public ValidationException(String message, String errorCode) {
 		super(message, errorCode);
 	}

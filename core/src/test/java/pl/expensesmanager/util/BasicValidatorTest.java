@@ -46,7 +46,7 @@ class BasicValidatorTest {
 		
 		// Then
 		assertThatThrownBy(throwable_1).isInstanceOf(ValidateNumberException.class)
-		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.NUMBER_NULL);
+		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.NULL_NUMBER);
 		assertThatThrownBy(throwable_2).isInstanceOf(ValidateNumberException.class)
 		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.NUMBER_NAN);
 		assertThat(BasicValidator.validateDouble(expectedValue)).isEqualTo(expectedValue);
@@ -62,7 +62,7 @@ class BasicValidatorTest {
 		
 		// Then
 		assertThatThrownBy(throwable_1).isInstanceOf(ValidateNumberException.class)
-		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.NUMBER_NULL);
+		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.NULL_NUMBER);
 		assertThat(BasicValidator.validateInteger(value)).isEqualTo(value);
 	}
 	
@@ -76,7 +76,7 @@ class BasicValidatorTest {
 		
 		// Then
 		assertThatThrownBy(throwable_1).isInstanceOf(ValidateDateException.class)
-		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.DATE_NULL);
+		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.NULL_DATE);
 		assertThat(BasicValidator.validateInstantDate(date)).isEqualTo(date);
 	}
 	

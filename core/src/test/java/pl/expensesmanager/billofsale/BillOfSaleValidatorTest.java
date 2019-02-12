@@ -1,27 +1,28 @@
 package pl.expensesmanager.billofsale;
 
-import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import pl.expensesmanager.AbstractCoreTest;
-import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.exception.validation.ValidateObjectException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.ErrorCode;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.ExceptionMessage;
 
 class BillOfSaleValidatorTest extends AbstractCoreTest {
 	
 	@Test
 	void validateDescription() {
 		// Given
-		ThrowableAssert.ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateDescription(BLANK_TEXT);
-		ThrowableAssert.ThrowingCallable throwable_2 = () -> BillOfSaleValidator.validateDescription(EMPTY_SPACE_TEXT);
+		ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateDescription(BLANK_TEXT);
+		ThrowingCallable throwable_2 = () -> BillOfSaleValidator.validateDescription(EMPTY_SPACE_TEXT);
 		
 		// Then
 		assertThatThrownByValidateTextException(
-			throwable_1, ValidationExceptionFactory.ExceptionMessage.BILL_OF_SALE_DESCRIPTION);
+			throwable_1, ExceptionMessage.BILL_OF_SALE_DESCRIPTION, ErrorCode.BILL_OF_SALE_DESCRIPTION);
 		assertThatThrownByValidateTextException(
-			throwable_2, ValidationExceptionFactory.ExceptionMessage.BILL_OF_SALE_DESCRIPTION);
+			throwable_2, ExceptionMessage.BILL_OF_SALE_DESCRIPTION, ErrorCode.BILL_OF_SALE_DESCRIPTION);
 		assertThat(BillOfSaleValidator.validateDescription(TEXT_WITH_HTML4_TO_ESCAPE)).isEqualTo(
 			TEXT_WITH_HTML4_AFTER_ESCAPE);
 	}
@@ -29,10 +30,10 @@ class BillOfSaleValidatorTest extends AbstractCoreTest {
 	@Test
 	void validateBoughtDate() {
 		// Given
-		ThrowableAssert.ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateBoughtDate(null);
+		ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateBoughtDate(null);
 		
 		// Then
-		assertThatThrownByValidateDateException(throwable_1, ValidationExceptionFactory.ExceptionMessage.DATE_NULL);
+		assertThatThrownByValidateDateException(throwable_1, ExceptionMessage.NULL_DATE, ErrorCode.NULL_DATE);
 		assertThat(BillOfSaleValidator.validateBoughtDate(BOUGHT_DATE)).isEqualTo(BOUGHT_DATE);
 	}
 	
@@ -41,11 +42,11 @@ class BillOfSaleValidatorTest extends AbstractCoreTest {
 		// Given
 		BillOfSalePort billOfSale = createBillOfSale();
 		
-		ThrowableAssert.ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateBillOfSale(null);
+		ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateBillOfSale(null);
 		
 		// Then
 		assertThatThrownBy(throwable_1).isInstanceOf(ValidateObjectException.class)
-		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.BILL_OF_SALE_NULL);
+		                               .hasMessage(ExceptionMessage.NULL_BILL_OF_SALE);
 		assertThat(BillOfSaleValidator.validateBillOfSale(billOfSale)).isEqualTo(billOfSale);
 	}
 	
