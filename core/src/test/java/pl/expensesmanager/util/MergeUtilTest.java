@@ -41,14 +41,4 @@ class MergeUtilTest {
 		
 	}
 	
-	@Getter
-	@Setter
-	private static class OtherClassTest {
-		
-		public Integer value;
-		
-		private String name;
-		
-	}
-	
 }

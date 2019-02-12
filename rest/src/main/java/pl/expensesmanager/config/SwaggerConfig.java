@@ -23,7 +23,7 @@ class SwaggerConfig {
 	
 	private static final String APPLICATION_NAME = "ExpensesManager";
 	
-	private static final String APPLICATION_VERSION = "0.1.1";
+	private static final String APPLICATION_VERSION = "0.1.5";
 	
 	private static final Set<String> FORMAT_OF_DATA = Set.of("application/json");
 	
@@ -41,6 +41,10 @@ class SwaggerConfig {
 	
 	ApiInfo budgetInfo() {
 		return buildInfo(" - endpoints of Budget.");
+	}
+	
+	ApiInfo orderInfo() {
+		return buildInfo(" - endpoints of product Orders.");
 	}
 	
 	private ApiInfo buildInfo(String description) {
@@ -79,6 +83,11 @@ class SwaggerConfig {
 		return buildDocket(AppPath.BUDGET.getTitle(), AppPath.BUDGET.getPath(), budgetInfo());
 	}
 	
+	@Bean
+	public Docket orderApi() {
+		return buildDocket(AppPath.PRODUCT_ORDER.getTitle(), AppPath.PRODUCT_ORDER.getPath(), orderInfo());
+	}
+	
 	private Docket buildDocket(String groupName, Predicate<String> path, ApiInfo apiInfo) {
 		return new Docket(DocumentationType.SWAGGER_2).groupName(groupName)
 		                                              .select()
@@ -95,15 +104,16 @@ class SwaggerConfig {
 	@RequiredArgsConstructor
 	private enum AppPath {
 		PRODUCT(regex("/product.+"), "2) Product"),
-		BILL_OF_SALE(regex("/billofsale.+"), "3) Bill of Sale"),
-		BUDGET(regex("/budget.+"), "4) Budget");
+		PRODUCT_ORDER(regex("/order.+"), "3) Product Order"),
+		BILL_OF_SALE(regex("/billofsale.+"), "4) Bill of Sale"),
+		BUDGET(regex("/budget.+"), "5) Budget");
 		
 		final Predicate<String> path;
 		
 		final String title;
 		
 		static Predicate<String> defaultPaths() {
-			return or(AppPath.PRODUCT.getPath(), AppPath.BILL_OF_SALE.getPath(), AppPath.BUDGET.getPath());
+			return or(AppPath.PRODUCT.getPath(), AppPath.PRODUCT_ORDER.getPath(), AppPath.BILL_OF_SALE.getPath(), AppPath.BUDGET.getPath());
 		}
 		
 		static String defaultTitle() {

@@ -68,26 +68,4 @@ public interface ProductDocumentation {
 		@ApiParam(value = "Price value to find products cheaper.", required = true) Double price
 	);
 	
-	@ApiOperation(value = "GET-endpoint to find Products by quanity range.", nickname = "searchAllForQuanityRange", notes = "Method allow to find a product by quanity range.", tags = {
-		"Product",
-	})
-	List<ProductPort> searchAllForQuanityRange(
-		@ApiParam(value = "Minimal quanity value to find.", required = true) Integer min,
-		@ApiParam(value = "Maximum quanity value to find.", required = true) Integer max
-	);
-	
-	@ApiOperation(value = "GET-endpoint to find Products by quanity greater than value.", nickname = "searchAllForQuanityGreater", notes = "Method allow to find a product by quanity greater than value.", tags = {
-		"Product",
-	})
-	List<ProductPort> searchAllForQuanityGreater(
-		@ApiParam(value = "Quanity value to find products of more value.", required = true) Integer quanity
-	);
-	
-	@ApiOperation(value = "GET-endpoint to find all Products of quanity lower than value.", nickname = "searchAllForQuanityLower", notes = "Method allow to find a product by quanity lower than.", tags = {
-		"Product",
-	})
-	List<ProductPort> searchAllForQuanityLower(
-		@ApiParam(value = "Quanity value to find products of less value.", required = true) Integer quanity
-	);
-	
 }

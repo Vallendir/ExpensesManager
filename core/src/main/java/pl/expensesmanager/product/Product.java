@@ -16,11 +16,4 @@ public final class Product extends ProductPort.BaseModel implements ProductPort 
 	
 	private Double price;
 	
-	private Integer quanity;
-	
-	@Override
-	public Double summaryPrice() {
-		return price * quanity;
-	}
-	
 }

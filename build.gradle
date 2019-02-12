@@ -6,6 +6,7 @@ buildscript {
         /** Spring **/
         springBootVersion = '2.1.0.RELEASE'
         springLoadedVersion = '1.2.8.RELEASE'
+        springContextVersion = '5.1.4.RELEASE'
 
         /** Mockito **/
         mockitoCoreVersion = '2.23.0'

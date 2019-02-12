@@ -4,6 +4,7 @@ import pl.expensesmanager.base.BaseService;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 interface BillOfSaleServicePort extends BaseService<BillOfSalePort, String> {
 	
@@ -13,7 +14,7 @@ interface BillOfSaleServicePort extends BaseService<BillOfSalePort, String> {
 	 * @param description - the description of bill of sale
 	 * @return found bill of sale as optional
 	 */
-	BillOfSalePort searchForDescription(String description);
+	Optional<BillOfSalePort> searchForDescription(String description);
 	
 	/**
 	 * Method to search bill of sale by bought date.

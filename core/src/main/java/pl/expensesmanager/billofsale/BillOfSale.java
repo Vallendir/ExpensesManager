@@ -1,7 +1,7 @@
 package pl.expensesmanager.billofsale;
 
 import lombok.*;
-import pl.expensesmanager.product.ProductPort;
+import pl.expensesmanager.product.ProductOrderPort;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public final class BillOfSale extends BillOfSalePort.BaseModel implements BillOfSalePort {
 	
-	private List<ProductPort> productList;
+	private List<ProductOrderPort> productList;
 	
 	private Instant boughtDate;
 	
@@ -25,7 +25,7 @@ public final class BillOfSale extends BillOfSalePort.BaseModel implements BillOf
 	@Override
 	public Double finalPrice() {
 		return productList.stream()
-		                  .mapToDouble(ProductPort::summaryPrice)
+		                  .mapToDouble(ProductOrderPort::summaryPrice)
 		                  .summaryStatistics()
 		                  .getSum();
 	}

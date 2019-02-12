@@ -4,66 +4,63 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 class ProductService implements ProductServicePort {
 	
 	private final ProductStorePort storage;
 	
 	@Override
-	public ProductPort searchForName(String name) {
-		return storage.findByName(name)
-		              .orElse(new ProductNullObject());
+	public Optional<ProductPort> searchForName(String name) {
+		return storage.findByName(ProductValidator.validateName(name));
 	}
 	
 	@Override
 	public List<ProductPort> searchAllForPriceRange(Double min, Double max) {
-		return storage.findByPriceBetween(min, max);
+		if (min > max) {
+			throw new RuntimeException();
+		}
+		
+		return storage.findByPriceBetween(ProductValidator.validatePrice(min), ProductValidator.validatePrice(max));
 	}
 	
 	@Override
 	public List<ProductPort> searchAllForPriceGreater(Double price) {
-		return storage.findByPriceGreaterThan(price);
+		return storage.findByPriceGreaterThan(ProductValidator.validatePrice(price));
 	}
 	
 	@Override
 	public List<ProductPort> searchAllForPriceLower(Double price) {
-		return storage.findByPriceLessThan(price);
-	}
-	
-	@Override
-	public List<ProductPort> searchAllForQuanityRange(Integer min, Integer max) {
-		return storage.findByQuanityBetween(min, max);
-	}
-	
-	@Override
-	public List<ProductPort> searchAllForQuanityGreater(Integer quanity) {
-		return storage.findByQuanityGreaterThan(quanity);
-	}
-	
-	@Override
-	public List<ProductPort> searchAllForQuanityLower(Integer quanity) {
-		return storage.findByQuanityLessThan(quanity);
+		return storage.findByPriceLessThan(ProductValidator.validatePrice(price));
 	}
 	
 	@Override
 	public ProductPort create(ProductPort object) {
+		ProductValidator.validateProduct(object);
+		
 		return storage.add(object);
 	}
 	
 	@Override
 	public ProductPort update(ProductPort object) {
+		ProductValidator.validateProduct(object);
+		
 		return storage.update(object);
 	}
 	
 	@Override
 	public ProductPort update(ProductPort originalObject, ProductPort changes) {
+		checkChangesInProduct(changes);
+		
 		return storage.update(originalObject, changes);
 	}
 	
 	@Override
 	public ProductPort update(ProductPort changes, String id) {
+		checkChangesInProduct(changes);
+		
 		return storage.update(id, changes);
 	}
 	
@@ -73,14 +70,23 @@ class ProductService implements ProductServicePort {
 	}
 	
 	@Override
-	public ProductPort searchForId(String id) {
-		return storage.findById(id)
-		              .orElse(new ProductNullObject());
+	public Optional<ProductPort> searchForId(String id) {
+		return storage.findById(id);
 	}
 	
 	@Override
 	public List<ProductPort> searchAll() {
 		return storage.findAll();
+	}
+	
+	private void checkChangesInProduct(ProductPort changes) {
+		if (changes.getName() != null) {
+			ProductValidator.validateName(changes.getName());
+		}
+		
+		if (changes.getPrice() != null) {
+			ProductValidator.validatePrice(changes.getPrice());
+		}
 	}
 	
 }

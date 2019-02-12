@@ -35,15 +35,4 @@ interface ProductApi {
 	@GetMapping(value = "/products", params = "price-lower")
 	List<ProductPort> searchAllForPriceLower(@RequestParam(value = "price-lower") Double price);
 	
-	@GetMapping(value = "/products", params = { "quanity-min", "quanity-max" })
-	List<ProductPort> searchAllForQuanityRange(
-		@RequestParam(value = "quanity-min") Integer min, @RequestParam(value = "quanity-max") Integer max
-	);
-	
-	@GetMapping(value = "/products", params = "quanity-bigger")
-	List<ProductPort> searchAllForQuanityGreater(@RequestParam(value = "quanity-bigger") Integer quanity);
-	
-	@GetMapping(value = "/products", params = "quanity-lower")
-	List<ProductPort> searchAllForQuanityLower(@RequestParam(value = "quanity-lower") Integer quanity);
-	
 }
