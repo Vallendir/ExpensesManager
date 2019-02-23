@@ -1,7 +1,6 @@
 package pl.expensesmanager.product;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Repository;
 import pl.expensesmanager.IdValidationPort;
 
 import java.util.List;
@@ -11,9 +10,8 @@ import java.util.stream.Collectors;
 /**
  * MOCK of product storage
  */
-@Repository
 @Profile("in-memory")
-public class ProductStorage extends IdValidationPort implements ProductStorePort {
+public class ProductStorageInMemory extends IdValidationPort implements ProductStorePort {
 	
 	@Override
 	public Optional<ProductPort> findByName(String name) {

@@ -5,7 +5,7 @@ import pl.expensesmanager.base.BaseRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository extends BaseRepository<ProductPort, String> {
+public interface ProductRepository<T extends ProductPort> extends BaseRepository<T, String> {
 	
 	/**
 	 * Method to find product by name.
@@ -13,7 +13,7 @@ public interface ProductRepository extends BaseRepository<ProductPort, String> {
 	 * @param name - the name of product
 	 * @return found product as optional
 	 */
-	Optional<ProductPort> findByName(String name);
+	Optional<T> findByName(String name);
 	
 	/**
 	 * Method to find products by price.
@@ -21,7 +21,7 @@ public interface ProductRepository extends BaseRepository<ProductPort, String> {
 	 * @param price - price
 	 * @return found product objects
 	 */
-	List<ProductPort> findByPrice(Double price);
+	List<T> findByPrice(Double price);
 	
 	/**
 	 * Method to find product between price range.
@@ -30,7 +30,7 @@ public interface ProductRepository extends BaseRepository<ProductPort, String> {
 	 * @param max - maximal price
 	 * @return found product objects
 	 */
-	List<ProductPort> findByPriceBetween(Double min, Double max);
+	List<T> findByPriceBetween(Double min, Double max);
 	
 	/**
 	 * Method to find product more expensive than price.
@@ -38,7 +38,7 @@ public interface ProductRepository extends BaseRepository<ProductPort, String> {
 	 * @param price - price
 	 * @return found product objects
 	 */
-	List<ProductPort> findByPriceGreaterThan(Double price);
+	List<T> findByPriceGreaterThan(Double price);
 	
 	/**
 	 * Method to find product cheaper than price.
@@ -46,6 +46,6 @@ public interface ProductRepository extends BaseRepository<ProductPort, String> {
 	 * @param price - price
 	 * @return found product objects
 	 */
-	List<ProductPort> findByPriceLessThan(Double price);
+	List<T> findByPriceLessThan(Double price);
 	
 }

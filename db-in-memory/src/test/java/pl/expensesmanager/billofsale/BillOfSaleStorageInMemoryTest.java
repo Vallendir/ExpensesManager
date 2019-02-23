@@ -14,12 +14,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
+class BillOfSaleStorageInMemoryTest extends AbstractDBInMemoryTest {
 	
 	private static final Instant BOUGHT_DATE_MAX = Instant.now();
 	
 	@Mock
-	private BillOfSaleStorage storage;
+	private BillOfSaleStorageInMemory storage;
 	
 	@Test
 	void findByDescription() {

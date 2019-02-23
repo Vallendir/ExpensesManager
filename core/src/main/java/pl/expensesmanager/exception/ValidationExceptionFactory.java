@@ -15,7 +15,7 @@ public final class ValidationExceptionFactory {
 	@UtilityClass
 	public static final class ErrorCode {
 		
-		public static final String INVALID_ID = code("id.invalid");
+		public static final String INVALID_ID_FORMAT = code("id.invalid.format");
 		
 		public static final String TEXT_BLANK = code("text.blank");
 		
@@ -54,7 +54,7 @@ public final class ValidationExceptionFactory {
 	@UtilityClass
 	public static final class ExceptionMessage {
 		
-		public static final String INVALID_ID = "Passed id is invalid.";
+		public static final String INVALID_ID_FORMAT = "Passed id has wrong format.";
 		
 		public static final String TEXT_BLANK = "Text cannot be blank.";
 		
@@ -90,8 +90,8 @@ public final class ValidationExceptionFactory {
 		
 	}
 	
-	public static ValidationException invalidIdException() {
-		throw new ValidateTextException(ExceptionMessage.INVALID_ID, ErrorCode.INVALID_ID);
+	public static ValidationException invalidIdFormatException() {
+		throw new ValidateTextException(ExceptionMessage.INVALID_ID_FORMAT, ErrorCode.INVALID_ID_FORMAT);
 	}
 	
 	public static ValidationException blankTextException() {

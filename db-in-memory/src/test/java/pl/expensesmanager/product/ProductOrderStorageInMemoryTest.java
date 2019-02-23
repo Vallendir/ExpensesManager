@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProductOrderStorageTest extends AbstractDBInMemoryTest {
+class ProductOrderStorageInMemoryTest extends AbstractDBInMemoryTest {
 	
 	private static final Integer QUANITY_MIN = PRODUCT_QUANITY - 4;
 	
 	private static final Integer QUANITY_MAX = PRODUCT_QUANITY + 4;
 	
 	@Mock
-	private ProductOrderStorage storage;
+	private ProductOrderStorageInMemory storage;
 	
 	@Test
 	void findByProductName() {

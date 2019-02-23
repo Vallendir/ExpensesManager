@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BudgetStorageTest extends AbstractDBInMemoryTest {
+class BudgetStorageInMemoryTest extends AbstractDBInMemoryTest {
 	
 	private static final Double BUDGET_VALUE_MIN = BUDGET_VALUE - 2.75;
 	
 	private static final Double BUDGET_VALUE_MAX = BUDGET_VALUE + 2.95;
 	
 	@Mock
-	private BudgetStorage storage;
+	private BudgetStorageInMemory storage;
 	
 	@Test
 	void findByName() {

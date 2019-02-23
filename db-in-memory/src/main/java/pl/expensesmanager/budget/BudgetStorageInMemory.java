@@ -1,7 +1,6 @@
 package pl.expensesmanager.budget;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Repository;
 import pl.expensesmanager.IdValidationPort;
 
 import java.util.List;
@@ -11,9 +10,8 @@ import java.util.stream.Collectors;
 /**
  * MOCK of budget storage
  */
-@Repository
 @Profile("in-memory")
-public class BudgetStorage extends IdValidationPort implements BudgetStorePort {
+public class BudgetStorageInMemory extends IdValidationPort implements BudgetStorePort {
 	
 	@Override
 	public Optional<BudgetPort> findByName(String name) {
@@ -120,7 +118,7 @@ public class BudgetStorage extends IdValidationPort implements BudgetStorePort {
 	@Override
 	public void deleteById(String id) {
 		BudgetSimulatedData.LIST.removeIf(budget -> budget.getId()
-		                                                         .equals(id));
+		                                                  .equals(id));
 	}
 	
 	@Override

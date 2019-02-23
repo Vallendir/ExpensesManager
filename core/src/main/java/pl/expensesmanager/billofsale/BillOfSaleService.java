@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdException;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdFormatException;
 
 @RequiredArgsConstructor
 @Service
@@ -63,7 +63,7 @@ class BillOfSaleService implements BillOfSaleServicePort {
 		
 		Optional<BillOfSalePort> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
-			throw invalidIdException();
+			throw invalidIdFormatException();
 		}
 		
 		return storage.save(MergeUtil.merge(originalObject.get(), changes));

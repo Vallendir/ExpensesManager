@@ -7,7 +7,7 @@ import pl.expensesmanager.util.MergeUtil;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdException;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdFormatException;
 
 @RequiredArgsConstructor
 @Service
@@ -72,7 +72,7 @@ class BudgetService implements BudgetServicePort {
 		
 		Optional<BudgetPort> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
-			throw invalidIdException();
+			throw invalidIdFormatException();
 		}
 		
 		return storage.save(MergeUtil.merge(originalObject.get(), changes));

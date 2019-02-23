@@ -1,5 +1,7 @@
 package pl.expensesmanager.budget;
 
+import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import pl.expensesmanager.base.BaseMongoStorage;
@@ -7,17 +9,12 @@ import pl.expensesmanager.base.BaseMongoStorage;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Component
 @Profile("dev")
-public class BudgetStorage extends BaseMongoStorage<BudgetPort> implements BudgetStorePort {
+public class BudgetStorage extends BaseMongoStorage implements BudgetStorePort {
 	
-	private BudgetRepositoryMongo repository;
-	
-	public BudgetStorage(BudgetRepositoryMongo repository) {
-		super(repository);
-		
-		this.repository = repository;
-	}
+	private final BudgetRepositoryMongo repository;
 	
 	@Override
 	public Optional<BudgetPort> findByName(String name) {
@@ -42,6 +39,31 @@ public class BudgetStorage extends BaseMongoStorage<BudgetPort> implements Budge
 	@Override
 	public List<BudgetPort> findByBudgetValueLessThan(Double budgetValue) {
 		return repository.findByBudgetValueLessThan(budgetValue);
+	}
+	
+	@Override
+	public BudgetPort save(BudgetPort object) {
+		return repository.save(object);
+	}
+	
+	@Override
+	public void deleteById(String id) {
+		repository.deleteById(id);
+	}
+	
+	@Override
+	public Optional<BudgetPort> findById(String id) {
+		return repository.findById(id);
+	}
+	
+	@Override
+	public List<BudgetPort> findAll() {
+		return repository.findAll();
+	}
+	
+	@Override
+	public boolean isValid(String id) {
+		return ObjectId.isValid(id);
 	}
 	
 }
