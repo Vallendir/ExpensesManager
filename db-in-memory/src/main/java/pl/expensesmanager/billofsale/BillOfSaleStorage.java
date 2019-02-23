@@ -2,7 +2,6 @@ package pl.expensesmanager.billofsale;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-import pl.expensesmanager.util.MergeUtil;
 
 import java.time.Instant;
 import java.util.List;
@@ -48,69 +47,10 @@ public class BillOfSaleStorage implements BillOfSaleStorePort {
 		
 	}
 	
-	/*@Override
-	public BillOfSalePort update(BillOfSalePort object) {
-		Optional<BillOfSalePort> result = BillOfSaleSimulatedData.LIST.stream()
-		                                                              .filter(billOfSale -> billOfSale.getId()
-		                                                                                              .equals(
-			                                                                                              object.getId()))
-		                                                              .findFirst();
-		
-		if (!result.isPresent()) {
-			return null;
-		}
-		
-		BillOfSalePort updatedBillOfSale = MergeUtil.merge(result.get(), object);
-		BillOfSaleSimulatedData.LIST.remove(BillOfSaleSimulatedData.LIST.indexOf(result.get()));
-		BillOfSaleSimulatedData.LIST.save(updatedBillOfSale);
-		
-		return updatedBillOfSale;
-		
-	}
-	
-	@Override
-	public BillOfSalePort update(BillOfSalePort originalObject, BillOfSalePort changes) {
-		Optional<BillOfSalePort> result = BillOfSaleSimulatedData.LIST.stream()
-		                                                              .filter(billOfSale -> billOfSale.getId()
-		                                                                                              .equals(
-			                                                                                              originalObject.getId()))
-		                                                              .findFirst();
-		
-		if (!result.isPresent()) {
-			return null;
-		}
-		
-		BillOfSalePort updatedBillOfSale = MergeUtil.merge(result.get(), changes);
-		
-		BillOfSaleSimulatedData.LIST.remove(result.get());
-		BillOfSaleSimulatedData.LIST.save(updatedBillOfSale);
-		
-		return updatedBillOfSale;
-	}
-	
-	@Override
-	public BillOfSalePort update(String id, BillOfSalePort changes) {
-		Optional<BillOfSalePort> result = BillOfSaleSimulatedData.LIST.stream()
-		                                                              .filter(billOfSale -> billOfSale.getId()
-		                                                                                              .equals(id))
-		                                                              .findFirst();
-		
-		if (!result.isPresent()) {
-			return null;
-		}
-		
-		BillOfSalePort updatedBillOfSale = MergeUtil.merge(result.get(), changes);
-		
-		BillOfSaleSimulatedData.LIST.remove(result.get());
-		BillOfSaleSimulatedData.LIST.save(updatedBillOfSale);
-		
-		return updatedBillOfSale;
-	}*/
-	
 	@Override
 	public void deleteById(String id) {
 		BillOfSaleSimulatedData.LIST.removeIf(billOfSale -> billOfSale.getId()
-		                                                                     .equals(id));
+		                                                              .equals(id));
 	}
 	
 	@Override

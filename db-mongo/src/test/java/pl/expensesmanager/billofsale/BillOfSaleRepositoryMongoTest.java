@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.expensesmanager.AbstractDBInMemoryTest;
+import pl.expensesmanager.AbstractMongoDBTest;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,12 +14,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
+class BillOfSaleRepositoryMongoTest extends AbstractMongoDBTest {
 	
 	private static final Instant BOUGHT_DATE_MAX = Instant.now();
 	
 	@Mock
-	private BillOfSaleStorage storage;
+	private BillOfSaleRepositoryMongo storage;
 	
 	@Test
 	void findByDescription() {
