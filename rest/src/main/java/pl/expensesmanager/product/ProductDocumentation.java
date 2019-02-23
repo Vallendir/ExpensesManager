@@ -9,14 +9,14 @@ import java.util.List;
 @Api(tags = { "Product" })
 public interface ProductDocumentation {
 	
-	@ApiOperation(value = "POST-endpoint to create Product.", nickname = "add", notes = "Method allow to create a new product.", tags = {
+	@ApiOperation(value = "POST-endpoint to create Product.", nickname = "save", notes = "Method allow to create a new product.", tags = {
 		"Product",
 	})
 	ProductPort add(
 		@ApiParam(value = "Product object which will be created.", required = true) Product product
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update Product.", nickname = "update", notes = "Method allow to update a product.", tags = {
+	/*@ApiOperation(value = "PUT-endpoint to update Product.", nickname = "update", notes = "Method allow to update a product.", tags = {
 		"Product",
 	})
 	ProductPort update(
@@ -30,8 +30,8 @@ public interface ProductDocumentation {
 		@ApiParam(value = "ID of Product to update.", required = true) String id,
 		@ApiParam(value = "Product object changes to update.", required = true) Product product
 	);
-	
-	@ApiOperation(value = "DELETE-endpoint to remove Product.", nickname = "delete", notes = "Method allow to remove a product.", tags = {
+	*/
+	@ApiOperation(value = "DELETE-endpoint to deleteById Product.", nickname = "deleteById", notes = "Method allow to deleteById a product.", tags = {
 		"Product",
 	})
 	void delete(@ApiParam(value = "Product object which will be deleted.", required = true) String id);

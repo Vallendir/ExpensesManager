@@ -17,16 +17,16 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 		return service.create(budget);
 	}
 	
-	public BudgetPort update(Budget budget) {
+	/*public BudgetPort update(Budget budget) {
 		return service.update(budget);
 	}
 	
 	public BudgetPort update(String id, Budget budget) {
 		return service.update(budget, id);
-	}
+	}*/
 	
 	public void delete(String id) {
-		service.delete(id);
+		service.deleteById(id);
 	}
 	
 	public BudgetPort searchForId(String id) {

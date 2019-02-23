@@ -79,16 +79,16 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		
 		BillOfSalePort expectedBillOfSale = createBillOfSale();
 		
-		when(storage.add(expectedToAdd)).thenReturn(expectedBillOfSale);
+		when(storage.save(expectedToAdd)).thenReturn(expectedBillOfSale);
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.add(expectedToAdd);
+		BillOfSalePort actualBillOfSale = storage.save(expectedToAdd);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
 	}
 	
-	@Test
+	/*@Test
 	void updateByObject() {
 		// Given
 		BillOfSalePort expectedToChange = new BillOfSale();
@@ -147,19 +147,7 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
-	}
-	
-	@Test
-	void remove() {
-		// Given
-		when(storage.remove(ID)).thenReturn(true);
-		
-		// When
-		boolean actualBillOfSale = storage.remove(ID);
-		
-		// Then
-		assertThat(actualBillOfSale).isTrue();
-	}
+	}*/
 	
 	@Test
 	void findById() {

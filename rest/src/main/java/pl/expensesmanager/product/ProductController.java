@@ -12,19 +12,26 @@ class ProductController implements ProductApi, ProductDocumentation {
 	private final ProductService service;
 	
 	public ProductPort add(Product product) {
+		ProductPort p = new Product();
+		p.setName("jakas nazwa");
+		p.setPrice(5.75);
+		
+		service.create(p);
+		
+		
 		return service.create(product);
 	}
 	
-	public ProductPort update(Product product) {
+	/*public ProductPort update(Product product) {
 		return service.update(product);
 	}
 	
 	public ProductPort update(String id, Product product) {
 		return service.update(product, id);
-	}
+	}*/
 	
 	public void delete(String id) {
-		service.delete(id);
+		service.deleteById(id);
 	}
 	
 	public ProductPort searchForId(String id) {

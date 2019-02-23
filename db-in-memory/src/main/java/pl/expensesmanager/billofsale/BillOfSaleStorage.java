@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * MOCK of bill of sale storage
  */
 @Repository
-@Profile("dev")
+@Profile("in-memory")
 public class BillOfSaleStorage implements BillOfSaleStorePort {
 	
 	@Override
@@ -42,13 +42,13 @@ public class BillOfSaleStorage implements BillOfSaleStorePort {
 	}
 	
 	@Override
-	public BillOfSalePort add(BillOfSalePort object) {
+	public BillOfSalePort save(BillOfSalePort object) {
 		BillOfSaleSimulatedData.LIST.add(object);
 		return object;
 		
 	}
 	
-	@Override
+	/*@Override
 	public BillOfSalePort update(BillOfSalePort object) {
 		Optional<BillOfSalePort> result = BillOfSaleSimulatedData.LIST.stream()
 		                                                              .filter(billOfSale -> billOfSale.getId()
@@ -62,7 +62,7 @@ public class BillOfSaleStorage implements BillOfSaleStorePort {
 		
 		BillOfSalePort updatedBillOfSale = MergeUtil.merge(result.get(), object);
 		BillOfSaleSimulatedData.LIST.remove(BillOfSaleSimulatedData.LIST.indexOf(result.get()));
-		BillOfSaleSimulatedData.LIST.add(updatedBillOfSale);
+		BillOfSaleSimulatedData.LIST.save(updatedBillOfSale);
 		
 		return updatedBillOfSale;
 		
@@ -83,7 +83,7 @@ public class BillOfSaleStorage implements BillOfSaleStorePort {
 		BillOfSalePort updatedBillOfSale = MergeUtil.merge(result.get(), changes);
 		
 		BillOfSaleSimulatedData.LIST.remove(result.get());
-		BillOfSaleSimulatedData.LIST.add(updatedBillOfSale);
+		BillOfSaleSimulatedData.LIST.save(updatedBillOfSale);
 		
 		return updatedBillOfSale;
 	}
@@ -102,14 +102,14 @@ public class BillOfSaleStorage implements BillOfSaleStorePort {
 		BillOfSalePort updatedBillOfSale = MergeUtil.merge(result.get(), changes);
 		
 		BillOfSaleSimulatedData.LIST.remove(result.get());
-		BillOfSaleSimulatedData.LIST.add(updatedBillOfSale);
+		BillOfSaleSimulatedData.LIST.save(updatedBillOfSale);
 		
 		return updatedBillOfSale;
-	}
+	}*/
 	
 	@Override
-	public boolean remove(String id) {
-		return BillOfSaleSimulatedData.LIST.removeIf(billOfSale -> billOfSale.getId()
+	public void deleteById(String id) {
+		BillOfSaleSimulatedData.LIST.removeIf(billOfSale -> billOfSale.getId()
 		                                                                     .equals(id));
 	}
 	

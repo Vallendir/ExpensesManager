@@ -46,10 +46,10 @@ class BudgetService implements BudgetServicePort {
 	public BudgetPort create(BudgetPort object) {
 		BudgetValidator.validateBudget(object);
 		
-		return storage.add(object);
+		return storage.save(object);
 	}
 	
-	@Override
+	/*@Override
 	public BudgetPort update(BudgetPort object) {
 		BudgetValidator.validateBudget(object);
 		
@@ -68,11 +68,11 @@ class BudgetService implements BudgetServicePort {
 		checkChangesInBudget(changes);
 		
 		return storage.update(id, changes);
-	}
+	}*/
 	
 	@Override
-	public boolean delete(String id) {
-		return storage.remove(id);
+	public void deleteById(String id) {
+		storage.deleteById(id);
 	}
 	
 	@Override

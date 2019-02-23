@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * MOCK of product storage
  */
 @Repository
-@Profile("dev")
+@Profile("in-memory")
 public class ProductStorage implements ProductStorePort {
 	
 	@Override
@@ -53,13 +53,13 @@ public class ProductStorage implements ProductStorePort {
 	}
 	
 	@Override
-	public ProductPort add(ProductPort object) {
+	public ProductPort save(ProductPort object) {
 		ProductSimulatedData.LIST.add(object);
 		
 		return object;
 	}
 	
-	@Override
+	/*@Override
 	public ProductPort update(ProductPort object) {
 		Optional<ProductPort> result = ProductSimulatedData.LIST.stream()
 		                                                        .filter(product -> product.getId()
@@ -72,7 +72,7 @@ public class ProductStorage implements ProductStorePort {
 		
 		ProductPort updatedProduct = MergeUtil.merge(result.get(), object);
 		ProductSimulatedData.LIST.remove(result.get());
-		ProductSimulatedData.LIST.add(updatedProduct);
+		ProductSimulatedData.LIST.save(updatedProduct);
 		
 		return updatedProduct;
 		
@@ -92,7 +92,7 @@ public class ProductStorage implements ProductStorePort {
 		
 		ProductPort updatedProduct = MergeUtil.merge(result.get(), changes);
 		ProductSimulatedData.LIST.remove(result.get());
-		ProductSimulatedData.LIST.add(updatedProduct);
+		ProductSimulatedData.LIST.save(updatedProduct);
 		
 		return updatedProduct;
 		
@@ -111,15 +111,15 @@ public class ProductStorage implements ProductStorePort {
 		
 		ProductPort updatedProduct = MergeUtil.merge(result.get(), changes);
 		ProductSimulatedData.LIST.remove(ProductSimulatedData.LIST.indexOf(result.get()));
-		ProductSimulatedData.LIST.add(updatedProduct);
+		ProductSimulatedData.LIST.save(updatedProduct);
 		
 		return updatedProduct;
 		
-	}
+	}*/
 	
 	@Override
-	public boolean remove(String id) {
-		return ProductSimulatedData.LIST.removeIf(product -> product.getId()
+	public void deleteById(String id) {
+		ProductSimulatedData.LIST.removeIf(product -> product.getId()
 		                                                            .equals(id));
 	}
 	

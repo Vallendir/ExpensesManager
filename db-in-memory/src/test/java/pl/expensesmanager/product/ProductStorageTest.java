@@ -111,16 +111,16 @@ class ProductStorageTest extends AbstractDBInMemoryTest {
 		ProductPort expectedToAdd = createProduct();
 		ProductPort expectedProduct = createProduct();
 		
-		when(storage.add(expectedToAdd)).thenReturn(expectedProduct);
+		when(storage.save(expectedToAdd)).thenReturn(expectedProduct);
 		
 		// When
-		ProductPort actualProduct = storage.add(expectedToAdd);
+		ProductPort actualProduct = storage.save(expectedToAdd);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
 	}
 	
-	@Test
+	/*@Test
 	void updateByObject() {
 		// Given
 		ProductPort expectedToChange = createProduct(null);
@@ -165,19 +165,7 @@ class ProductStorageTest extends AbstractDBInMemoryTest {
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
-	}
-	
-	@Test
-	void remove() {
-		// Given
-		when(storage.remove(ID)).thenReturn(true);
-		
-		// When
-		boolean actualProductList = storage.remove(ID);
-		
-		// Then
-		assertThat(actualProductList).isTrue();
-	}
+	}*/
 	
 	@Test
 	void findById() {

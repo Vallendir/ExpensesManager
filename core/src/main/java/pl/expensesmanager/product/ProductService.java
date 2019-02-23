@@ -40,10 +40,10 @@ class ProductService implements ProductServicePort {
 	public ProductPort create(ProductPort object) {
 		ProductValidator.validateProduct(object);
 		
-		return storage.add(object);
+		return storage.save(object);
 	}
 	
-	@Override
+	/*@Override
 	public ProductPort update(ProductPort object) {
 		ProductValidator.validateProduct(object);
 		
@@ -62,11 +62,11 @@ class ProductService implements ProductServicePort {
 		checkChangesInProduct(changes);
 		
 		return storage.update(id, changes);
-	}
+	}*/
 	
 	@Override
-	public boolean delete(String id) {
-		return storage.remove(id);
+	public void deleteById(String id) {
+		storage.deleteById(id);
 	}
 	
 	@Override

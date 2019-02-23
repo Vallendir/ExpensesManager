@@ -112,16 +112,16 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		
 		BudgetPort expectedBudget = createBudget();
 		
-		when(storage.add(expectedToAdd)).thenReturn(expectedBudget);
+		when(storage.save(expectedToAdd)).thenReturn(expectedBudget);
 		
 		// When
-		BudgetPort actualBudget = storage.add(expectedToAdd);
+		BudgetPort actualBudget = storage.save(expectedToAdd);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
 	}
 	
-	@Test
+	/*@Test
 	void updateByObject() {
 		// Given
 		BudgetPort expectedToChange = createBudget();
@@ -169,19 +169,7 @@ class BudgetStorageTest extends AbstractDBInMemoryTest {
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
-	}
-	
-	@Test
-	void remove() {
-		// Given
-		when(storage.remove(ID)).thenReturn(true);
-		
-		// When
-		boolean actualBudgets = storage.remove(ID);
-		
-		// Then
-		assertThat(actualBudgets).isTrue();
-	}
+	}*/
 	
 	@Test
 	void findById() {

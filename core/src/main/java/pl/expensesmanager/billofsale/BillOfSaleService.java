@@ -37,10 +37,10 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	public BillOfSalePort create(BillOfSalePort object) {
 		BillOfSaleValidator.validateBillOfSale(object);
 		
-		return storage.add(object);
+		return storage.save(object);
 	}
 	
-	@Override
+	/*@Override
 	public BillOfSalePort update(BillOfSalePort object) {
 		BillOfSaleValidator.validateBillOfSale(object);
 		
@@ -59,11 +59,11 @@ class BillOfSaleService implements BillOfSaleServicePort {
 		checkChangesInBillOfSale(changes);
 		
 		return storage.update(id, changes);
-	}
+	}*/
 	
 	@Override
-	public boolean delete(String id) {
-		return storage.remove(id);
+	public void deleteById(String id) {
+		storage.deleteById(id);
 	}
 	
 	@Override

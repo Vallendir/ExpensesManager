@@ -15,16 +15,16 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 		return service.create(product);
 	}
 	
-	public ProductOrderPort update(ProductOrder product) {
+	/*public ProductOrderPort update(ProductOrder product) {
 		return service.update(product);
 	}
 	
 	public ProductOrderPort update(String id, ProductOrder product) {
 		return service.update(product, id);
-	}
+	}*/
 	
 	public void delete(String id) {
-		service.delete(id);
+		service.deleteById(id);
 	}
 	
 	public ProductOrderPort searchForId(String id) {

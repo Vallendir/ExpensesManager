@@ -10,14 +10,14 @@ import java.util.List;
 @Api(tags = { "BillOfSale" })
 public interface BillOfSaleDocumentation {
 	
-	@ApiOperation(value = "POST-endpoint to create BillOfSale.", nickname = "add", notes = "Method allow to create a new bill of sale.", tags = {
+	@ApiOperation(value = "POST-endpoint to create BillOfSale.", nickname = "save", notes = "Method allow to create a new bill of sale.", tags = {
 		"BillOfSale",
 	})
 	BillOfSalePort add(
 		@ApiParam(value = "BillOfSale object which will be created.", required = true) BillOfSale billOfSale
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update BillOfSale.", nickname = "update", notes = "Method allow to update a bill of sale.", tags = {
+	/*@ApiOperation(value = "PUT-endpoint to update BillOfSale.", nickname = "update", notes = "Method allow to update a bill of sale.", tags = {
 		"BillOfSale",
 	})
 	BillOfSale update(
@@ -30,9 +30,9 @@ public interface BillOfSaleDocumentation {
 	BillOfSalePort update(
 		@ApiParam(value = "ID of BillOfSale to update.", required = true) String id,
 		@ApiParam(value = "BillOfSale object changes to update.", required = true) BillOfSale billOfSale
-	);
+	);*/
 	
-	@ApiOperation(value = "DELETE-endpoint to remove BillOfSale.", nickname = "delete", notes = "Method allow to remove a bill of sale.", tags = {
+	@ApiOperation(value = "DELETE-endpoint to deleteById BillOfSale.", nickname = "deleteById", notes = "Method allow to deleteById a bill of sale.", tags = {
 		"BillOfSale",
 	})
 	void delete(@ApiParam(value = "BillOfSale object which will be deleted.", required = true) String id);

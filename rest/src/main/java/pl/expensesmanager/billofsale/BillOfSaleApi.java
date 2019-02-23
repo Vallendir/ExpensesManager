@@ -10,11 +10,11 @@ interface BillOfSaleApi {
 	@PostMapping(value = "/billofsales")
 	BillOfSalePort add(@RequestBody BillOfSale billOfSale);
 	
-	@PutMapping(value = "/billofsales")
+	/*@PutMapping(value = "/billofsales")
 	BillOfSale update(@RequestBody BillOfSale billOfSale);
 	
 	@PutMapping(value = "/billofsales/{id}")
-	BillOfSalePort update(@PathVariable("id") String id, @RequestBody BillOfSale billOfSale);
+	BillOfSalePort update(@PathVariable("id") String id, @RequestBody BillOfSale billOfSale);*/
 	
 	@DeleteMapping(value = "/billofsales/{id}")
 	void delete(@PathVariable("id") String id);

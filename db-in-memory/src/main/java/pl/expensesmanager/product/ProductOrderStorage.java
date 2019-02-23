@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * MOCK of product order storage
  */
 @Repository
-@Profile("dev")
+@Profile("in-memory")
 public class ProductOrderStorage implements ProductOrderStorePort {
 	
 	@Override
@@ -57,13 +57,13 @@ public class ProductOrderStorage implements ProductOrderStorePort {
 	}
 	
 	@Override
-	public ProductOrderPort add(ProductOrderPort object) {
+	public ProductOrderPort save(ProductOrderPort object) {
 		ProductOrderSimulatedData.LIST.add(object);
 		return object;
 		
 	}
 	
-	@Override
+	/*@Override
 	public ProductOrderPort update(ProductOrderPort object) {
 		Optional<ProductOrderPort> result = ProductOrderSimulatedData.LIST.stream()
 		                                                                  .filter(product -> product.getId()
@@ -77,7 +77,7 @@ public class ProductOrderStorage implements ProductOrderStorePort {
 		
 		ProductOrderPort updatedProduct = MergeUtil.merge(result.get(), object);
 		ProductOrderSimulatedData.LIST.remove(result.get());
-		ProductOrderSimulatedData.LIST.add(updatedProduct);
+		ProductOrderSimulatedData.LIST.save(updatedProduct);
 		
 		return updatedProduct;
 		
@@ -98,7 +98,7 @@ public class ProductOrderStorage implements ProductOrderStorePort {
 		ProductOrderPort updatedProduct = MergeUtil.merge(result.get(), changes);
 		
 		ProductOrderSimulatedData.LIST.remove(result.get());
-		ProductOrderSimulatedData.LIST.add(updatedProduct);
+		ProductOrderSimulatedData.LIST.save(updatedProduct);
 		
 		return updatedProduct;
 		
@@ -117,15 +117,15 @@ public class ProductOrderStorage implements ProductOrderStorePort {
 		
 		ProductOrderPort updatedProduct = MergeUtil.merge(result.get(), changes);
 		ProductOrderSimulatedData.LIST.remove(result.get());
-		ProductOrderSimulatedData.LIST.add(updatedProduct);
+		ProductOrderSimulatedData.LIST.save(updatedProduct);
 		
 		return updatedProduct;
 		
-	}
+	}*/
 	
 	@Override
-	public boolean remove(String id) {
-		return ProductOrderSimulatedData.LIST.removeIf(product -> product.getId()
+	public void deleteById(String id) {
+		ProductOrderSimulatedData.LIST.removeIf(product -> product.getId()
 		                                                                 .equals(id));
 	}
 	

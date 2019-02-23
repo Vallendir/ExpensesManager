@@ -12,7 +12,7 @@ public interface BaseStorage<T, I extends Serializable> {
 	 * @param object - object which will be stored
 	 * @return object which was stored
 	 */
-	T add(T object);
+	T save(T object);
 	
 	/**
 	 * Method to update object in storage.
@@ -20,7 +20,7 @@ public interface BaseStorage<T, I extends Serializable> {
 	 * @param object - object which will be updated
 	 * @return object which was updated
 	 */
-	T update(T object);
+	//T update(T object);
 	
 	/**
 	 * Method to update object in storage.
@@ -29,7 +29,7 @@ public interface BaseStorage<T, I extends Serializable> {
 	 * @param changes        - changes which will be updated to @originalObject
 	 * @return object which was updated
 	 */
-	T update(T originalObject, T changes);
+	//T update(T originalObject, T changes);
 	
 	/**
 	 * Method to update object in storage.
@@ -38,15 +38,15 @@ public interface BaseStorage<T, I extends Serializable> {
 	 * @param changes - changes in object of @id
 	 * @return object which was updated
 	 */
-	T update(I id, T changes);
+	//T update(I id, T changes);
 	
 	/**
-	 * Method to remove object from storage.
+	 * Method to deleteById object from storage.
 	 *
 	 * @param id - id of object which will be removed
 	 * @return true if was removed and false if not
 	 */
-	boolean remove(I id);
+	void deleteById(I id);
 	
 	/**
 	 * Method to find object by id.

@@ -9,14 +9,14 @@ import java.util.List;
 @Api(tags = { "Order" })
 public interface ProductOrderDocumentation {
 	
-	@ApiOperation(value = "POST-endpoint to create Order.", nickname = "add", notes = "Method allow to create a new order.", tags = {
+	@ApiOperation(value = "POST-endpoint to create Order.", nickname = "save", notes = "Method allow to create a new order.", tags = {
 		"Order",
 	})
 	ProductOrderPort add(
 		@ApiParam(value = "Order object which will be created.", required = true) ProductOrder order
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update Order.", nickname = "update", notes = "Method allow to update a order.", tags = {
+	/*@ApiOperation(value = "PUT-endpoint to update Order.", nickname = "update", notes = "Method allow to update a order.", tags = {
 		"Order",
 	})
 	ProductOrderPort update(
@@ -29,9 +29,9 @@ public interface ProductOrderDocumentation {
 	ProductOrderPort update(
 		@ApiParam(value = "ID of Order to update.", required = true) String id,
 		@ApiParam(value = "Order object changes to update.", required = true) ProductOrder order
-	);
+	);*/
 	
-	@ApiOperation(value = "DELETE-endpoint to remove Order.", nickname = "delete", notes = "Method allow to remove a order.", tags = {
+	@ApiOperation(value = "DELETE-endpoint to deleteById Order.", nickname = "deleteById", notes = "Method allow to deleteById a order.", tags = {
 		"Order",
 	})
 	void delete(@ApiParam(value = "Order object which will be deleted.", required = true) String id);

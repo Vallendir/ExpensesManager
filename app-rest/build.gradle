@@ -10,5 +10,6 @@ dependencies {
 
     implementation project(':core')
     implementation project(':db-in-memory')
+    implementation project(':db-mongo')
     implementation project(':rest')
 }

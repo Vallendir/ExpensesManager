@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * MOCK of budget storage
  */
 @Repository
-@Profile("dev")
+@Profile("in-memory")
 public class BudgetStorage implements BudgetStorePort {
 	
 	@Override
@@ -53,13 +53,13 @@ public class BudgetStorage implements BudgetStorePort {
 	}
 	
 	@Override
-	public BudgetPort add(BudgetPort object) {
+	public BudgetPort save(BudgetPort object) {
 		BudgetSimulatedData.LIST.add(object);
 		return object;
 		
 	}
 	
-	@Override
+	/*@Override
 	public BudgetPort update(BudgetPort object) {
 		Optional<BudgetPort> result = BudgetSimulatedData.LIST.stream()
 		                                                      .filter(budget -> budget.getId()
@@ -72,7 +72,7 @@ public class BudgetStorage implements BudgetStorePort {
 		
 		BudgetPort updatedBudget = MergeUtil.merge(result.get(), object);
 		BudgetSimulatedData.LIST.remove(result.get());
-		BudgetSimulatedData.LIST.add(updatedBudget);
+		BudgetSimulatedData.LIST.save(updatedBudget);
 		
 		return updatedBudget;
 		
@@ -92,7 +92,7 @@ public class BudgetStorage implements BudgetStorePort {
 		BudgetPort updatedBudget = MergeUtil.merge(result.get(), changes);
 		
 		BudgetSimulatedData.LIST.remove(result.get());
-		BudgetSimulatedData.LIST.add(updatedBudget);
+		BudgetSimulatedData.LIST.save(updatedBudget);
 		
 		return updatedBudget;
 		
@@ -112,14 +112,14 @@ public class BudgetStorage implements BudgetStorePort {
 		BudgetPort updatedBudget = MergeUtil.merge(result.get(), changes);
 		
 		BudgetSimulatedData.LIST.remove(BudgetSimulatedData.LIST.indexOf(result.get()));
-		BudgetSimulatedData.LIST.add(updatedBudget);
+		BudgetSimulatedData.LIST.save(updatedBudget);
 		
 		return updatedBudget;
-	}
+	}*/
 	
 	@Override
-	public boolean remove(String id) {
-		return BudgetSimulatedData.LIST.removeIf(budget -> budget.getId()
+	public void deleteById(String id) {
+		BudgetSimulatedData.LIST.removeIf(budget -> budget.getId()
 		                                                         .equals(id));
 	}
 	
