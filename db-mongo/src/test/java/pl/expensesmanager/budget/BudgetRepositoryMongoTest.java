@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.expensesmanager.AbstractDBInMemoryTest;
+import pl.expensesmanager.AbstractMongoDBTest;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BudgetStorageTest extends AbstractDBInMemoryTest {
+class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 	
-	private static final Double BUDGET_VALUE_MIN = BUDGET_VALUE - 2.75;
+	private static final Double BUDGET_VALUE_MIN = BUDGET_VALUE - 2.55;
 	
-	private static final Double BUDGET_VALUE_MAX = BUDGET_VALUE + 2.95;
+	private static final Double BUDGET_VALUE_MAX = BUDGET_VALUE + 2.75;
 	
 	@Mock
-	private BudgetStorage storage;
+	private BudgetRepositoryMongo storage;
 	
 	@Test
 	void findByName() {
