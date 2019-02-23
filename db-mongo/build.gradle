@@ -2,10 +2,6 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
     implementation "org.springframework.data:spring-data-mongodb"
-    //annotationProcessor "org.mapstruct:mapstruct-processor:$mapstrutsVersion"
-    //compileOnly "org.mapstruct:mapstruct-processor:$mapstrutsVersion"
-    //compileOnly "org.mapstruct:mapstruct-jdk8:$mapstrutsVersion"
-    //testImplementation "org.mapstruct:mapstruct-jdk8:$mapstrutsVersion"
     
     implementation project(':core')
 }

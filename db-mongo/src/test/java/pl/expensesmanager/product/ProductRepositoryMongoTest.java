@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.expensesmanager.AbstractDBInMemoryTest;
+import pl.expensesmanager.AbstractMongoDBTest;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProductStorageTest extends AbstractDBInMemoryTest {
+class ProductRepositoryMongoTest extends AbstractMongoDBTest {
 	
 	private static final Double PRICE_MIN = PRODUCT_PRICE - 5;
 	
 	private static final Double PRICE_MAX = PRODUCT_PRICE + 5;
 	
 	@Mock
-	private ProductStorage storage;
+	private ProductRepositoryMongo storage;
 	
 	@Test
 	void findByName() {

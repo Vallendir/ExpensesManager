@@ -1,10 +1,9 @@
 package pl.expensesmanager.base;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseStorage<T, I extends Serializable> {
+public interface BaseStorage<T, I> {
 	
 	/**
 	 * Method to store object.
@@ -13,32 +12,6 @@ public interface BaseStorage<T, I extends Serializable> {
 	 * @return object which was stored
 	 */
 	T save(T object);
-	
-	/**
-	 * Method to update object in storage.
-	 *
-	 * @param object - object which will be updated
-	 * @return object which was updated
-	 */
-	//T update(T object);
-	
-	/**
-	 * Method to update object in storage.
-	 *
-	 * @param originalObject - object which will be updated
-	 * @param changes        - changes which will be updated to @originalObject
-	 * @return object which was updated
-	 */
-	//T update(T originalObject, T changes);
-	
-	/**
-	 * Method to update object in storage.
-	 *
-	 * @param id      - id of object which will be updated
-	 * @param changes - changes in object of @id
-	 * @return object which was updated
-	 */
-	//T update(I id, T changes);
 	
 	/**
 	 * Method to deleteById object from storage.

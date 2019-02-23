@@ -11,23 +11,23 @@ import pl.expensesmanager.product.ProductPort;
 import java.time.Instant;
 import java.util.List;
 
-public abstract class AbstractDBInMemoryTest {
+public abstract class AbstractMongoDBTest {
 	
-	protected static final String ID = "PRODUCT_ID_TEST";
+	protected static final String ID = "PRODUCT_ID_TEST_MONGO";
 	
-	protected static final String PRODUCT_NAME = "PRODUCT_NAME_TEST";
+	protected static final String PRODUCT_NAME = "PRODUCT_NAME_TEST_MONGO";
 	
-	protected static final Double PRODUCT_PRICE = 10.25;
+	protected static final Double PRODUCT_PRICE = 9.75;
 	
-	protected static final Integer PRODUCT_QUANITY = 3;
+	protected static final Integer PRODUCT_QUANITY = 4;
 	
 	protected static final Instant BOUGHT_DATE = Instant.now();
 	
-	protected static final String BILL_OF_SALE_DESCRIPTION = "Description test";
+	protected static final String BILL_OF_SALE_DESCRIPTION = "Description test mongo";
 	
-	protected static final String BUDGET_NAME = "Budget name";
+	protected static final String BUDGET_NAME = "Budget name mongo";
 	
-	protected static final Double BUDGET_VALUE = 350.0;
+	protected static final Double BUDGET_VALUE = 375.0;
 	
 	
 	protected ProductPort createProduct() {
