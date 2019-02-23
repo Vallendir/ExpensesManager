@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.bson.types.ObjectId;
 
 @UtilityClass
-public final class ObjectIdConverter {
+public final class ObjectIdUtil {
 	
 	public static String objectIdAsString(ObjectId objectId) {
 		return objectId.toString();

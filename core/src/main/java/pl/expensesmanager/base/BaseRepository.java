@@ -3,7 +3,7 @@ package pl.expensesmanager.base;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseStorage<T, I> extends IdValidatorPort<I> {
+public interface BaseRepository<T, I> {
 	
 	/**
 	 * Method to store object.

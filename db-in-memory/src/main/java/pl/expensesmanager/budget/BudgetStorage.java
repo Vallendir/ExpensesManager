@@ -2,7 +2,7 @@ package pl.expensesmanager.budget;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-import pl.expensesmanager.util.MergeUtil;
+import pl.expensesmanager.IdValidationPort;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  */
 @Repository
 @Profile("in-memory")
-public class BudgetStorage implements BudgetStorePort {
+public class BudgetStorage extends IdValidationPort implements BudgetStorePort {
 	
 	@Override
 	public Optional<BudgetPort> findByName(String name) {

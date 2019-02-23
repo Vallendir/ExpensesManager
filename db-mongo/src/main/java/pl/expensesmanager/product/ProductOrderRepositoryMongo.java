@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Profile("dev")
-public interface ProductOrderRepositoryMongo extends ProductOrderStorePort, MongoRepository<ProductOrderPort, String> {
+public interface ProductOrderRepositoryMongo extends ProductOrderRepository, MongoRepository<ProductOrderPort, String> {
 
 }

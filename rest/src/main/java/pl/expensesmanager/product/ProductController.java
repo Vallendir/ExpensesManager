@@ -36,8 +36,12 @@ class ProductController implements ProductApi, ProductDocumentation {
 	
 	public ProductPort searchForId(String id) {
 		// FIXME
-		return service.searchById(id)
-		              .get();
+		ProductPort p = service.searchById(id)
+		                       .get();
+		
+		System.err.println(p);
+		
+		return p;
 	}
 	
 	public ProductPort searchForName(String name) {

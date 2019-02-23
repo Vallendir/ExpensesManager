@@ -2,6 +2,7 @@ package pl.expensesmanager.billofsale;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
+import pl.expensesmanager.IdValidationPort;
 
 import java.time.Instant;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
  */
 @Repository
 @Profile("in-memory")
-public class BillOfSaleStorage implements BillOfSaleStorePort {
+public class BillOfSaleStorage extends IdValidationPort implements BillOfSaleStorePort {
 	
 	@Override
 	public Optional<BillOfSalePort> findByDescription(String description) {
