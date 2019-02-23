@@ -9,14 +9,14 @@ import java.util.List;
 @Api(tags = { "Budget" })
 public interface BudgetDocumentation {
 	
-	@ApiOperation(value = "POST-endpoint to create Budget.", nickname = "add", notes = "Method allow to create a new budget.", tags = {
+	@ApiOperation(value = "POST-endpoint to create Budget.", nickname = "save", notes = "Method allow to create a new budget.", tags = {
 		"Budget",
 	})
 	BudgetPort add(
 		@ApiParam(value = "Budget object which will be created.", required = true) Budget budget
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update Budget.", nickname = "update", notes = "Method allow to update a budget.", tags = {
+	/*@ApiOperation(value = "PUT-endpoint to update Budget.", nickname = "update", notes = "Method allow to update a budget.", tags = {
 		"Budget",
 	})
 	BudgetPort update(
@@ -29,9 +29,9 @@ public interface BudgetDocumentation {
 	BudgetPort update(
 		@ApiParam(value = "ID of Budget to update.", required = true) String id,
 		@ApiParam(value = "Budget object changes to update.", required = true) Budget budget
-	);
+	);*/
 	
-	@ApiOperation(value = "DELETE-endpoint to remove Budget.", nickname = "delete", notes = "Method allow to remove a budget.", tags = {
+	@ApiOperation(value = "DELETE-endpoint to deleteById Budget.", nickname = "deleteById", notes = "Method allow to deleteById a budget.", tags = {
 		"Budget",
 	})
 	void delete(@ApiParam(value = "Budget object which will be deleted.", required = true) String id);

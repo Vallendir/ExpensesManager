@@ -9,11 +9,11 @@ interface BudgetApi {
 	@PostMapping(value = "/budgets")
 	BudgetPort add(@RequestBody Budget budget);
 	
-	@PutMapping(value = "/budgets")
+	/*@PutMapping(value = "/budgets")
 	BudgetPort update(@RequestBody Budget budget);
 	
 	@PutMapping(value = "/budgets/{id}")
-	BudgetPort update(String id, @RequestBody Budget budget);
+	BudgetPort update(String id, @RequestBody Budget budget);*/
 	
 	@DeleteMapping(value = "/budgets/{id}")
 	void delete(String id);

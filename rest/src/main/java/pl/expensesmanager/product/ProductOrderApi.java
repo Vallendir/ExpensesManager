@@ -9,11 +9,11 @@ interface ProductOrderApi {
 	@PostMapping(value = "/orders")
 	ProductOrderPort add(@RequestBody ProductOrder product);
 	
-	@PutMapping(value = "/orders")
+	/*@PutMapping(value = "/orders")
 	ProductOrderPort update(@RequestBody ProductOrder product);
 	
 	@PutMapping(value = "/orders/{id}")
-	ProductOrderPort update(@PathVariable("id") String id, @RequestBody ProductOrder product);
+	ProductOrderPort update(@PathVariable("id") String id, @RequestBody ProductOrder product);*/
 	
 	@DeleteMapping(value = "/orders/{id}")
 	void delete(@PathVariable("id") String id);

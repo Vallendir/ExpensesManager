@@ -79,86 +79,13 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		
 		BillOfSalePort expectedBillOfSale = createBillOfSale();
 		
-		when(storage.add(expectedToAdd)).thenReturn(expectedBillOfSale);
+		when(storage.save(expectedToAdd)).thenReturn(expectedBillOfSale);
 		
 		// When
-		BillOfSalePort actualBillOfSale = storage.add(expectedToAdd);
+		BillOfSalePort actualBillOfSale = storage.save(expectedToAdd);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
-	}
-	
-	@Test
-	void updateByObject() {
-		// Given
-		BillOfSalePort expectedToChange = new BillOfSale();
-		expectedToChange.setId(ID);
-		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
-		
-		BillOfSalePort expectedBillOfSale = createBillOfSale();
-		
-		expectedToChange.setBoughtDate(BOUGHT_DATE);
-		
-		when(storage.update(expectedToChange)).thenReturn(expectedBillOfSale);
-		
-		// When
-		BillOfSalePort actualBillOfSale = storage.update(expectedToChange);
-		
-		// Then
-		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
-	}
-	
-	@Test
-	void updateById() {
-		// Given
-		BillOfSalePort expectedToChange = new BillOfSale();
-		expectedToChange.setId(ID);
-		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
-		
-		BillOfSalePort expectedChanges = new BillOfSale();
-		expectedChanges.setBoughtDate(BOUGHT_DATE);
-		
-		BillOfSalePort expectedBillOfSale = createBillOfSale();
-		
-		when(storage.update(ID, expectedChanges)).thenReturn(expectedBillOfSale);
-		
-		// When
-		BillOfSalePort actualBillOfSale = storage.update(ID, expectedChanges);
-		
-		// Then
-		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
-	}
-	
-	@Test
-	void updateOriginalAndChanges() {
-		// Given
-		BillOfSalePort expectedToChange = new BillOfSale();
-		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
-		
-		BillOfSalePort expectedChanges = new BillOfSale();
-		expectedChanges.setBoughtDate(BOUGHT_DATE);
-		
-		BillOfSalePort expectedBillOfSale = createBillOfSale();
-		
-		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedBillOfSale);
-		
-		// When
-		BillOfSalePort actualBillOfSale = storage.update(expectedToChange, expectedChanges);
-		
-		// Then
-		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
-	}
-	
-	@Test
-	void remove() {
-		// Given
-		when(storage.remove(ID)).thenReturn(true);
-		
-		// When
-		boolean actualBillOfSale = storage.remove(ID);
-		
-		// Then
-		assertThat(actualBillOfSale).isTrue();
 	}
 	
 	@Test
@@ -201,15 +128,11 @@ class BillOfSaleStorageTest extends AbstractDBInMemoryTest {
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
 		assertThat(actualBillOfSaleList.size()).isEqualTo(expectedBillOfSaleList.size());
 		assertThat(actualBillOfSaleList).containsExactlyInAnyOrder(expectedBillOfSale_1, expectedBillOfSale_2);
-		assertThat(
-			actualBillOfSaleList.stream()
-			                    .mapToDouble(BillOfSalePort::finalPrice)
-			                    .sum()
-		).isEqualTo(
-			expectedBillOfSaleList.stream()
-			                      .mapToDouble(BillOfSalePort::finalPrice)
-			                      .sum()
-		);
+		assertThat(actualBillOfSaleList.stream()
+		                               .mapToDouble(BillOfSalePort::finalPrice)
+		                               .sum()).isEqualTo(expectedBillOfSaleList.stream()
+		                                                                       .mapToDouble(BillOfSalePort::finalPrice)
+		                                                                       .sum());
 	}
 	
 }

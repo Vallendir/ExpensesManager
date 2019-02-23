@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
+@Document(collection = "billOfSale")
 public class BillOfSaleDocument {
 	
 	private String id;

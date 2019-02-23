@@ -2,7 +2,6 @@ package pl.expensesmanager.product;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
  * MOCK of product storage
  */
 @Repository
-@Profile("dev")
+@Profile("in-memory")
 public class ProductStorage implements ProductStorePort {
 	
 	@Override
@@ -53,74 +52,16 @@ public class ProductStorage implements ProductStorePort {
 	}
 	
 	@Override
-	public ProductPort add(ProductPort object) {
+	public ProductPort save(ProductPort object) {
 		ProductSimulatedData.LIST.add(object);
 		
 		return object;
 	}
 	
 	@Override
-	public ProductPort update(ProductPort object) {
-		Optional<ProductPort> result = ProductSimulatedData.LIST.stream()
-		                                                        .filter(product -> product.getId()
-		                                                                                  .equals(object.getId()))
-		                                                        .findFirst();
-		
-		if (!result.isPresent()) {
-			return null;
-		}
-		
-		ProductPort updatedProduct = MergeUtil.merge(result.get(), object);
-		ProductSimulatedData.LIST.remove(result.get());
-		ProductSimulatedData.LIST.add(updatedProduct);
-		
-		return updatedProduct;
-		
-	}
-	
-	@Override
-	public ProductPort update(ProductPort originalObject, ProductPort changes) {
-		Optional<ProductPort> result = ProductSimulatedData.LIST.stream()
-		                                                        .filter(product -> product.getId()
-		                                                                                  .equals(
-			                                                                                  originalObject.getId()))
-		                                                        .findFirst();
-		
-		if (!result.isPresent()) {
-			return null;
-		}
-		
-		ProductPort updatedProduct = MergeUtil.merge(result.get(), changes);
-		ProductSimulatedData.LIST.remove(result.get());
-		ProductSimulatedData.LIST.add(updatedProduct);
-		
-		return updatedProduct;
-		
-	}
-	
-	@Override
-	public ProductPort update(String id, ProductPort changes) {
-		Optional<ProductPort> result = ProductSimulatedData.LIST.stream()
-		                                                        .filter(product -> product.getId()
-		                                                                                  .equals(id))
-		                                                        .findFirst();
-		
-		if (!result.isPresent()) {
-			return null;
-		}
-		
-		ProductPort updatedProduct = MergeUtil.merge(result.get(), changes);
-		ProductSimulatedData.LIST.remove(ProductSimulatedData.LIST.indexOf(result.get()));
-		ProductSimulatedData.LIST.add(updatedProduct);
-		
-		return updatedProduct;
-		
-	}
-	
-	@Override
-	public boolean remove(String id) {
-		return ProductSimulatedData.LIST.removeIf(product -> product.getId()
-		                                                            .equals(id));
+	public void deleteById(String id) {
+		ProductSimulatedData.LIST.removeIf(product -> product.getId()
+		                                                     .equals(id));
 	}
 	
 	@Override

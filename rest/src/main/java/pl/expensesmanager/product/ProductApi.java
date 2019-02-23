@@ -9,11 +9,11 @@ interface ProductApi {
 	@PostMapping(value = "/products")
 	ProductPort add(@RequestBody Product product);
 	
-	@PutMapping(value = "/products")
+	/*@PutMapping(value = "/products")
 	ProductPort update(@RequestBody Product product);
 	
 	@PutMapping(value = "/products/{id}")
-	ProductPort update(@PathVariable("id") String id, @RequestBody Product product);
+	ProductPort update(@PathVariable("id") String id, @RequestBody Product product);*/
 	
 	@DeleteMapping(value = "/products/{id}")
 	void delete(@PathVariable("id") String id);

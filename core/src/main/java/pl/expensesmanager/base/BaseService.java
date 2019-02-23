@@ -26,7 +26,7 @@ public interface BaseService<T, I extends Serializable> {
 	 * @param object object to update
 	 * @return object which was update
 	 */
-	T update(T object);
+	//T update(T object);
 	
 	/**
 	 * Method to create object and update.
@@ -35,7 +35,7 @@ public interface BaseService<T, I extends Serializable> {
 	 * @param changes        changes to updated object
 	 * @return object which was update
 	 */
-	T update(T originalObject, T changes);
+	//T update(T originalObject, T changes);
 	
 	/**
 	 * Method to create object and update.
@@ -44,15 +44,15 @@ public interface BaseService<T, I extends Serializable> {
 	 * @param id      identificator of object to update
 	 * @return object which was update
 	 */
-	T update(T changes, I id);
+	//T update(T changes, I id);
 	
 	/**
-	 * Method to delete object by id.
+	 * Method to deleteById object by id.
 	 *
-	 * @param id identificator of object to delete
+	 * @param id identificator of object to deleteById
 	 * @return true if deleted and false if not
 	 */
-	boolean delete(I id);
+	void deleteById(I id);
 	
 	/**
 	 * Method to search object by id.

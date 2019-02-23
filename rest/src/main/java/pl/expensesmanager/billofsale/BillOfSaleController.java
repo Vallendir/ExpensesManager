@@ -18,16 +18,16 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 		return service.create(billOfSale);
 	}
 	
-	public BillOfSale update(BillOfSale billOfSale) {
+	/*public BillOfSale update(BillOfSale billOfSale) {
 		return (BillOfSale) service.update(billOfSale);
 	}
 	
 	public BillOfSalePort update(String id, BillOfSale billOfSale) {
 		return service.update(billOfSale, id);
-	}
+	}*/
 	
 	public void delete(String id) {
-		service.delete(id);
+		service.deleteById(id);
 	}
 	
 	public BillOfSalePort searchForId(String id) {
