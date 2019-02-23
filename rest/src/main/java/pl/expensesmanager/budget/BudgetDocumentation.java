@@ -31,29 +31,29 @@ public interface BudgetDocumentation {
 		@ApiParam(value = "Budget object changes to update.", required = true) Budget budget
 	);*/
 	
-	@ApiOperation(value = "DELETE-endpoint to deleteById Budget.", nickname = "deleteById", notes = "Method allow to deleteById a budget.", tags = {
+	@ApiOperation(value = "DELETE-endpoint to removeById Budget.", nickname = "removeById", notes = "Method allow to removeById a budget.", tags = {
 		"Budget",
 	})
 	void delete(@ApiParam(value = "Budget object which will be deleted.", required = true) String id);
 	
-	@ApiOperation(value = "GET-endpoint to find Budget by id.", nickname = "searchForId", notes = "Method allow to find a budget by id.", tags = {
+	@ApiOperation(value = "GET-endpoint to find Budget by id.", nickname = "searchById", notes = "Method allow to find a budget by id.", tags = {
 		"Budget",
 	})
 	BudgetPort searchForId(@ApiParam(value = "ID of Budget to find.", required = true) String id);
 	
-	@ApiOperation(value = "GET-endpoint to find Budget by name.", nickname = "searchForName", notes = "Method allow to find a budget by name.", tags = {
+	@ApiOperation(value = "GET-endpoint to find Budget by name.", nickname = "searchByName", notes = "Method allow to find a budget by name.", tags = {
 		"Budget",
 	})
 	BudgetPort searchForName(@ApiParam(value = "Name of Budget to find.", required = true) String name);
 	
-	@ApiOperation(value = "GET-endpoint to find Budget by budget value.", nickname = "searchAllForBudgetValue", notes = "Method allow to find a budget by budget value.", tags = {
+	@ApiOperation(value = "GET-endpoint to find Budget by budget value.", nickname = "searchAllByValue", notes = "Method allow to find a budget by budget value.", tags = {
 		"Budget",
 	})
 	List<BudgetPort> searchAllForBudgetValue(
 		@ApiParam(value = "Budget value to find.", required = true) Double budgetValue
 	);
 	
-	@ApiOperation(value = "GET-endpoint to find Budget by budget value range.", nickname = "searchAllForBudgetValueRange", notes = "Method allow to find a budget by budget value range.", tags = {
+	@ApiOperation(value = "GET-endpoint to find Budget by budget value range.", nickname = "searchAllByValueRange", notes = "Method allow to find a budget by budget value range.", tags = {
 		"Budget",
 	})
 	List<BudgetPort> searchAllForBudgetValueRange(
@@ -61,14 +61,14 @@ public interface BudgetDocumentation {
 		@ApiParam(value = "Maximum budget value to find.", required = true) Double max
 	);
 	
-	@ApiOperation(value = "GET-endpoint to find Budget by budget value greater than a value.", nickname = "searchAllForBudgetValueGreater", notes = "Method allow to find a budget by budget value greater than a value.", tags = {
+	@ApiOperation(value = "GET-endpoint to find Budget by budget value greater than a value.", nickname = "searchAllByBiggerValueThan", notes = "Method allow to find a budget by budget value greater than a value.", tags = {
 		"Budget",
 	})
 	List<BudgetPort> searchAllForBudgetValueGreater(
 		@ApiParam(value = "Budget value to find greaters.", required = true) Double budgetValue
 	);
 	
-	@ApiOperation(value = "GET-endpoint to find Budget by budget value lower than a value.", nickname = "searchAllForBudgetValueLower", notes = "Method allow to find a budget by budget value lower than a value.", tags = {
+	@ApiOperation(value = "GET-endpoint to find Budget by budget value lower than a value.", nickname = "searchAllByLessValueThan", notes = "Method allow to find a budget by budget value lower than a value.", tags = {
 		"Budget",
 	})
 	List<BudgetPort> searchAllForBudgetValueLower(

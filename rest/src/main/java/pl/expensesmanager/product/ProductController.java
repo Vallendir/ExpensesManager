@@ -31,31 +31,31 @@ class ProductController implements ProductApi, ProductDocumentation {
 	}*/
 	
 	public void delete(String id) {
-		service.deleteById(id);
+		service.removeById(id);
 	}
 	
 	public ProductPort searchForId(String id) {
 		// FIXME
-		return service.searchForId(id)
+		return service.searchById(id)
 		              .get();
 	}
 	
 	public ProductPort searchForName(String name) {
 		// FIXME
-		return service.searchForName(name)
+		return service.searchByName(name)
 		              .get();
 	}
 	
 	public List<ProductPort> searchAllForPriceRange(Double min, Double max) {
-		return service.searchAllForPriceRange(min, max);
+		return service.searchAllByPriceRange(min, max);
 	}
 	
 	public List<ProductPort> searchAllForPriceGreater(Double price) {
-		return service.searchAllForPriceGreater(price);
+		return service.searchAllExpensiveThan(price);
 	}
 	
 	public List<ProductPort> searchAllForPriceLower(Double price) {
-		return service.searchAllForPriceLower(price);
+		return service.searchAllCheaperThan(price);
 	}
 	
 }

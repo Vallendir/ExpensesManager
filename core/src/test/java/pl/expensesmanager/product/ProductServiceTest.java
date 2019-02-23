@@ -35,7 +35,7 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.findByName(PRODUCT_NAME)).thenReturn(Optional.of(expectedProduct_1));
 		
 		// When
-		ProductPort actualProduct = service.searchForName(PRODUCT_NAME)
+		ProductPort actualProduct = service.searchByName(PRODUCT_NAME)
 		                                   .get();
 		
 		// Then
@@ -53,7 +53,7 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.findByPriceBetween(PRICE_MIN, PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAllForPriceRange(PRICE_MIN, PRICE_MAX);
+		List<ProductPort> actualProductList = service.searchAllByPriceRange(PRICE_MIN, PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -70,7 +70,7 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.findByPriceGreaterThan(PRODUCT_PRICE)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAllForPriceGreater(PRODUCT_PRICE);
+		List<ProductPort> actualProductList = service.searchAllExpensiveThan(PRODUCT_PRICE);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -87,7 +87,7 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.findByPriceLessThan(PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAllForPriceLower(PRICE_MAX);
+		List<ProductPort> actualProductList = service.searchAllCheaperThan(PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -164,7 +164,7 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedProduct));
 		
 		// When
-		ProductPort actualProduct = service.searchForId(ID)
+		ProductPort actualProduct = service.searchById(ID)
 		                                   .get();
 		
 		// Then

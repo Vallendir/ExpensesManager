@@ -24,35 +24,35 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 	}*/
 	
 	public void delete(String id) {
-		service.deleteById(id);
+		service.removeById(id);
 	}
 	
 	public ProductOrderPort searchForId(String id) {
 		// FIXME
-		return service.searchForId(id)
+		return service.searchById(id)
 		              .get();
 	}
 	
 	public List<ProductOrderPort> searchAllForQuanityRange(Integer min, Integer max) {
-		return service.searchAllForQuanityRange(min, max);
+		return service.searchAllByQuanityRange(min, max);
 	}
 	
 	public List<ProductOrderPort> searchAllForQuanityGreater(Integer quanity) {
-		return service.searchAllForQuanityGreater(quanity);
+		return service.searchAllByBiggerQuanityThan(quanity);
 	}
 	
 	public List<ProductOrderPort> searchAllForQuanityLower(Integer quanity) {
-		return service.searchAllForQuanityLower(quanity);
+		return service.searchAllByLessQuanityThan(quanity);
 	}
 	
 	@Override
 	public List<ProductOrderPort> searchAllForProductName(String productName) {
-		return service.searchAllForProductName(productName);
+		return service.searchAllByProductName(productName);
 	}
 	
 	@Override
 	public List<ProductOrderPort> searchAllForProductNameAndProductPrice(String productName, Double price) {
-		return service.searchAllForProductNameAndProductPrice(productName, price);
+		return service.searchAllByProductNameAndPrice(productName, price);
 	}
 	
 }

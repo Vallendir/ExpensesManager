@@ -35,7 +35,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.findByName(BUDGET_NAME)).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		BudgetPort actualBudget = service.searchForName(BUDGET_NAME)
+		BudgetPort actualBudget = service.searchByName(BUDGET_NAME)
 		                                 .get();
 		
 		// Then
@@ -53,7 +53,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.findByBudgetValue(BUDGET_VALUE)).thenReturn(expectedBudgets);
 		
 		// When
-		List<BudgetPort> actualBudgets = service.searchAllForBudgetValue(BUDGET_VALUE);
+		List<BudgetPort> actualBudgets = service.searchAllByValue(BUDGET_VALUE);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -70,7 +70,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.findByBudgetValueBetween(BUDGET_VALUE_MIN, BUDGET_VALUE_MAX)).thenReturn(expectedBudgets);
 		
 		// When
-		List<BudgetPort> actualBudgets = service.searchAllForBudgetValueRange(BUDGET_VALUE_MIN, BUDGET_VALUE_MAX);
+		List<BudgetPort> actualBudgets = service.searchAllByValueRange(BUDGET_VALUE_MIN, BUDGET_VALUE_MAX);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -87,7 +87,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.findByBudgetValueGreaterThan(BUDGET_VALUE_MIN)).thenReturn(expectedBudgets);
 		
 		// When
-		List<BudgetPort> actualBudgets = service.searchAllForBudgetValueGreater(BUDGET_VALUE_MIN);
+		List<BudgetPort> actualBudgets = service.searchAllByBiggerValueThan(BUDGET_VALUE_MIN);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -104,7 +104,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.findByBudgetValueLessThan(BUDGET_VALUE_MAX)).thenReturn(expectedBudgets);
 		
 		// When
-		List<BudgetPort> actualBudgets = service.searchAllForBudgetValueLower(BUDGET_VALUE_MAX);
+		List<BudgetPort> actualBudgets = service.searchAllByLessValueThan(BUDGET_VALUE_MAX);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -180,7 +180,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		BudgetPort actualBudget = service.searchForId(ID)
+		BudgetPort actualBudget = service.searchById(ID)
 		                                 .get();
 		
 		// Then

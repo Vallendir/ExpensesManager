@@ -16,17 +16,17 @@ class BudgetService implements BudgetServicePort {
 	private final BudgetStorePort storage;
 	
 	@Override
-	public Optional<BudgetPort> searchForName(String name) {
+	public Optional<BudgetPort> searchByName(String name) {
 		return storage.findByName(BudgetValidator.validateName(name));
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllForBudgetValue(Double budgetValue) {
+	public List<BudgetPort> searchAllByValue(Double budgetValue) {
 		return storage.findByBudgetValue(BudgetValidator.validateBudgetValue(budgetValue));
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllForBudgetValueRange(Double min, Double max) {
+	public List<BudgetPort> searchAllByValueRange(Double min, Double max) {
 		if (min > max) {
 			throw new RuntimeException();
 		}
@@ -36,12 +36,12 @@ class BudgetService implements BudgetServicePort {
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllForBudgetValueGreater(Double budgetValue) {
+	public List<BudgetPort> searchAllByBiggerValueThan(Double budgetValue) {
 		return storage.findByBudgetValueGreaterThan(BudgetValidator.validateBudgetValue(budgetValue));
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllForBudgetValueLower(Double budgetValue) {
+	public List<BudgetPort> searchAllByLessValueThan(Double budgetValue) {
 		return storage.findByBudgetValueLessThan(BudgetValidator.validateBudgetValue(budgetValue));
 	}
 	
@@ -70,7 +70,7 @@ class BudgetService implements BudgetServicePort {
 	public BudgetPort update(BudgetPort changes, String id) {
 		checkChangesInBudget(changes);
 		
-		Optional<BudgetPort> originalObject = searchForId(id);
+		Optional<BudgetPort> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
 			throw invalidIdException();
 		}
@@ -79,12 +79,12 @@ class BudgetService implements BudgetServicePort {
 	}
 	
 	@Override
-	public void deleteById(String id) {
+	public void removeById(String id) {
 		storage.deleteById(id);
 	}
 	
 	@Override
-	public Optional<BudgetPort> searchForId(String id) {
+	public Optional<BudgetPort> searchById(String id) {
 		return storage.findById(id);
 	}
 	

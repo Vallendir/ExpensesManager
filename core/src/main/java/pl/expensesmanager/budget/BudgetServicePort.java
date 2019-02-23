@@ -13,7 +13,7 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param name - the name of budget
 	 * @return found budget as optional
 	 */
-	Optional<BudgetPort> searchForName(String name);
+	Optional<BudgetPort> searchByName(String name);
 	
 	/**
 	 * Method to search budgets by budget value.
@@ -21,7 +21,7 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budgets objects
 	 */
-	List<BudgetPort> searchAllForBudgetValue(Double budgetValue);
+	List<BudgetPort> searchAllByValue(Double budgetValue);
 	
 	/**
 	 * Method to search budgets between budget value range.
@@ -30,7 +30,7 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param max - maximal budget value
 	 * @return found budget objects
 	 */
-	List<BudgetPort> searchAllForBudgetValueRange(Double min, Double max);
+	List<BudgetPort> searchAllByValueRange(Double min, Double max);
 	
 	/**
 	 * Method to search budgets bigger than value.
@@ -38,7 +38,7 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<BudgetPort> searchAllForBudgetValueGreater(Double budgetValue);
+	List<BudgetPort> searchAllByBiggerValueThan(Double budgetValue);
 	
 	/**
 	 * Method to search budgets less than value.
@@ -46,6 +46,6 @@ interface BudgetServicePort extends BaseService<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<BudgetPort> searchAllForBudgetValueLower(Double budgetValue);
+	List<BudgetPort> searchAllByLessValueThan(Double budgetValue);
 	
 }

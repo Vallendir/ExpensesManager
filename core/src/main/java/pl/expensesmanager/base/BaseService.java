@@ -47,12 +47,12 @@ public interface BaseService<T, I extends Serializable> {
 	T update(T changes, I id);
 	
 	/**
-	 * Method to deleteById object by id.
+	 * Method to removeById object by id.
 	 *
-	 * @param id identificator of object to deleteById
+	 * @param id identificator of object to remove
 	 * @return true if deleted and false if not
 	 */
-	void deleteById(I id);
+	void removeById(I id);
 	
 	/**
 	 * Method to search object by id.
@@ -60,7 +60,7 @@ public interface BaseService<T, I extends Serializable> {
 	 * @param id identificator of object to find
 	 * @return found object
 	 */
-	Optional<T> searchForId(I id);
+	Optional<T> searchById(I id);
 	
 	/**
 	 * Method to search all objects.

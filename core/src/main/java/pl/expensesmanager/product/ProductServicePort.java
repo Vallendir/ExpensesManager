@@ -13,7 +13,7 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param name - the name of product
 	 * @return found product as optional
 	 */
-	Optional<ProductPort> searchForName(String name);
+	Optional<ProductPort> searchByName(String name);
 	
 	/**
 	 * Method to search products between price range.
@@ -22,7 +22,7 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param max - maximal price
 	 * @return found product objects
 	 */
-	List<ProductPort> searchAllForPriceRange(Double min, Double max);
+	List<ProductPort> searchAllByPriceRange(Double min, Double max);
 	
 	/**
 	 * Method to search products more expensive than price.
@@ -30,7 +30,7 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param price - price
 	 * @return found product objects
 	 */
-	List<ProductPort> searchAllForPriceGreater(Double price);
+	List<ProductPort> searchAllExpensiveThan(Double price);
 	
 	/**
 	 * Method to search product cheaper than price.
@@ -38,6 +38,6 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param price - price
 	 * @return found product objects
 	 */
-	List<ProductPort> searchAllForPriceLower(Double price);
+	List<ProductPort> searchAllCheaperThan(Double price);
 	
 }

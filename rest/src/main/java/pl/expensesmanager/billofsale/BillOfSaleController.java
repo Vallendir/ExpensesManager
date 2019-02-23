@@ -27,25 +27,25 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	}*/
 	
 	public void delete(String id) {
-		service.deleteById(id);
+		service.removeById(id);
 	}
 	
 	public BillOfSalePort searchForId(String id) {
 		// FIXME
-		return service.searchForId(id).get();
+		return service.searchById(id).get();
 	}
 	
 	public BillOfSalePort searchForDescription(String description) {
 		// FIXME
-		return service.searchForDescription(description).get();
+		return service.searchByDescription(description).get();
 	}
 	
 	public List<BillOfSalePort> searchForBoughtDate(Instant boughtDate) {
-		return service.searchForBoughtDate(boughtDate);
+		return service.searchAllByBoughtDate(boughtDate);
 	}
 	
 	public List<BillOfSalePort> searchAllForBoughtDateRange(Instant min, Instant max) {
-		return service.searchAllForBoughtDateRange(min, max);
+		return service.searchAllByBoughtDateRange(min, max);
 	}
 	
 }

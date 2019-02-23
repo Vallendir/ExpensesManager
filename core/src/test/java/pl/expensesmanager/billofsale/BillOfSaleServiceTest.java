@@ -34,7 +34,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		when(storage.findByDescription(BILL_OF_SALE_DESCRIPTION)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSalePort actualBillOfSale = service.searchForDescription(BILL_OF_SALE_DESCRIPTION)
+		BillOfSalePort actualBillOfSale = service.searchByDescription(BILL_OF_SALE_DESCRIPTION)
 		                                         .get();
 		
 		// Then
@@ -52,7 +52,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		when(storage.findByBoughtDate(BOUGHT_DATE)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSalePort> actualBillOfSaleList = service.searchForBoughtDate(BOUGHT_DATE);
+		List<BillOfSalePort> actualBillOfSaleList = service.searchAllByBoughtDate(BOUGHT_DATE);
 		
 		// Then
 		billOfSaleListAssertions(
@@ -70,7 +70,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		when(storage.findByBoughtDateBetween(BOUGHT_DATE, BOUGHT_DATE_MAX)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSalePort> actualBillOfSaleList = service.searchAllForBoughtDateRange(BOUGHT_DATE, BOUGHT_DATE_MAX);
+		List<BillOfSalePort> actualBillOfSaleList = service.searchAllByBoughtDateRange(BOUGHT_DATE, BOUGHT_DATE_MAX);
 		
 		// Then
 		billOfSaleListAssertions(
@@ -164,7 +164,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSalePort actualBillOfSale = service.searchForId(ID)
+		BillOfSalePort actualBillOfSale = service.searchById(ID)
 		                                         .get();
 		
 		// Then

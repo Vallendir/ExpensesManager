@@ -16,18 +16,18 @@ class ProductOrderService implements ProductOrderServicePort {
 	private final ProductOrderStorePort storage;
 	
 	@Override
-	public List<ProductOrderPort> searchAllForProductName(String name) {
+	public List<ProductOrderPort> searchAllByProductName(String name) {
 		return storage.findByProductName(ProductValidator.validateName(name));
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllForProductNameAndProductPrice(String name, Double price) {
+	public List<ProductOrderPort> searchAllByProductNameAndPrice(String name, Double price) {
 		return storage.findByProductNameAndProductPrice(
 			ProductValidator.validateName(name), ProductValidator.validatePrice(price));
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllForQuanityRange(Integer min, Integer max) {
+	public List<ProductOrderPort> searchAllByQuanityRange(Integer min, Integer max) {
 		if (min > max) {
 			throw new RuntimeException();
 		}
@@ -37,12 +37,12 @@ class ProductOrderService implements ProductOrderServicePort {
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllForQuanityGreater(Integer quanity) {
+	public List<ProductOrderPort> searchAllByBiggerQuanityThan(Integer quanity) {
 		return storage.findByQuanityGreaterThan(ProductValidator.validateQuanity(quanity));
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllForQuanityLower(Integer quanity) {
+	public List<ProductOrderPort> searchAllByLessQuanityThan(Integer quanity) {
 		return storage.findByQuanityLessThan(ProductValidator.validateQuanity(quanity));
 	}
 	
@@ -71,7 +71,7 @@ class ProductOrderService implements ProductOrderServicePort {
 	public ProductOrderPort update(ProductOrderPort changes, String id) {
 		checkChangesInOrder(changes);
 		
-		Optional<ProductOrderPort> originalObject = searchForId(id);
+		Optional<ProductOrderPort> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
 			throw invalidIdException();
 		}
@@ -80,12 +80,12 @@ class ProductOrderService implements ProductOrderServicePort {
 	}
 	
 	@Override
-	public void deleteById(String id) {
+	public void removeById(String id) {
 		storage.deleteById(id);
 	}
 	
 	@Override
-	public Optional<ProductOrderPort> searchForId(String id) {
+	public Optional<ProductOrderPort> searchById(String id) {
 		return storage.findById(id);
 	}
 	

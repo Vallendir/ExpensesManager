@@ -16,12 +16,12 @@ class ProductService implements ProductServicePort {
 	private final ProductStorePort storage;
 	
 	@Override
-	public Optional<ProductPort> searchForName(String name) {
+	public Optional<ProductPort> searchByName(String name) {
 		return storage.findByName(ProductValidator.validateName(name));
 	}
 	
 	@Override
-	public List<ProductPort> searchAllForPriceRange(Double min, Double max) {
+	public List<ProductPort> searchAllByPriceRange(Double min, Double max) {
 		if (min > max) {
 			throw new RuntimeException();
 		}
@@ -30,12 +30,12 @@ class ProductService implements ProductServicePort {
 	}
 	
 	@Override
-	public List<ProductPort> searchAllForPriceGreater(Double price) {
+	public List<ProductPort> searchAllExpensiveThan(Double price) {
 		return storage.findByPriceGreaterThan(ProductValidator.validatePrice(price));
 	}
 	
 	@Override
-	public List<ProductPort> searchAllForPriceLower(Double price) {
+	public List<ProductPort> searchAllCheaperThan(Double price) {
 		return storage.findByPriceLessThan(ProductValidator.validatePrice(price));
 	}
 	
@@ -64,7 +64,7 @@ class ProductService implements ProductServicePort {
 	public ProductPort update(ProductPort changes, String id) {
 		checkChangesInProduct(changes);
 		
-		Optional<ProductPort> originalObject = searchForId(id);
+		Optional<ProductPort> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
 			throw invalidIdException();
 		}
@@ -73,12 +73,12 @@ class ProductService implements ProductServicePort {
 	}
 	
 	@Override
-	public void deleteById(String id) {
+	public void removeById(String id) {
 		storage.deleteById(id);
 	}
 	
 	@Override
-	public Optional<ProductPort> searchForId(String id) {
+	public Optional<ProductPort> searchById(String id) {
 		return storage.findById(id);
 	}
 	

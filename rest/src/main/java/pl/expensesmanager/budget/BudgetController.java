@@ -26,35 +26,35 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 	}*/
 	
 	public void delete(String id) {
-		service.deleteById(id);
+		service.removeById(id);
 	}
 	
 	public BudgetPort searchForId(String id) {
 		// FIXME
-		return service.searchForId(id)
+		return service.searchById(id)
 		              .get();
 	}
 	
 	public BudgetPort searchForName(String name) {
 		// FIXME
-		return service.searchForName(name)
+		return service.searchByName(name)
 		              .get();
 	}
 	
 	public List<BudgetPort> searchAllForBudgetValue(Double budgetValue) {
-		return service.searchAllForBudgetValue(budgetValue);
+		return service.searchAllByValue(budgetValue);
 	}
 	
 	public List<BudgetPort> searchAllForBudgetValueRange(Double min, Double max) {
-		return service.searchAllForBudgetValueRange(min, max);
+		return service.searchAllByValueRange(min, max);
 	}
 	
 	public List<BudgetPort> searchAllForBudgetValueGreater(Double budgetValue) {
-		return service.searchAllForBudgetValueGreater(budgetValue);
+		return service.searchAllByBiggerValueThan(budgetValue);
 	}
 	
 	public List<BudgetPort> searchAllForBudgetValueLower(Double budgetValue) {
-		return service.searchAllForBudgetValueLower(budgetValue);
+		return service.searchAllByLessValueThan(budgetValue);
 	}
 	
 	

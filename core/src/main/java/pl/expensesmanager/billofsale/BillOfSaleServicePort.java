@@ -14,7 +14,7 @@ interface BillOfSaleServicePort extends BaseService<BillOfSalePort, String> {
 	 * @param description - the description of bill of sale
 	 * @return found bill of sale as optional
 	 */
-	Optional<BillOfSalePort> searchForDescription(String description);
+	Optional<BillOfSalePort> searchByDescription(String description);
 	
 	/**
 	 * Method to search bill of sale by bought date.
@@ -22,7 +22,7 @@ interface BillOfSaleServicePort extends BaseService<BillOfSalePort, String> {
 	 * @param boughtDate - the bought date of bill of sale
 	 * @return found bills of sale list
 	 */
-	List<BillOfSalePort> searchForBoughtDate(Instant boughtDate);
+	List<BillOfSalePort> searchAllByBoughtDate(Instant boughtDate);
 	
 	/**
 	 * Method to search bill of sale by bought date range.
@@ -31,6 +31,6 @@ interface BillOfSaleServicePort extends BaseService<BillOfSalePort, String> {
 	 * @param max - end bought date
 	 * @return found bills of sale list
 	 */
-	List<BillOfSalePort> searchAllForBoughtDateRange(Instant min, Instant max);
+	List<BillOfSalePort> searchAllByBoughtDateRange(Instant min, Instant max);
 	
 }

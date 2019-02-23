@@ -38,7 +38,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findByProductName(PRODUCT_NAME)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllForProductName(PRODUCT_NAME);
+		List<ProductOrderPort> actualOrderList = service.searchAllByProductName(PRODUCT_NAME);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
@@ -55,7 +55,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllForProductNameAndProductPrice(
+		List<ProductOrderPort> actualOrderList = service.searchAllByProductNameAndPrice(
 			PRODUCT_NAME, PRODUCT_PRICE);
 		
 		// Then
@@ -73,7 +73,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findByQuanityBetween(QUANITY_MIN, QUANITY_MAX)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllForQuanityRange(QUANITY_MIN, QUANITY_MAX);
+		List<ProductOrderPort> actualOrderList = service.searchAllByQuanityRange(QUANITY_MIN, QUANITY_MAX);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
@@ -90,7 +90,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findByQuanityGreaterThan(QUANITY_MIN)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllForQuanityGreater(QUANITY_MIN);
+		List<ProductOrderPort> actualOrderList = service.searchAllByBiggerQuanityThan(QUANITY_MIN);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
@@ -107,7 +107,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findByQuanityLessThan(QUANITY_MAX)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllForQuanityLower(QUANITY_MAX);
+		List<ProductOrderPort> actualOrderList = service.searchAllByLessQuanityThan(QUANITY_MAX);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
@@ -188,7 +188,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder_1));
 		
 		// When
-		ProductOrderPort actualOrder = service.searchForId(ID)
+		ProductOrderPort actualOrder = service.searchById(ID)
 		                                      .get();
 		
 		// Then

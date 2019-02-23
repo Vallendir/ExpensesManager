@@ -12,16 +12,16 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param name - the product name
 	 * @return found products
 	 */
-	List<ProductOrderPort> searchAllForProductName(String name);
+	List<ProductOrderPort> searchAllByProductName(String name);
 	
 	/**
 	 * Method to find order by product name and price.
 	 *
-	 * @param name - the product name
+	 * @param name  - the product name
 	 * @param price - the product price
 	 * @return found product
 	 */
-	List<ProductOrderPort> searchAllForProductNameAndProductPrice(String name, Double price);
+	List<ProductOrderPort> searchAllByProductNameAndPrice(String name, Double price);
 	
 	/**
 	 * Method to search product between quanity range.
@@ -30,7 +30,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param max - maximal quanity
 	 * @return found product objects
 	 */
-	List<ProductOrderPort> searchAllForQuanityRange(Integer min, Integer max);
+	List<ProductOrderPort> searchAllByQuanityRange(Integer min, Integer max);
 	
 	/**
 	 * Method to search product which have more quanity than value.
@@ -38,7 +38,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param quanity - quanity
 	 * @return found product objects
 	 */
-	List<ProductOrderPort> searchAllForQuanityGreater(Integer quanity);
+	List<ProductOrderPort> searchAllByBiggerQuanityThan(Integer quanity);
 	
 	/**
 	 * Method to search product which have more quanity than value.
@@ -46,6 +46,6 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param quanity - quanity
 	 * @return found product objects
 	 */
-	List<ProductOrderPort> searchAllForQuanityLower(Integer quanity);
+	List<ProductOrderPort> searchAllByLessQuanityThan(Integer quanity);
 	
 }

@@ -17,17 +17,17 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	private final BillOfSaleStorePort storage;
 	
 	@Override
-	public Optional<BillOfSalePort> searchForDescription(String description) {
+	public Optional<BillOfSalePort> searchByDescription(String description) {
 		return storage.findByDescription(BillOfSaleValidator.validateDescription(description));
 	}
 	
 	@Override
-	public List<BillOfSalePort> searchForBoughtDate(Instant boughtDate) {
+	public List<BillOfSalePort> searchAllByBoughtDate(Instant boughtDate) {
 		return storage.findByBoughtDate(BillOfSaleValidator.validateBoughtDate(boughtDate));
 	}
 	
 	@Override
-	public List<BillOfSalePort> searchAllForBoughtDateRange(Instant min, Instant max) {
+	public List<BillOfSalePort> searchAllByBoughtDateRange(Instant min, Instant max) {
 		if (min.isAfter(max)) {
 			throw new RuntimeException();
 		}
@@ -61,7 +61,7 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	public BillOfSalePort update(BillOfSalePort changes, String id) {
 		checkChangesInBillOfSale(changes);
 		
-		Optional<BillOfSalePort> originalObject = searchForId(id);
+		Optional<BillOfSalePort> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
 			throw invalidIdException();
 		}
@@ -70,12 +70,12 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	}
 	
 	@Override
-	public void deleteById(String id) {
+	public void removeById(String id) {
 		storage.deleteById(id);
 	}
 	
 	@Override
-	public Optional<BillOfSalePort> searchForId(String id) {
+	public Optional<BillOfSalePort> searchById(String id) {
 		return storage.findById(id);
 	}
 	
