@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -127,14 +128,14 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		assertThat(actualOrder).isEqualTo(expectedOrder);
 	}
 	
-	/*@Test
+	@Test
 	void updateByObject() {
 		// Given
 		ProductOrderPort expectedToChange = createProductOrder(null);
 		ProductOrderPort expectedOrder = createProductOrder();
 		expectedToChange.setQuanity(PRODUCT_QUANITY);
 		
-		when(storage.update(expectedToChange)).thenReturn(expectedOrder);
+		when(storage.save(expectedToChange)).thenReturn(expectedOrder);
 		
 		// When
 		ProductOrderPort actualOrder = service.update(expectedToChange);
@@ -152,7 +153,8 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		
 		ProductOrderPort expectedOrder = createProductOrder();
 		
-		when(storage.update(expectedToChange.getId(), expectedChanges)).thenReturn(expectedOrder);
+		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder));
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedOrder);
 		
 		// When
 		ProductOrderPort actualOrder = service.update(expectedChanges, expectedToChange.getId());
@@ -169,14 +171,14 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		expectedChanges.setQuanity(PRODUCT_QUANITY);
 		ProductOrderPort expectedOrder = createProductOrder();
 		
-		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedOrder);
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedOrder);
 		
 		// When
 		ProductOrderPort actualOrder = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder);
-	}*/
+	}
 	
 	@Test
 	void searchForId() {
@@ -217,15 +219,11 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		assertThat(actualOrderList).isEqualTo(expectedOrderList);
 		assertThat(actualOrderList.size()).isEqualTo(expectedOrderList.size());
 		assertThat(actualOrderList).containsExactlyInAnyOrder(expectedOrder_1, expectedOrder_2);
-		assertThat(
-			actualOrderList.stream()
-			               .mapToDouble(ProductOrderPort::summaryPrice)
-			               .sum()
-		).isEqualTo(
-			expectedOrderList.stream()
-			                 .mapToDouble(ProductOrderPort::summaryPrice)
-			                 .sum()
-		);
+		assertThat(actualOrderList.stream()
+		                          .mapToDouble(ProductOrderPort::summaryPrice)
+		                          .sum()).isEqualTo(expectedOrderList.stream()
+		                                                             .mapToDouble(ProductOrderPort::summaryPrice)
+		                                                             .sum());
 	}
 	
 }

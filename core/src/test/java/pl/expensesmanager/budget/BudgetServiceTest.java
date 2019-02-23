@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -113,7 +114,6 @@ class BudgetServiceTest extends AbstractCoreTest {
 	void create() {
 		// Given
 		BudgetPort expectedToAdd = createBudget();
-		
 		BudgetPort expectedBudget = createBudget();
 		
 		when(storage.save(expectedToAdd)).thenReturn(expectedBudget);
@@ -125,14 +125,13 @@ class BudgetServiceTest extends AbstractCoreTest {
 		assertThat(actualBudget).isEqualTo(expectedBudget);
 	}
 	
-	/*@Test
+	@Test
 	void updateByObject() {
 		// Given
 		BudgetPort expectedToChange = createBudget();
-		
 		BudgetPort expectedBudget = createBudget(500.5);
 		
-		when(storage.update(expectedToChange)).thenReturn(expectedBudget);
+		when(storage.save(expectedToChange)).thenReturn(expectedBudget);
 		
 		// When
 		BudgetPort actualBudget = service.update(expectedToChange);
@@ -145,10 +144,10 @@ class BudgetServiceTest extends AbstractCoreTest {
 	void updateById() {
 		// Given
 		BudgetPort expectedChanges = createBudget(500.5);
+		BudgetPort expectedBudget = createBudget();
 		
-		BudgetPort expectedBudget = createBudget(500.5);
-		
-		when(storage.update(ID, expectedChanges)).thenReturn(expectedBudget);
+		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget));
+		when(storage.save(MergeUtil.merge(expectedChanges, expectedChanges))).thenReturn(expectedBudget);
 		
 		// When
 		BudgetPort actualBudget = service.update(expectedChanges, ID);
@@ -161,19 +160,17 @@ class BudgetServiceTest extends AbstractCoreTest {
 	void updateOriginalAndChanges() {
 		// Given
 		BudgetPort expectedToChange = createBudget();
-		
 		BudgetPort expectedChanges = createBudget(500.5);
-		
 		BudgetPort expectedBudget = createBudget(500.5);
 		
-		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedBudget);
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedBudget);
 		
 		// When
 		BudgetPort actualBudget = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
-	}*/
+	}
 	
 	@Test
 	void searchForId() {

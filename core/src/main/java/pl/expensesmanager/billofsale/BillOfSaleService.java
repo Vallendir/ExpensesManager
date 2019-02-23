@@ -2,10 +2,13 @@ package pl.expensesmanager.billofsale;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+
+import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdException;
 
 @RequiredArgsConstructor
 @Service
@@ -40,26 +43,31 @@ class BillOfSaleService implements BillOfSaleServicePort {
 		return storage.save(object);
 	}
 	
-	/*@Override
+	@Override
 	public BillOfSalePort update(BillOfSalePort object) {
 		BillOfSaleValidator.validateBillOfSale(object);
 		
-		return storage.update(object);
+		return storage.save(object);
 	}
 	
 	@Override
 	public BillOfSalePort update(BillOfSalePort originalObject, BillOfSalePort changes) {
 		checkChangesInBillOfSale(changes);
 		
-		return storage.update(originalObject, changes);
+		return storage.save(MergeUtil.merge(originalObject, changes));
 	}
 	
 	@Override
 	public BillOfSalePort update(BillOfSalePort changes, String id) {
 		checkChangesInBillOfSale(changes);
 		
-		return storage.update(id, changes);
-	}*/
+		Optional<BillOfSalePort> originalObject = searchForId(id);
+		if (!originalObject.isPresent()) {
+			throw invalidIdException();
+		}
+		
+		return storage.save(MergeUtil.merge(originalObject.get(), changes));
+	}
 	
 	@Override
 	public void deleteById(String id) {

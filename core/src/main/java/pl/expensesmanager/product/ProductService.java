@@ -2,9 +2,12 @@ package pl.expensesmanager.product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
+
+import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,26 +46,31 @@ class ProductService implements ProductServicePort {
 		return storage.save(object);
 	}
 	
-	/*@Override
+	@Override
 	public ProductPort update(ProductPort object) {
 		ProductValidator.validateProduct(object);
 		
-		return storage.update(object);
+		return storage.save(object);
 	}
 	
 	@Override
 	public ProductPort update(ProductPort originalObject, ProductPort changes) {
 		checkChangesInProduct(changes);
 		
-		return storage.update(originalObject, changes);
+		return storage.save(MergeUtil.merge(originalObject, changes));
 	}
 	
 	@Override
 	public ProductPort update(ProductPort changes, String id) {
 		checkChangesInProduct(changes);
 		
-		return storage.update(id, changes);
-	}*/
+		Optional<ProductPort> originalObject = searchForId(id);
+		if (!originalObject.isPresent()) {
+			throw invalidIdException();
+		}
+		
+		return storage.save(MergeUtil.merge(originalObject.get(), changes));
+	}
 	
 	@Override
 	public void deleteById(String id) {

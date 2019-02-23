@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -107,13 +108,13 @@ class ProductServiceTest extends AbstractCoreTest {
 		assertThat(actualProduct).isEqualTo(expectedProduct_1);
 	}
 	
-	/*@Test
+	@Test
 	void updateByObject() {
 		// Given
 		ProductPort expectedToChange = createProduct(null);
 		ProductPort expectedProduct_1 = createProduct(expectedToChange, PRODUCT_PRICE);
 		
-		when(storage.update(expectedToChange)).thenReturn(expectedProduct_1);
+		when(storage.save(expectedToChange)).thenReturn(expectedProduct_1);
 		
 		// When
 		ProductPort actualProduct = service.update(expectedToChange);
@@ -129,7 +130,8 @@ class ProductServiceTest extends AbstractCoreTest {
 		ProductPort expectedChanges = createProduct(expectedToChange, PRICE_MIN);
 		ProductPort expectedProduct = createProduct(PRICE_MIN);
 		
-		when(storage.update(expectedToChange.getId(), expectedChanges)).thenReturn(expectedProduct);
+		when(storage.findById(ID)).thenReturn(Optional.of(expectedProduct));
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedProduct);
 		
 		// When
 		ProductPort actualProduct = service.update(expectedChanges, expectedToChange.getId());
@@ -145,14 +147,14 @@ class ProductServiceTest extends AbstractCoreTest {
 		ProductPort expectedChanges = createProduct(expectedToChange, PRICE_MAX);
 		ProductPort expectedProduct = createProduct(PRICE_MAX);
 		
-		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedProduct);
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedProduct);
 		
 		// When
 		ProductPort actualProduct = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
-	}*/
+	}
 	
 	@Test
 	void searchForId() {

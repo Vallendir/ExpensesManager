@@ -2,9 +2,12 @@ package pl.expensesmanager.budget;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
+
+import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdException;
 
 @RequiredArgsConstructor
 @Service
@@ -49,26 +52,31 @@ class BudgetService implements BudgetServicePort {
 		return storage.save(object);
 	}
 	
-	/*@Override
+	@Override
 	public BudgetPort update(BudgetPort object) {
 		BudgetValidator.validateBudget(object);
 		
-		return storage.update(object);
+		return storage.save(object);
 	}
 	
 	@Override
 	public BudgetPort update(BudgetPort originalObject, BudgetPort changes) {
 		checkChangesInBudget(changes);
 		
-		return storage.update(originalObject, changes);
+		return storage.save(MergeUtil.merge(originalObject, changes));
 	}
 	
 	@Override
 	public BudgetPort update(BudgetPort changes, String id) {
 		checkChangesInBudget(changes);
 		
-		return storage.update(id, changes);
-	}*/
+		Optional<BudgetPort> originalObject = searchForId(id);
+		if (!originalObject.isPresent()) {
+			throw invalidIdException();
+		}
+		
+		return storage.save(MergeUtil.merge(originalObject.get(), changes));
+	}
 	
 	@Override
 	public void deleteById(String id) {

@@ -15,6 +15,8 @@ public final class ValidationExceptionFactory {
 	@UtilityClass
 	public static final class ErrorCode {
 		
+		public static final String INVALID_ID = code("id.invalid");
+		
 		public static final String TEXT_BLANK = code("text.blank");
 		
 		public static final String NUMBER_NAN = code("number.nan");
@@ -52,6 +54,8 @@ public final class ValidationExceptionFactory {
 	@UtilityClass
 	public static final class ExceptionMessage {
 		
+		public static final String INVALID_ID = "Passed id is invalid.";
+		
 		public static final String TEXT_BLANK = "Text cannot be blank.";
 		
 		public static final String NUMBER_NAN = "Value is not a number.";
@@ -84,6 +88,10 @@ public final class ValidationExceptionFactory {
 			return type + " cannot be null.";
 		}
 		
+	}
+	
+	public static ValidationException invalidIdException() {
+		throw new ValidateTextException(ExceptionMessage.INVALID_ID, ErrorCode.INVALID_ID);
 	}
 	
 	public static ValidationException blankTextException() {

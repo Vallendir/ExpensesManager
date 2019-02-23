@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.time.Instant;
 import java.util.List;
@@ -92,7 +93,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
 	}
 	
-	/*@Test
+	@Test
 	void updateByObject() {
 		// Given
 		BillOfSalePort expectedToChange = new BillOfSale();
@@ -103,7 +104,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		
 		expectedToChange.setBoughtDate(BOUGHT_DATE);
 		
-		when(storage.update(expectedToChange)).thenReturn(expectedBillOfSaleList);
+		when(storage.save(expectedToChange)).thenReturn(expectedBillOfSaleList);
 		
 		// When
 		BillOfSalePort actualBillOfSaleList = service.update(expectedToChange);
@@ -118,13 +119,15 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		BillOfSalePort expectedToChange = new BillOfSale();
 		expectedToChange.setId(ID);
 		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
+		expectedToChange.setProductList(List.of(createProductOrder()));
 		
 		BillOfSalePort expectedChanges = new BillOfSale();
 		expectedChanges.setBoughtDate(BOUGHT_DATE);
 		
 		BillOfSalePort expectedBillOfSaleList = createBillOfSale();
 		
-		when(storage.update(ID, expectedChanges)).thenReturn(expectedBillOfSaleList);
+		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSaleList));
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedBillOfSaleList);
 		
 		// When
 		BillOfSalePort actualBillOfSaleList = service.update(expectedChanges, ID);
@@ -144,14 +147,14 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		
 		BillOfSalePort expectedBillOfSaleList = createBillOfSale();
 		
-		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedBillOfSaleList);
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedBillOfSaleList);
 		
 		// When
 		BillOfSalePort actualBillOfSaleList = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
-	}*/
+	}
 	
 	@Test
 	void searchForId() {
@@ -193,15 +196,11 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
 		assertThat(actualBillOfSaleList.size()).isEqualTo(expectedBillOfSaleList.size());
 		assertThat(actualBillOfSaleList).containsExactlyInAnyOrder(expectedBillOfSale_1, expectedBillOfSale_2);
-		assertThat(
-			actualBillOfSaleList.stream()
-			               .mapToDouble(BillOfSalePort::finalPrice)
-			               .sum()
-		).isEqualTo(
-			expectedBillOfSaleList.stream()
-			                 .mapToDouble(BillOfSalePort::finalPrice)
-			                 .sum()
-		);
+		assertThat(actualBillOfSaleList.stream()
+		                               .mapToDouble(BillOfSalePort::finalPrice)
+		                               .sum()).isEqualTo(expectedBillOfSaleList.stream()
+		                                                                       .mapToDouble(BillOfSalePort::finalPrice)
+		                                                                       .sum());
 	}
 	
 }
