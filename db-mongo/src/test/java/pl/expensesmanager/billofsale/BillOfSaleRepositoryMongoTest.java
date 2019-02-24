@@ -1,4 +1,3 @@
-/*
 package pl.expensesmanager.billofsale;
 
 import org.junit.jupiter.api.Test;
@@ -25,13 +24,13 @@ class BillOfSaleRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByDescription() {
 		// Given
-		BillOfSale expectedBillOfSale_1 = createBillOfSale();
+		BillOfSaleDocument expectedBillOfSale_1 = createBillOfSale();
 		
 		when(storage.findByDescription(BILL_OF_SALE_DESCRIPTION)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSale actualBillOfSale = storage.findByDescription(BILL_OF_SALE_DESCRIPTION)
-		                                         .get();
+		BillOfSaleDocument actualBillOfSale = storage.findByDescription(BILL_OF_SALE_DESCRIPTION)
+		                                             .get();
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale_1);
@@ -40,15 +39,15 @@ class BillOfSaleRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByBoughtDate() {
 		// Given
-		BillOfSale expectedBillOfSale_1 = createBillOfSale();
-		BillOfSale expectedBillOfSale_2 = createBillOfSale();
+		BillOfSaleDocument expectedBillOfSale_1 = createBillOfSale();
+		BillOfSaleDocument expectedBillOfSale_2 = createBillOfSale();
 		
-		List<BillOfSale> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
+		List<BillOfSaleDocument> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
 		
 		when(storage.findByBoughtDate(BOUGHT_DATE)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSale> actualBillOfSaleList = storage.findByBoughtDate(BOUGHT_DATE);
+		List<BillOfSaleDocument> actualBillOfSaleList = storage.findByBoughtDate(BOUGHT_DATE);
 		
 		// Then
 		billOfSaleListAssertions(
@@ -58,15 +57,15 @@ class BillOfSaleRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByBoughtDateBetween() {
 		// Given
-		BillOfSale expectedBillOfSale_1 = createBillOfSale();
-		BillOfSale expectedBillOfSale_2 = createBillOfSale();
+		BillOfSaleDocument expectedBillOfSale_1 = createBillOfSale();
+		BillOfSaleDocument expectedBillOfSale_2 = createBillOfSale();
 		
-		List<BillOfSale> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
+		List<BillOfSaleDocument> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
 		
 		when(storage.findByBoughtDateBetween(BOUGHT_DATE, BOUGHT_DATE_MAX)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSale> actualBillOfSaleList = storage.findByBoughtDateBetween(BOUGHT_DATE, BOUGHT_DATE_MAX);
+		List<BillOfSaleDocument> actualBillOfSaleList = storage.findByBoughtDateBetween(BOUGHT_DATE, BOUGHT_DATE_MAX);
 		
 		// Then
 		billOfSaleListAssertions(
@@ -76,14 +75,14 @@ class BillOfSaleRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void add() {
 		// Given
-		BillOfSale expectedToAdd = createBillOfSale();
+		BillOfSaleDocument expectedToAdd = createBillOfSale();
 		
-		BillOfSale expectedBillOfSale = createBillOfSale();
+		BillOfSaleDocument expectedBillOfSale = createBillOfSale();
 		
 		when(storage.save(expectedToAdd)).thenReturn(expectedBillOfSale);
 		
 		// When
-		BillOfSale actualBillOfSale = storage.save(expectedToAdd);
+		BillOfSaleDocument actualBillOfSale = storage.save(expectedToAdd);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale);
@@ -92,13 +91,13 @@ class BillOfSaleRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findById() {
 		// Given
-		BillOfSale expectedBillOfSale_1 = createBillOfSale();
+		BillOfSaleDocument expectedBillOfSale_1 = createBillOfSale();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSale actualBillOfSale = storage.findById(ID)
-		                                         .get();
+		BillOfSaleDocument actualBillOfSale = storage.findById(ID)
+		                                             .get();
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale_1);
@@ -107,15 +106,15 @@ class BillOfSaleRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findAll() {
 		// Given
-		BillOfSale expectedBillOfSale_1 = createBillOfSale();
-		BillOfSale expectedBillOfSale_2 = createBillOfSale();
+		BillOfSaleDocument expectedBillOfSale_1 = createBillOfSale();
+		BillOfSaleDocument expectedBillOfSale_2 = createBillOfSale();
 		
-		List<BillOfSale> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
+		List<BillOfSaleDocument> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
 		
 		when(storage.findAll()).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSale> actualBillOfSaleList = storage.findAll();
+		List<BillOfSaleDocument> actualBillOfSaleList = storage.findAll();
 		
 		// Then
 		billOfSaleListAssertions(
@@ -123,17 +122,12 @@ class BillOfSaleRepositoryMongoTest extends AbstractMongoDBTest {
 	}
 	
 	private void billOfSaleListAssertions(
-		List<BillOfSale> actualBillOfSaleList, List<BillOfSale> expectedBillOfSaleList,
-		BillOfSale expectedBillOfSale_1, BillOfSale expectedBillOfSale_2
+		List<BillOfSaleDocument> actualBillOfSaleList, List<BillOfSaleDocument> expectedBillOfSaleList,
+		BillOfSaleDocument expectedBillOfSale_1, BillOfSaleDocument expectedBillOfSale_2
 	) {
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
 		assertThat(actualBillOfSaleList.size()).isEqualTo(expectedBillOfSaleList.size());
 		assertThat(actualBillOfSaleList).containsExactlyInAnyOrder(expectedBillOfSale_1, expectedBillOfSale_2);
-		assertThat(actualBillOfSaleList.stream()
-		                               .mapToDouble(BillOfSale::finalPrice)
-		                               .sum()).isEqualTo(expectedBillOfSaleList.stream()
-		                                                                       .mapToDouble(BillOfSale::finalPrice)
-		                                                                       .sum());
 	}
 	
-}*/
+}

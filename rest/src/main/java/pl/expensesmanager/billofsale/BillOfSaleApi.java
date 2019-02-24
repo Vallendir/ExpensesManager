@@ -10,11 +10,11 @@ interface BillOfSaleApi {
 	@PostMapping(value = "/billofsales")
 	BillOfSale add(@RequestBody BillOfSale billOfSale);
 	
-	/*@PutMapping(value = "/billofsales")
+	@PutMapping(value = "/billofsales")
 	BillOfSale update(@RequestBody BillOfSale billOfSale);
 	
 	@PutMapping(value = "/billofsales/{id}")
-	BillOfSale update(@PathVariable("id") String id, @RequestBody BillOfSale billOfSale);*/
+	BillOfSale update(@PathVariable("id") String id, @RequestBody BillOfSale billOfSale);
 	
 	@DeleteMapping(value = "/billofsales/{id}")
 	void delete(@PathVariable("id") String id);
@@ -25,12 +25,13 @@ interface BillOfSaleApi {
 	@GetMapping(value = "/billofsales", params = "description")
 	BillOfSale searchForDescription(@RequestParam(value = "description") String description);
 	
-	@GetMapping(value = "/billofsales", params = "bought-date")
-	List<BillOfSale> searchForBoughtDate(@RequestParam(value = "bought-date") Instant boughtDate);
+	@GetMapping(value = "/billofsales", params = "boughtDate")
+	List<BillOfSale> searchForBoughtDate(@RequestParam(value = "boughtDate") Instant boughtDate);
 	
-	@GetMapping(value = "/billofsales", params = { "bought-date-min", "bought-date-max" })
+	@GetMapping(value = "/billofsales", params = { "boughtDateMin", "boughtDateMax" })
 	List<BillOfSale> searchAllForBoughtDateRange(
-		@RequestParam(value = "bought-date-min") Instant min, @RequestParam(value = "bought-date-max") Instant max
+		@RequestParam(value = "boughtDateMin") Instant boughtDateMin,
+		@RequestParam(value = "boughtDateMax") Instant boughtDateMax
 	);
 	
 }

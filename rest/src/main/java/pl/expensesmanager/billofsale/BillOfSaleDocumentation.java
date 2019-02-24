@@ -17,7 +17,7 @@ public interface BillOfSaleDocumentation {
 		@ApiParam(value = "BillOfSale object which will be created.", required = true) BillOfSale billOfSale
 	);
 	
-	/*@ApiOperation(value = "PUT-endpoint to update BillOfSale.", nickname = "update", notes = "Method allow to update a bill of sale.", tags = {
+	@ApiOperation(value = "PUT-endpoint to update BillOfSale.", nickname = "update", notes = "Method allow to update a bill of sale.", tags = {
 		"BillOfSale",
 	})
 	BillOfSale update(
@@ -30,7 +30,7 @@ public interface BillOfSaleDocumentation {
 	BillOfSale update(
 		@ApiParam(value = "ID of BillOfSale to update.", required = true) String id,
 		@ApiParam(value = "BillOfSale object changes to update.", required = true) BillOfSale billOfSale
-	);*/
+	);
 	
 	@ApiOperation(value = "DELETE-endpoint to removeById BillOfSale.", nickname = "removeById", notes = "Method allow to removeById a bill of sale.", tags = {
 		"BillOfSale",
@@ -60,8 +60,8 @@ public interface BillOfSaleDocumentation {
 		"BillOfSale",
 	})
 	List<BillOfSale> searchAllForBoughtDateRange(
-		@ApiParam(value = "Start bought date.", required = true) Instant min,
-		@ApiParam(value = "End bought date.", required = true) Instant max
+		@ApiParam(value = "Start bought date.", required = true) Instant boughtDateMin,
+		@ApiParam(value = "End bought date.", required = true) Instant boughtDateMax
 	);
 	
 }

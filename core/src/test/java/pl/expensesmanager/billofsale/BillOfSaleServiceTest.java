@@ -1,5 +1,6 @@
 package pl.expensesmanager.billofsale;
 
+import org.assertj.core.api.ThrowableAssert;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -127,6 +129,20 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		
 		// Then
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
+	}
+	
+	@Test
+	void checkIfNotUpdatedThrowException() {
+		// When
+		when(storage.save(any())).thenReturn(null);
+		
+		ThrowableAssert.ThrowingCallable throwable = () -> service.update(createBillOfSale());
+		
+		// Then
+		assertThatThrownByNotUpdatedException(throwable,
+		                                      BusinessLogicExceptionFactory.ExceptionMessage.BILL_OF_SALE_NOT_UPDATED,
+		                                      BusinessLogicExceptionFactory.ErrorCode.BILL_OF_SALE_NOT_UPDATED
+		);
 	}
 	
 	@Test

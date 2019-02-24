@@ -32,9 +32,7 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 	
 	public ProductOrder searchForId(String id) {
 		Optional<ProductOrder> order = service.searchById(id);
-		if (!order.isPresent()) {
-			throw productOrderNotFoundException();
-		}
+		checkIfProductOrderWasFound(order);
 		
 		return order.get();
 	}
@@ -59,11 +57,15 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 	@Override
 	public ProductOrder searchAllForProductNameAndProductPrice(String productName, Double productPrice) {
 		Optional<ProductOrder> order = service.searchAllByProductNameAndProductPrice(productName, productPrice);
+		checkIfProductOrderWasFound(order);
+		
+		return order.get();
+	}
+	
+	private void checkIfProductOrderWasFound(Optional<ProductOrder> order) {
 		if (!order.isPresent()) {
 			throw productOrderNotFoundException();
 		}
-		
-		return order.get();
 	}
 	
 }

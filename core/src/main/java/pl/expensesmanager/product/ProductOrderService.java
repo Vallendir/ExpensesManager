@@ -8,8 +8,7 @@ import pl.expensesmanager.util.MergeUtil;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.minBiggerThanMaxException;
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.productOrderNotFoundException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
 
 @Service
 @RequiredArgsConstructor
@@ -59,14 +58,20 @@ class ProductOrderService implements ProductOrderServicePort {
 	public ProductOrder update(ProductOrder object) {
 		ProductValidator.validateOrder(object);
 		
-		return storage.save(object);
+		ProductOrder order = storage.save(object);
+		checkIfProductOrderWasUpdated(order);
+		
+		return order;
 	}
 	
 	@Override
 	public ProductOrder update(ProductOrder originalObject, ProductOrder changes) {
 		checkChangesInOrder(changes);
 		
-		return storage.save(MergeUtil.merge(originalObject, changes));
+		ProductOrder order = storage.save(MergeUtil.merge(originalObject, changes));
+		checkIfProductOrderWasUpdated(order);
+		
+		return order;
 	}
 	
 	@Override
@@ -79,7 +84,10 @@ class ProductOrderService implements ProductOrderServicePort {
 			throw productOrderNotFoundException();
 		}
 		
-		return storage.save(MergeUtil.merge(originalObject.get(), changes));
+		ProductOrder order = storage.save(MergeUtil.merge(originalObject.get(), changes));
+		checkIfProductOrderWasUpdated(order);
+		
+		return order;
 	}
 	
 	@Override
@@ -106,6 +114,12 @@ class ProductOrderService implements ProductOrderServicePort {
 		
 		if (changes.getProduct() != null) {
 			ProductValidator.validateProduct(changes.getProduct());
+		}
+	}
+	
+	private void checkIfProductOrderWasUpdated(ProductOrder order) {
+		if (order == null) {
+			throw productOrderNotUpdatedException();
 		}
 	}
 	

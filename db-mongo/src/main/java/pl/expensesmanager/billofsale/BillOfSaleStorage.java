@@ -1,14 +1,16 @@
 package pl.expensesmanager.billofsale;
 
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import pl.expensesmanager.base.BaseMongoStorage;
+import pl.expensesmanager.product.ProductOrder;
+import pl.expensesmanager.product.ProductOrderStorage;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -17,24 +19,55 @@ public class BillOfSaleStorage extends BaseMongoStorage implements BillOfSaleSto
 	
 	private final BillOfSaleRepositoryMongo repository;
 	
+	private final ProductOrderStorage orderStorage;
+	
 	@Override
 	public Optional<BillOfSale> findByDescription(String description) {
-		return null;
+		return repository.findByDescription(description)
+		                 .map(this::map);
 	}
 	
 	@Override
 	public List<BillOfSale> findByBoughtDate(Instant boughtDate) {
-		return null;
+		return repository.findByBoughtDate(boughtDate)
+		                 .stream()
+		                 .map(this::map)
+		                 .collect(Collectors.toList());
 	}
 	
 	@Override
 	public List<BillOfSale> findByBoughtDateBetween(Instant min, Instant max) {
-		return null;
+		return repository.findByBoughtDateBetween(min, max)
+		                 .stream()
+		                 .map(this::map)
+		                 .collect(Collectors.toList());
+	}
+	
+	@Override
+	public Optional<BillOfSale> findById(String id) {
+		return repository.findById(id)
+		                 .map(this::map);
 	}
 	
 	@Override
 	public BillOfSale save(BillOfSale object) {
-		return null;
+		object.getProductList()
+		      .forEach(order -> {
+			      if (order.getId() == null) {
+				      ProductOrder ifNoId = orderStorage.save(order);
+				
+				      order.setId(ifNoId.getId());
+			      } else {
+				      Optional<ProductOrder> ifExists = orderStorage.findById(order.getId());
+				      if (!ifExists.isPresent()) {
+					      ProductOrder existed = orderStorage.save(order);
+					
+					      order.setId(existed.getId());
+				      }
+			      }
+		      });
+		
+		return map(repository.save(map(object)));
 	}
 	
 	@Override
@@ -43,18 +76,11 @@ public class BillOfSaleStorage extends BaseMongoStorage implements BillOfSaleSto
 	}
 	
 	@Override
-	public Optional<BillOfSale> findById(String id) {
-		return null;
-	}
-	
-	@Override
 	public List<BillOfSale> findAll() {
-		return null;
-	}
-	
-	@Override
-	public boolean isValid(String id) {
-		return ObjectId.isValid(id);
+		return repository.findAll()
+		                 .stream()
+		                 .map(this::map)
+		                 .collect(Collectors.toList());
 	}
 	
 }

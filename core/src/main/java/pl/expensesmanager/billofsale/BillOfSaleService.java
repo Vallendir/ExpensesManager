@@ -9,8 +9,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.billOfSaleNotFoundException;
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.minBiggerThanMaxException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
 
 @RequiredArgsConstructor
 @Service
@@ -49,14 +48,20 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	public BillOfSale update(BillOfSale object) {
 		BillOfSaleValidator.validateBillOfSale(object);
 		
-		return storage.save(object);
+		BillOfSale billOfSale = storage.save(object);
+		checkIfBillOfSaleWasUpdated(billOfSale);
+		
+		return billOfSale;
 	}
 	
 	@Override
 	public BillOfSale update(BillOfSale originalObject, BillOfSale changes) {
 		checkChangesInBillOfSale(changes);
 		
-		return storage.save(MergeUtil.merge(originalObject, changes));
+		BillOfSale billOfSale = storage.save(MergeUtil.merge(originalObject, changes));
+		checkIfBillOfSaleWasUpdated(billOfSale);
+		
+		return billOfSale;
 	}
 	
 	@Override
@@ -69,7 +74,10 @@ class BillOfSaleService implements BillOfSaleServicePort {
 			throw billOfSaleNotFoundException();
 		}
 		
-		return storage.save(MergeUtil.merge(originalObject.get(), changes));
+		BillOfSale billOfSale = storage.save(MergeUtil.merge(originalObject.get(), changes));
+		checkIfBillOfSaleWasUpdated(billOfSale);
+		
+		return billOfSale;
 	}
 	
 	@Override
@@ -96,6 +104,12 @@ class BillOfSaleService implements BillOfSaleServicePort {
 		
 		if (changes.getBoughtDate() != null) {
 			BillOfSaleValidator.validateBoughtDate(changes.getBoughtDate());
+		}
+	}
+	
+	private void checkIfBillOfSaleWasUpdated(BillOfSale billOfSale) {
+		if (billOfSale == null) {
+			throw billOfSaleNotUpdatedException();
 		}
 	}
 	

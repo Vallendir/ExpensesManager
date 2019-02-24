@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.billOfSaleNotFoundException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,26 +21,30 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 		return service.create(billOfSale);
 	}
 	
-	/*public BillOfSale update(BillOfSale billOfSale) {
-		return (BillOfSale) service.update(billOfSale);
+	public BillOfSale update(BillOfSale billOfSale) {
+		return service.update(billOfSale);
 	}
 	
 	public BillOfSale update(String id, BillOfSale billOfSale) {
 		return service.update(billOfSale, id);
-	}*/
+	}
 	
 	public void delete(String id) {
 		service.removeById(id);
 	}
 	
 	public BillOfSale searchForId(String id) {
-		// FIXME
-		return service.searchById(id).get();
+		Optional<BillOfSale> billOfSale = service.searchById(id);
+		checkIfBillOfSaleNotFound(billOfSale);
+		
+		return billOfSale.get();
 	}
 	
 	public BillOfSale searchForDescription(String description) {
-		// FIXME
-		return service.searchByDescription(description).get();
+		Optional<BillOfSale> billOfSale = service.searchByDescription(description);
+		checkIfBillOfSaleNotFound(billOfSale);
+		
+		return billOfSale.get();
 	}
 	
 	public List<BillOfSale> searchForBoughtDate(Instant boughtDate) {
@@ -46,6 +53,12 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	
 	public List<BillOfSale> searchAllForBoughtDateRange(Instant min, Instant max) {
 		return service.searchAllByBoughtDateRange(min, max);
+	}
+	
+	private void checkIfBillOfSaleNotFound(Optional<BillOfSale> billOfSale) {
+		if (!billOfSale.isPresent()) {
+			throw billOfSaleNotFoundException();
+		}
 	}
 	
 }
