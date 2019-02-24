@@ -4,51 +4,55 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.productNotFoundException;
 
 @RequiredArgsConstructor
 @RestController
 class ProductController implements ProductApi, ProductDocumentation {
 	
-	private final ProductService service;
+	private final ProductServicePort service;
 	
-	public ProductPort add(Product product) {
+	public Product add(Product product) {
 		return service.create(product);
 	}
 	
-	public ProductPort update(Product product) {
+	public Product update(Product product) {
 		return service.update(product);
 	}
 	
-	public ProductPort update(String id, Product product) {
+	public Product update(String id, Product product) {
 		return service.update(product, id);
 	}
 	
 	public void delete(String id) {
-		service.delete(id);
+		service.removeById(id);
 	}
 	
-	public ProductPort searchForId(String id) {
-		// FIXME
-		return service.searchForId(id)
-		              .get();
+	public Product searchForId(String id) {
+		Optional<Product> product = service.searchById(id);
+		if (!product.isPresent()) {
+			throw productNotFoundException();
+		}
+		
+		return product.get();
 	}
 	
-	public ProductPort searchForName(String name) {
-		// FIXME
-		return service.searchForName(name)
-		              .get();
+	public List<Product> searchForName(String name) {
+		return service.searchByName(name);
 	}
 	
-	public List<ProductPort> searchAllForPriceRange(Double min, Double max) {
-		return service.searchAllForPriceRange(min, max);
+	public List<Product> searchAllForPriceRange(Double priceMin, Double priceMax) {
+		return service.searchAllByPriceRange(priceMin, priceMax);
 	}
 	
-	public List<ProductPort> searchAllForPriceGreater(Double price) {
-		return service.searchAllForPriceGreater(price);
+	public List<Product> searchAllForPriceGreater(Double priceBigger) {
+		return service.searchAllExpensiveThan(priceBigger);
 	}
 	
-	public List<ProductPort> searchAllForPriceLower(Double price) {
-		return service.searchAllForPriceLower(price);
+	public List<Product> searchAllForPriceLower(Double priceLower) {
+		return service.searchAllCheaperThan(priceLower);
 	}
 	
 }

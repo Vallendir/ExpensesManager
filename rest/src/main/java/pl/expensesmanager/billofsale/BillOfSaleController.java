@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.billOfSaleNotFoundException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -14,38 +17,48 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	
 	private final BillOfSaleService service;
 	
-	public BillOfSalePort add(BillOfSale billOfSale) {
+	public BillOfSale add(BillOfSale billOfSale) {
 		return service.create(billOfSale);
 	}
 	
 	public BillOfSale update(BillOfSale billOfSale) {
-		return (BillOfSale) service.update(billOfSale);
+		return service.update(billOfSale);
 	}
 	
-	public BillOfSalePort update(String id, BillOfSale billOfSale) {
+	public BillOfSale update(String id, BillOfSale billOfSale) {
 		return service.update(billOfSale, id);
 	}
 	
 	public void delete(String id) {
-		service.delete(id);
+		service.removeById(id);
 	}
 	
-	public BillOfSalePort searchForId(String id) {
-		// FIXME
-		return service.searchForId(id).get();
+	public BillOfSale searchForId(String id) {
+		Optional<BillOfSale> billOfSale = service.searchById(id);
+		checkIfBillOfSaleNotFound(billOfSale);
+		
+		return billOfSale.get();
 	}
 	
-	public BillOfSalePort searchForDescription(String description) {
-		// FIXME
-		return service.searchForDescription(description).get();
+	public BillOfSale searchForDescription(String description) {
+		Optional<BillOfSale> billOfSale = service.searchByDescription(description);
+		checkIfBillOfSaleNotFound(billOfSale);
+		
+		return billOfSale.get();
 	}
 	
-	public List<BillOfSalePort> searchForBoughtDate(Instant boughtDate) {
-		return service.searchForBoughtDate(boughtDate);
+	public List<BillOfSale> searchForBoughtDate(Instant boughtDate) {
+		return service.searchAllByBoughtDate(boughtDate);
 	}
 	
-	public List<BillOfSalePort> searchAllForBoughtDateRange(Instant min, Instant max) {
-		return service.searchAllForBoughtDateRange(min, max);
+	public List<BillOfSale> searchAllForBoughtDateRange(Instant min, Instant max) {
+		return service.searchAllByBoughtDateRange(min, max);
+	}
+	
+	private void checkIfBillOfSaleNotFound(Optional<BillOfSale> billOfSale) {
+		if (!billOfSale.isPresent()) {
+			throw billOfSaleNotFoundException();
+		}
 	}
 	
 }

@@ -1,7 +1,8 @@
 package pl.expensesmanager.budget;
 
 import lombok.*;
-import pl.expensesmanager.billofsale.BillOfSalePort;
+import pl.expensesmanager.base.BaseModel;
+import pl.expensesmanager.billofsale.BillOfSale;
 
 import java.util.List;
 
@@ -13,23 +14,31 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Budget extends BudgetPort.BaseModel implements BudgetPort {
+public class Budget extends BaseModel {
 	
 	private String name;
 	
 	private Double budgetValue;
 	
-	private List<BillOfSalePort> billsOfSaleList;
+	private List<BillOfSale> billsOfSaleList;
 	
-	@Override
+	/**
+	 * Method to get the budget spent.
+	 *
+	 * @return budget spent
+	 */
 	public Double budgetSpent() {
 		return billsOfSaleList.stream()
-		                      .mapToDouble(BillOfSalePort::finalPrice)
+		                      .mapToDouble(BillOfSale::finalPrice)
 		                      .summaryStatistics()
 		                      .getSum();
 	}
 	
-	@Override
+	/**
+	 * Method to get the budget left.
+	 *
+	 * @return budget left
+	 */
 	public Double budgetLeft() {
 		return budgetValue - budgetSpent();
 	}

@@ -1,7 +1,7 @@
 rootProject.name = 'ExpensesManager'
 
 include 'core'
-include 'db-in-memory'
 include 'app-rest'
 include 'rest'
 include 'exception'
+include 'db-mongo'

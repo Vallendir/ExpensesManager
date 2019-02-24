@@ -1,17 +1,23 @@
 package pl.expensesmanager.billofsale;
 
+import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
+import pl.expensesmanager.exception.ValidationExceptionFactory;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,13 +34,13 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	@Test
 	void searchForDescription() {
 		// Given
-		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
+		BillOfSale expectedBillOfSale_1 = createBillOfSale();
 		
 		when(storage.findByDescription(BILL_OF_SALE_DESCRIPTION)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSalePort actualBillOfSale = service.searchForDescription(BILL_OF_SALE_DESCRIPTION)
-		                                         .get();
+		BillOfSale actualBillOfSale = service.searchByDescription(BILL_OF_SALE_DESCRIPTION)
+		                                     .get();
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale_1);
@@ -43,15 +49,15 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	@Test
 	void searchForBoughtDate() {
 		// Given
-		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
-		BillOfSalePort expectedBillOfSale_2 = createBillOfSale();
+		BillOfSale expectedBillOfSale_1 = createBillOfSale();
+		BillOfSale expectedBillOfSale_2 = createBillOfSale();
 		
-		List<BillOfSalePort> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
+		List<BillOfSale> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
 		
 		when(storage.findByBoughtDate(BOUGHT_DATE)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSalePort> actualBillOfSaleList = service.searchForBoughtDate(BOUGHT_DATE);
+		List<BillOfSale> actualBillOfSaleList = service.searchAllByBoughtDate(BOUGHT_DATE);
 		
 		// Then
 		billOfSaleListAssertions(
@@ -61,15 +67,15 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForBoughtDateRange() {
 		// Given
-		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
-		BillOfSalePort expectedBillOfSale_2 = createBillOfSale();
+		BillOfSale expectedBillOfSale_1 = createBillOfSale();
+		BillOfSale expectedBillOfSale_2 = createBillOfSale();
 		
-		List<BillOfSalePort> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
+		List<BillOfSale> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
 		
 		when(storage.findByBoughtDateBetween(BOUGHT_DATE, BOUGHT_DATE_MAX)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSalePort> actualBillOfSaleList = service.searchAllForBoughtDateRange(BOUGHT_DATE, BOUGHT_DATE_MAX);
+		List<BillOfSale> actualBillOfSaleList = service.searchAllByBoughtDateRange(BOUGHT_DATE, BOUGHT_DATE_MAX);
 		
 		// Then
 		billOfSaleListAssertions(
@@ -77,16 +83,29 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	}
 	
 	@Test
+	void searchAllForBoughtDateRange_throwMinIsBiggerThanMax() {
+		// Then
+		ThrowingCallable throwable = () -> service.searchAllByBoughtDateRange(
+			BOUGHT_DATE_MAX.plusMillis(56456465), BOUGHT_DATE);
+		
+		// Then
+		assertThatThrownByPassedValueIsInvalidException(throwable,
+		                                                BusinessLogicExceptionFactory.ExceptionMessage.MIN_BIGGER_THAN_MAX,
+		                                                BusinessLogicExceptionFactory.ErrorCode.MIN_BIGGER_THAN_MAX
+		);
+	}
+	
+	@Test
 	void create() {
 		// Given
-		BillOfSalePort expectedToAdd = createBillOfSale();
+		BillOfSale expectedToAdd = createBillOfSale();
 		
-		BillOfSalePort expectedBillOfSaleList = createBillOfSale();
+		BillOfSale expectedBillOfSaleList = createBillOfSale();
 		
-		when(storage.add(expectedToAdd)).thenReturn(expectedBillOfSaleList);
+		when(storage.save(expectedToAdd)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		BillOfSalePort actualBillOfSaleList = service.create(expectedToAdd);
+		BillOfSale actualBillOfSaleList = service.create(expectedToAdd);
 		
 		// Then
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
@@ -95,86 +114,123 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	@Test
 	void updateByObject() {
 		// Given
-		BillOfSalePort expectedToChange = new BillOfSale();
+		BillOfSale expectedToChange = new BillOfSale();
 		expectedToChange.setId(ID);
 		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
 		
-		BillOfSalePort expectedBillOfSaleList = createBillOfSale();
+		BillOfSale expectedBillOfSaleList = createBillOfSale();
 		
 		expectedToChange.setBoughtDate(BOUGHT_DATE);
 		
-		when(storage.update(expectedToChange)).thenReturn(expectedBillOfSaleList);
+		when(storage.save(expectedToChange)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		BillOfSalePort actualBillOfSaleList = service.update(expectedToChange);
+		BillOfSale actualBillOfSaleList = service.update(expectedToChange);
 		
 		// Then
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
+	}
+	
+	@Test
+	void checkIfNotUpdatedThrowException() {
+		// When
+		when(storage.save(any())).thenReturn(null);
+		
+		ThrowableAssert.ThrowingCallable throwable = () -> service.update(createBillOfSale());
+		
+		// Then
+		assertThatThrownByNotUpdatedException(throwable,
+		                                      BusinessLogicExceptionFactory.ExceptionMessage.BILL_OF_SALE_NOT_UPDATED,
+		                                      BusinessLogicExceptionFactory.ErrorCode.BILL_OF_SALE_NOT_UPDATED
+		);
 	}
 	
 	@Test
 	void updateById() {
 		// Given
-		BillOfSalePort expectedToChange = new BillOfSale();
+		BillOfSale expectedToChange = new BillOfSale();
 		expectedToChange.setId(ID);
 		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
+		expectedToChange.setProductList(List.of(createProductOrder()));
 		
-		BillOfSalePort expectedChanges = new BillOfSale();
+		BillOfSale expectedChanges = new BillOfSale();
 		expectedChanges.setBoughtDate(BOUGHT_DATE);
 		
-		BillOfSalePort expectedBillOfSaleList = createBillOfSale();
+		BillOfSale expectedBillOfSaleList = createBillOfSale();
 		
-		when(storage.update(ID, expectedChanges)).thenReturn(expectedBillOfSaleList);
+		when(storage.isValid(ID)).thenReturn(true);
+		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSaleList));
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		BillOfSalePort actualBillOfSaleList = service.update(expectedChanges, ID);
+		BillOfSale actualBillOfSaleList = service.update(expectedChanges, ID);
 		
 		// Then
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
+	}
+	
+	@Test
+	void updateById_throw() {
+		// When
+		BillOfSale expectedChanges = new BillOfSale();
+		
+		when(storage.isValid(ID)).thenReturn(true);
+		when(storage.findById(ID)).thenReturn(Optional.empty());
+		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		// Then
+		assertThatThrownByNotFoundException(throwable,
+		                                    BusinessLogicExceptionFactory.ExceptionMessage.BILL_OF_SALE_NOT_FOUND,
+		                                    BusinessLogicExceptionFactory.ErrorCode.BILL_OF_SALE_NOT_FOUND
+		);
+	}
+	
+	@Test
+	void ifIdIsNotValid_throw() {
+		// Given
+		when(storage.isValid(ID)).thenReturn(false);
+		
+		// When
+		ThrowingCallable throwable = () -> service.searchById(ID)
+		                                          .get();
+		
+		// Then
+		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
+		                                      ValidationExceptionFactory.ErrorCode.INVALID_ID_FORMAT
+		);
 	}
 	
 	@Test
 	void updateOriginalAndChanges() {
 		// Given
-		BillOfSalePort expectedToChange = new BillOfSale();
+		BillOfSale expectedToChange = new BillOfSale();
 		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
 		
-		BillOfSalePort expectedChanges = new BillOfSale();
+		BillOfSale expectedChanges = new BillOfSale();
 		expectedChanges.setBoughtDate(BOUGHT_DATE);
 		
-		BillOfSalePort expectedBillOfSaleList = createBillOfSale();
+		BillOfSale expectedBillOfSaleList = createBillOfSale();
 		
-		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedBillOfSaleList);
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		BillOfSalePort actualBillOfSaleList = service.update(expectedToChange, expectedChanges);
+		BillOfSale actualBillOfSaleList = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
 	}
 	
 	@Test
-	void delete() {
-		// Given
-		when(storage.remove(ID)).thenReturn(true);
-		
-		// When
-		boolean actualBillOfSale = service.delete(ID);
-		
-		// Then
-		assertThat(actualBillOfSale).isTrue();
-	}
-	
-	@Test
 	void searchForId() {
 		// Given
-		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
+		BillOfSale expectedBillOfSale_1 = createBillOfSale();
 		
+		when(storage.isValid(ID)).thenReturn(true);
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSalePort actualBillOfSale = service.searchForId(ID)
-		                                         .get();
+		BillOfSale actualBillOfSale = service.searchById(ID)
+		                                     .get();
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale_1);
@@ -183,15 +239,15 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAll() {
 		// Given
-		BillOfSalePort expectedBillOfSale_1 = createBillOfSale();
-		BillOfSalePort expectedBillOfSale_2 = createBillOfSale();
+		BillOfSale expectedBillOfSale_1 = createBillOfSale();
+		BillOfSale expectedBillOfSale_2 = createBillOfSale();
 		
-		List<BillOfSalePort> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
+		List<BillOfSale> expectedBillOfSaleList = List.of(expectedBillOfSale_1, expectedBillOfSale_2);
 		
 		when(storage.findAll()).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSalePort> actualBillOfSaleList = service.searchAll();
+		List<BillOfSale> actualBillOfSaleList = service.searchAll();
 		
 		// Then
 		billOfSaleListAssertions(
@@ -199,21 +255,17 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	}
 	
 	private void billOfSaleListAssertions(
-		List<BillOfSalePort> actualBillOfSaleList, List<BillOfSalePort> expectedBillOfSaleList,
-		BillOfSalePort expectedBillOfSale_1, BillOfSalePort expectedBillOfSale_2
+		List<BillOfSale> actualBillOfSaleList, List<BillOfSale> expectedBillOfSaleList, BillOfSale expectedBillOfSale_1,
+		BillOfSale expectedBillOfSale_2
 	) {
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
 		assertThat(actualBillOfSaleList.size()).isEqualTo(expectedBillOfSaleList.size());
 		assertThat(actualBillOfSaleList).containsExactlyInAnyOrder(expectedBillOfSale_1, expectedBillOfSale_2);
-		assertThat(
-			actualBillOfSaleList.stream()
-			               .mapToDouble(BillOfSalePort::finalPrice)
-			               .sum()
-		).isEqualTo(
-			expectedBillOfSaleList.stream()
-			                 .mapToDouble(BillOfSalePort::finalPrice)
-			                 .sum()
-		);
+		assertThat(actualBillOfSaleList.stream()
+		                               .mapToDouble(BillOfSale::finalPrice)
+		                               .sum()).isEqualTo(expectedBillOfSaleList.stream()
+		                                                                       .mapToDouble(BillOfSale::finalPrice)
+		                                                                       .sum());
 	}
 	
 }

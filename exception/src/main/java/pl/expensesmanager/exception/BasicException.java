@@ -8,7 +8,7 @@ import lombok.Getter;
 class BasicException extends RuntimeException {
 	
 	@Getter
-	private String errorCode;
+	private final String errorCode;
 	
 	BasicException(String message, String errorCode) {
 		super(message);

@@ -1,7 +1,8 @@
 package pl.expensesmanager.billofsale;
 
 import lombok.*;
-import pl.expensesmanager.product.ProductOrderPort;
+import pl.expensesmanager.base.BaseModel;
+import pl.expensesmanager.product.ProductOrder;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,18 +15,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public final class BillOfSale extends BillOfSalePort.BaseModel implements BillOfSalePort {
+public final class BillOfSale extends BaseModel {
 	
-	private List<ProductOrderPort> productList;
+	private List<ProductOrder> productList;
 	
 	private Instant boughtDate;
 	
 	private String description;
 	
-	@Override
+	/**
+	 * Method to get the final price of bill of sale.
+	 *
+	 * @return the final price of bill of sale
+	 */
 	public Double finalPrice() {
 		return productList.stream()
-		                  .mapToDouble(ProductOrderPort::summaryPrice)
+		                  .mapToDouble(ProductOrder::summaryPrice)
 		                  .summaryStatistics()
 		                  .getSum();
 	}

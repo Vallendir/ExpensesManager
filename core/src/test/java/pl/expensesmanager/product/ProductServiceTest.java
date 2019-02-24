@@ -1,17 +1,23 @@
 package pl.expensesmanager.product;
 
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
+import pl.expensesmanager.exception.ValidationExceptionFactory.ExceptionMessage;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.ErrorCode;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest extends AbstractCoreTest {
@@ -29,47 +35,72 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void searchForName() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
+		List<Product> expectedProductList = List.of(createProduct());
 		
-		when(storage.findByName(PRODUCT_NAME)).thenReturn(Optional.of(expectedProduct_1));
+		when(storage.findByName(PRODUCT_NAME)).thenReturn(expectedProductList);
 		
 		// When
-		ProductPort actualProduct = service.searchForName(PRODUCT_NAME)
-		                                   .get();
+		List<Product> actualProduct = service.searchByName(PRODUCT_NAME);
 		
 		// Then
-		assertThat(actualProduct).isEqualTo(expectedProduct_1);
+		assertThat(actualProduct).isEqualTo(expectedProductList);
+	}
+	
+	@Test
+	void searchByNameAndPrice() {
+		// Given
+		Product expectedProduct_1 = createProduct();
+		
+		when(storage.findByNameAndPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(Optional.of(expectedProduct_1));
+		
+		// When
+		Optional<Product> actualProduct = service.searchByNameAndPrice(PRODUCT_NAME, PRODUCT_PRICE);
+		
+		// Then
+		assertThat(actualProduct.get()).isEqualTo(expectedProduct_1);
 	}
 	
 	@Test
 	void searchAllForPriceRange() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRODUCT_PRICE + 0.75);
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct(PRODUCT_PRICE + 0.75);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceBetween(PRICE_MIN, PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAllForPriceRange(PRICE_MIN, PRICE_MAX);
+		List<Product> actualProductList = service.searchAllByPriceRange(PRICE_MIN, PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
 	}
 	
 	@Test
+	void searchAllForPriceRange_throwMinIsBiggerThanMax() {
+		// Then
+		ThrowingCallable throwable = () -> service.searchAllByPriceRange(PRICE_MAX, PRICE_MIN);
+		
+		// Then
+		assertThatThrownByPassedValueIsInvalidException(throwable,
+		                                                BusinessLogicExceptionFactory.ExceptionMessage.MIN_BIGGER_THAN_MAX,
+		                                                BusinessLogicExceptionFactory.ErrorCode.MIN_BIGGER_THAN_MAX
+		);
+	}
+	
+	@Test
 	void searchAllForPriceGreater() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct(PRODUCT_PRICE + 0.25);
-		ProductPort expectedProduct_2 = createProduct(PRODUCT_PRICE + 0.75);
+		Product expectedProduct_1 = createProduct(PRODUCT_PRICE + 0.25);
+		Product expectedProduct_2 = createProduct(PRODUCT_PRICE + 0.75);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceGreaterThan(PRODUCT_PRICE)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAllForPriceGreater(PRODUCT_PRICE);
+		List<Product> actualProductList = service.searchAllExpensiveThan(PRODUCT_PRICE);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -78,15 +109,15 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForPriceLower() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRICE_MAX);
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct(PRICE_MAX);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceLessThan(PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAllForPriceLower(PRICE_MAX);
+		List<Product> actualProductList = service.searchAllCheaperThan(PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -95,13 +126,13 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void create() {
 		// Given
-		ProductPort expectedToAdd = createProduct();
-		ProductPort expectedProduct_1 = createProduct();
+		Product expectedToAdd = createProduct();
+		Product expectedProduct_1 = createProduct();
 		
-		when(storage.add(expectedToAdd)).thenReturn(expectedProduct_1);
+		when(storage.save(expectedToAdd)).thenReturn(expectedProduct_1);
 		
 		// When
-		ProductPort actualProduct = service.create(expectedToAdd);
+		Product actualProduct = service.create(expectedToAdd);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct_1);
@@ -110,97 +141,132 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void updateByObject() {
 		// Given
-		ProductPort expectedToChange = createProduct(null);
-		ProductPort expectedProduct_1 = createProduct(expectedToChange, PRODUCT_PRICE);
+		Product expectedToChange = createProduct(null);
+		Product expectedProduct_1 = createProduct(expectedToChange, PRODUCT_PRICE);
 		
-		when(storage.update(expectedToChange)).thenReturn(expectedProduct_1);
+		when(storage.save(expectedToChange)).thenReturn(expectedProduct_1);
 		
 		// When
-		ProductPort actualProduct = service.update(expectedToChange);
+		Product actualProduct = service.update(expectedToChange);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct_1);
 	}
 	
 	@Test
+	void checkIfNotUpdatedThrowException() {
+		// When
+		when(storage.save(any())).thenReturn(null);
+		
+		ThrowingCallable throwable = () -> service.update(createProduct());
+		
+		// Then
+		assertThatThrownByNotUpdatedException(throwable,
+		                                      BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_NOT_UPDATED,
+		                                      BusinessLogicExceptionFactory.ErrorCode.PRODUCT_NOT_UPDATED
+		);
+	}
+	
+	@Test
 	void updateById() {
 		// Given
-		ProductPort expectedToChange = createProduct(null);
-		ProductPort expectedChanges = createProduct(expectedToChange, PRICE_MIN);
-		ProductPort expectedProduct = createProduct(PRICE_MIN);
+		Product expectedToChange = createProduct(null);
+		Product expectedChanges = createProduct(expectedToChange, PRICE_MIN);
+		Product expectedProduct = createProduct(PRICE_MIN);
 		
-		when(storage.update(expectedToChange.getId(), expectedChanges)).thenReturn(expectedProduct);
+		when(storage.isValid(ID)).thenReturn(true);
+		when(storage.findById(ID)).thenReturn(Optional.of(expectedProduct));
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedProduct);
 		
 		// When
-		ProductPort actualProduct = service.update(expectedChanges, expectedToChange.getId());
+		Product actualProduct = service.update(expectedChanges, expectedToChange.getId());
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
+	}
+	
+	@Test
+	void updateById_throw() {
+		// When
+		Product expectedToChange = createProduct(null);
+		Product expectedChanges = createProduct(expectedToChange, PRICE_MIN);
+		
+		when(storage.isValid(ID)).thenReturn(true);
+		when(storage.findById(ID)).thenReturn(Optional.empty());
+		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		// Then
+		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_NOT_FOUND,
+		                                    BusinessLogicExceptionFactory.ErrorCode.PRODUCT_NOT_FOUND
+		);
 	}
 	
 	@Test
 	void updateOriginalAndChanges() {
 		// Given
-		ProductPort expectedToChange = createProduct(null);
-		ProductPort expectedChanges = createProduct(expectedToChange, PRICE_MAX);
-		ProductPort expectedProduct = createProduct(PRICE_MAX);
+		Product expectedToChange = createProduct(null);
+		Product expectedChanges = createProduct(expectedToChange, PRICE_MAX);
+		Product expectedProduct = createProduct(PRICE_MAX);
 		
-		when(storage.update(expectedToChange, expectedChanges)).thenReturn(expectedProduct);
+		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedProduct);
 		
 		// When
-		ProductPort actualProduct = service.update(expectedToChange, expectedChanges);
+		Product actualProduct = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
-	}
-	
-	@Test
-	void delete() {
-		// Given
-		when(storage.remove(ID)).thenReturn(true);
-		
-		// When
-		boolean actualProductList = service.delete(ID);
-		
-		// Then
-		assertThat(actualProductList).isTrue();
 	}
 	
 	@Test
 	void searchForId() {
 		// Given
-		ProductPort expectedProduct = createProduct();
+		Product expectedProduct = createProduct();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedProduct));
+		when(storage.isValid(ID)).thenReturn(true);
 		
 		// When
-		ProductPort actualProduct = service.searchForId(ID)
-		                                   .get();
+		Product actualProduct = service.searchById(ID)
+		                               .get();
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
 	}
 	
 	@Test
+	void ifIdIsNotValid_throw() {
+		// Given
+		when(storage.isValid(ID)).thenReturn(false);
+		
+		// When
+		ThrowingCallable throwable = () -> service.searchById(ID)
+		                                          .get();
+		
+		// Then
+		assertThatThrownByValidateIdException(
+			throwable, ExceptionMessage.INVALID_ID_FORMAT, ErrorCode.INVALID_ID_FORMAT);
+	}
+	
+	@Test
 	void searchAll() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRICE_MAX);
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct(PRICE_MAX);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findAll()).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAll();
+		List<Product> actualProductList = service.searchAll();
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
 	}
 	
 	private void productListAssertions(
-		List<ProductPort> actualProductList, List<ProductPort> expectedProductList, ProductPort expectedProduct_1,
-		ProductPort expectedProduct_2
+		List<Product> actualProductList, List<Product> expectedProductList, Product expectedProduct_1,
+		Product expectedProduct_2
 	) {
 		assertThat(actualProductList).isEqualTo(expectedProductList);
 		assertThat(actualProductList.size()).isEqualTo(expectedProductList.size());

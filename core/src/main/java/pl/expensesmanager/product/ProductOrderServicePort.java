@@ -3,8 +3,9 @@ package pl.expensesmanager.product;
 import pl.expensesmanager.base.BaseService;
 
 import java.util.List;
+import java.util.Optional;
 
-interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> {
+interface ProductOrderServicePort extends BaseService<ProductOrder, String> {
 	
 	/**
 	 * Method to find order by product name.
@@ -12,16 +13,16 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param name - the product name
 	 * @return found products
 	 */
-	List<ProductOrderPort> searchAllForProductName(String name);
+	List<ProductOrder> searchAllByProductName(String name);
 	
 	/**
 	 * Method to find order by product name and price.
 	 *
-	 * @param name - the product name
+	 * @param name  - the product name
 	 * @param price - the product price
 	 * @return found product
 	 */
-	List<ProductOrderPort> searchAllForProductNameAndProductPrice(String name, Double price);
+	Optional<ProductOrder> searchAllByProductNameAndProductPrice(String name, Double price);
 	
 	/**
 	 * Method to search product between quanity range.
@@ -30,7 +31,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param max - maximal quanity
 	 * @return found product objects
 	 */
-	List<ProductOrderPort> searchAllForQuanityRange(Integer min, Integer max);
+	List<ProductOrder> searchAllByQuanityRange(Integer min, Integer max);
 	
 	/**
 	 * Method to search product which have more quanity than value.
@@ -38,7 +39,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param quanity - quanity
 	 * @return found product objects
 	 */
-	List<ProductOrderPort> searchAllForQuanityGreater(Integer quanity);
+	List<ProductOrder> searchAllByBiggerQuanityThan(Integer quanity);
 	
 	/**
 	 * Method to search product which have more quanity than value.
@@ -46,6 +47,6 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param quanity - quanity
 	 * @return found product objects
 	 */
-	List<ProductOrderPort> searchAllForQuanityLower(Integer quanity);
+	List<ProductOrder> searchAllByLessQuanityThan(Integer quanity);
 	
 }

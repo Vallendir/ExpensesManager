@@ -39,7 +39,7 @@ class BudgetValidatorTest extends AbstractCoreTest {
 	@Test
 	void validateBudget() {
 		// Given
-		BudgetPort budget = createBudget();
+		Budget budget = createBudget();
 		
 		ThrowingCallable throwable_1 = () -> BudgetValidator.validateBudget(null);
 		

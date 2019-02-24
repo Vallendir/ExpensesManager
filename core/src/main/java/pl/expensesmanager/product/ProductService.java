@@ -2,9 +2,13 @@ package pl.expensesmanager.product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.IdValidateUtil;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
 
 @Service
 @RequiredArgsConstructor
@@ -13,79 +17,107 @@ class ProductService implements ProductServicePort {
 	private final ProductStorePort storage;
 	
 	@Override
-	public Optional<ProductPort> searchForName(String name) {
+	public List<Product> searchByName(String name) {
 		return storage.findByName(ProductValidator.validateName(name));
 	}
 	
 	@Override
-	public List<ProductPort> searchAllForPriceRange(Double min, Double max) {
+	public Optional<Product> searchByNameAndPrice(String name, Double price) {
+		return storage.findByNameAndPrice(ProductValidator.validateName(name), ProductValidator.validatePrice(price));
+	}
+	
+	@Override
+	public List<Product> searchAllByPriceRange(Double min, Double max) {
 		if (min > max) {
-			throw new RuntimeException();
+			throw minBiggerThanMaxException();
 		}
 		
 		return storage.findByPriceBetween(ProductValidator.validatePrice(min), ProductValidator.validatePrice(max));
 	}
 	
 	@Override
-	public List<ProductPort> searchAllForPriceGreater(Double price) {
+	public List<Product> searchAllExpensiveThan(Double price) {
 		return storage.findByPriceGreaterThan(ProductValidator.validatePrice(price));
 	}
 	
 	@Override
-	public List<ProductPort> searchAllForPriceLower(Double price) {
+	public List<Product> searchAllCheaperThan(Double price) {
 		return storage.findByPriceLessThan(ProductValidator.validatePrice(price));
 	}
 	
 	@Override
-	public ProductPort create(ProductPort object) {
+	public Product create(Product object) {
 		ProductValidator.validateProduct(object);
 		
-		return storage.add(object);
+		return storage.save(object);
 	}
 	
 	@Override
-	public ProductPort update(ProductPort object) {
+	public Product update(Product object) {
 		ProductValidator.validateProduct(object);
 		
-		return storage.update(object);
+		Product product = storage.save(object);
+		checkIfProductWasUpdated(product);
+		
+		return product;
 	}
 	
 	@Override
-	public ProductPort update(ProductPort originalObject, ProductPort changes) {
+	public Product update(Product originalObject, Product changes) {
 		checkChangesInProduct(changes);
 		
-		return storage.update(originalObject, changes);
+		Product product = storage.save(MergeUtil.merge(originalObject, changes));
+		checkIfProductWasUpdated(product);
+		
+		return product;
 	}
 	
 	@Override
-	public ProductPort update(ProductPort changes, String id) {
+	public Product update(Product changes, String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		checkChangesInProduct(changes);
 		
-		return storage.update(id, changes);
+		Optional<Product> originalObject = searchById(id);
+		if (!originalObject.isPresent()) {
+			throw productNotFoundException();
+		}
+		
+		Product product = storage.save(MergeUtil.merge(originalObject.get(), changes));
+		checkIfProductWasUpdated(product);
+		
+		return product;
 	}
 	
 	@Override
-	public boolean delete(String id) {
-		return storage.remove(id);
+	public void removeById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
+		storage.deleteById(id);
 	}
 	
 	@Override
-	public Optional<ProductPort> searchForId(String id) {
+	public Optional<Product> searchById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		return storage.findById(id);
 	}
 	
 	@Override
-	public List<ProductPort> searchAll() {
+	public List<Product> searchAll() {
 		return storage.findAll();
 	}
 	
-	private void checkChangesInProduct(ProductPort changes) {
+	private void checkChangesInProduct(Product changes) {
 		if (changes.getName() != null) {
 			ProductValidator.validateName(changes.getName());
 		}
 		
 		if (changes.getPrice() != null) {
 			ProductValidator.validatePrice(changes.getPrice());
+		}
+	}
+	
+	private void checkIfProductWasUpdated(Product product) {
+		if (product == null) {
+			throw productNotUpdatedException();
 		}
 	}
 	
