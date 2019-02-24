@@ -70,7 +70,7 @@ public interface ProductOrderDocumentation {
 		@ApiParam(value = "Product name to find orders of this product.", required = true) String productName
 	);
 	
-	@ApiOperation(value = "GET-endpoint to find Order by name and price.", nickname = "searchAllByProductNameAndPrice", notes = "Method allow to find a order by name and price.", tags = {
+	@ApiOperation(value = "GET-endpoint to find Order by name and price.", nickname = "searchAllByProductNameAndProductPrice", notes = "Method allow to find a order by name and price.", tags = {
 		"Order",
 	})
 	List<ProductOrder> searchAllForProductNameAndProductPrice(

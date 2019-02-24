@@ -9,7 +9,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
 
     implementation project(':core')
-    implementation project(':db-in-memory')
     implementation project(':db-mongo')
     implementation project(':rest')
 }

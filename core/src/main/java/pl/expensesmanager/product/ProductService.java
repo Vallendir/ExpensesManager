@@ -8,8 +8,7 @@ import pl.expensesmanager.util.MergeUtil;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.minBiggerThanMaxException;
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.productNotFoundException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +17,13 @@ class ProductService implements ProductServicePort {
 	private final ProductStorePort storage;
 	
 	@Override
-	public Optional<Product> searchByName(String name) {
+	public List<Product> searchByName(String name) {
 		return storage.findByName(ProductValidator.validateName(name));
+	}
+	
+	@Override
+	public Optional<Product> searchByNameAndPrice(String name, Double price) {
+		return storage.findByNameAndPrice(ProductValidator.validateName(name), ProductValidator.validatePrice(price));
 	}
 	
 	@Override
@@ -52,14 +56,20 @@ class ProductService implements ProductServicePort {
 	public Product update(Product object) {
 		ProductValidator.validateProduct(object);
 		
-		return storage.save(object);
+		Product product = storage.save(object);
+		checkIfProductWasUpdated(product);
+		
+		return product;
 	}
 	
 	@Override
 	public Product update(Product originalObject, Product changes) {
 		checkChangesInProduct(changes);
 		
-		return storage.save(MergeUtil.merge(originalObject, changes));
+		Product product = storage.save(MergeUtil.merge(originalObject, changes));
+		checkIfProductWasUpdated(product);
+		
+		return product;
 	}
 	
 	@Override
@@ -72,7 +82,10 @@ class ProductService implements ProductServicePort {
 			throw productNotFoundException();
 		}
 		
-		return storage.save(MergeUtil.merge(originalObject.get(), changes));
+		Product product = storage.save(MergeUtil.merge(originalObject.get(), changes));
+		checkIfProductWasUpdated(product);
+		
+		return product;
 	}
 	
 	@Override
@@ -99,6 +112,12 @@ class ProductService implements ProductServicePort {
 		
 		if (changes.getPrice() != null) {
 			ProductValidator.validatePrice(changes.getPrice());
+		}
+	}
+	
+	private void checkIfProductWasUpdated(Product product) {
+		if (product == null) {
+			throw productNotUpdatedException();
 		}
 	}
 	

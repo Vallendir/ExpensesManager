@@ -21,7 +21,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrder, String> {
 	 * @param price - the product price
 	 * @return found product
 	 */
-	List<ProductOrder> searchAllByProductNameAndPrice(String name, Double price);
+	List<ProductOrder> searchAllByProductNameAndProductPrice(String name, Double price);
 	
 	/**
 	 * Method to search product between quanity range.

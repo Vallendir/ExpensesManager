@@ -4,62 +4,55 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.productNotFoundException;
 
 @RequiredArgsConstructor
 @RestController
 class ProductController implements ProductApi, ProductDocumentation {
 	
-	private final ProductService service;
+	private final ProductServicePort service;
 	
 	public Product add(Product product) {
-		Product p = new Product();
-		p.setName("jakas nazwa");
-		p.setPrice(5.75);
-		
-		service.create(p);
-		
-		
 		return service.create(product);
 	}
 	
-	/*public Product update(Product product) {
+	public Product update(Product product) {
 		return service.update(product);
 	}
 	
 	public Product update(String id, Product product) {
 		return service.update(product, id);
-	}*/
+	}
 	
 	public void delete(String id) {
 		service.removeById(id);
 	}
 	
 	public Product searchForId(String id) {
-		// FIXME
-		Product p = service.searchById(id)
-		                       .get();
+		Optional<Product> product = service.searchById(id);
+		if (!product.isPresent()) {
+			throw productNotFoundException();
+		}
 		
-		System.err.println(p);
-		
-		return p;
+		return product.get();
 	}
 	
-	public Product searchForName(String name) {
-		// FIXME
-		return service.searchByName(name)
-		              .get();
+	public List<Product> searchForName(String name) {
+		return service.searchByName(name);
 	}
 	
-	public List<Product> searchAllForPriceRange(Double min, Double max) {
-		return service.searchAllByPriceRange(min, max);
+	public List<Product> searchAllForPriceRange(Double priceMin, Double priceMax) {
+		return service.searchAllByPriceRange(priceMin, priceMax);
 	}
 	
-	public List<Product> searchAllForPriceGreater(Double price) {
-		return service.searchAllExpensiveThan(price);
+	public List<Product> searchAllForPriceGreater(Double priceBigger) {
+		return service.searchAllExpensiveThan(priceBigger);
 	}
 	
-	public List<Product> searchAllForPriceLower(Double price) {
-		return service.searchAllCheaperThan(price);
+	public List<Product> searchAllForPriceLower(Double priceLower) {
+		return service.searchAllCheaperThan(priceLower);
 	}
 	
 }

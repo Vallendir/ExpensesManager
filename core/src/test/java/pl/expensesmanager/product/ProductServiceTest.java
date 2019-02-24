@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.ErrorCode;
 
@@ -34,16 +35,29 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void searchForName() {
 		// Given
-		Product expectedProduct_1 = createProduct();
+		List<Product> expectedProductList = List.of(createProduct());
 		
-		when(storage.findByName(PRODUCT_NAME)).thenReturn(Optional.of(expectedProduct_1));
+		when(storage.findByName(PRODUCT_NAME)).thenReturn(expectedProductList);
 		
 		// When
-		Product actualProduct = service.searchByName(PRODUCT_NAME)
-		                               .get();
+		List<Product> actualProduct = service.searchByName(PRODUCT_NAME);
 		
 		// Then
-		assertThat(actualProduct).isEqualTo(expectedProduct_1);
+		assertThat(actualProduct).isEqualTo(expectedProductList);
+	}
+	
+	@Test
+	void searchByNameAndPrice() {
+		// Given
+		Product expectedProduct_1 = createProduct();
+		
+		when(storage.findByNameAndPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(Optional.of(expectedProduct_1));
+		
+		// When
+		Optional<Product> actualProduct = service.searchByNameAndPrice(PRODUCT_NAME, PRODUCT_PRICE);
+		
+		// Then
+		assertThat(actualProduct.get()).isEqualTo(expectedProduct_1);
 	}
 	
 	@Test
@@ -69,9 +83,9 @@ class ProductServiceTest extends AbstractCoreTest {
 		ThrowingCallable throwable = () -> service.searchAllByPriceRange(PRICE_MAX, PRICE_MIN);
 		
 		// Then
-		assertThatThrownByPassedValueIsInvalidException(
-			throwable, BusinessLogicExceptionFactory.ExceptionMessage.MIN_BIGGER_THAN_MAX,
-			BusinessLogicExceptionFactory.ErrorCode.MIN_BIGGER_THAN_MAX
+		assertThatThrownByPassedValueIsInvalidException(throwable,
+		                                                BusinessLogicExceptionFactory.ExceptionMessage.MIN_BIGGER_THAN_MAX,
+		                                                BusinessLogicExceptionFactory.ErrorCode.MIN_BIGGER_THAN_MAX
 		);
 	}
 	
@@ -140,6 +154,20 @@ class ProductServiceTest extends AbstractCoreTest {
 	}
 	
 	@Test
+	void checkIfNotUpdatedThrowException() {
+		// When
+		when(storage.save(any())).thenReturn(null);
+		
+		ThrowingCallable throwable = () -> service.update(createProduct());
+		
+		// Then
+		assertThatThrownByNotUpdatedException(throwable,
+		                                      BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_NOT_UPDATED,
+		                                      BusinessLogicExceptionFactory.ErrorCode.PRODUCT_NOT_UPDATED
+		);
+	}
+	
+	@Test
 	void updateById() {
 		// Given
 		Product expectedToChange = createProduct(null);
@@ -168,9 +196,8 @@ class ProductServiceTest extends AbstractCoreTest {
 		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
 		
 		// Then
-		assertThatThrownByNotFoundException(
-			throwable, BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_NOT_FOUND,
-			BusinessLogicExceptionFactory.ErrorCode.PRODUCT_NOT_FOUND
+		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_NOT_FOUND,
+		                                    BusinessLogicExceptionFactory.ErrorCode.PRODUCT_NOT_FOUND
 		);
 	}
 	

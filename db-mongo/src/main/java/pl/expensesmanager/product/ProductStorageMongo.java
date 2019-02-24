@@ -9,16 +9,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Profile("dev")
 @RequiredArgsConstructor
+@Profile("dev")
 @Component
 public class ProductStorageMongo extends BaseMongoStorage implements ProductStorePort {
 	
 	private final ProductRepositoryMongo repository;
 	
 	@Override
-	public Optional<Product> findByName(String name) {
+	public List<Product> findByName(String name) {
 		return repository.findByName(name)
+		                 .stream()
+		                 .map(this::map)
+		                 .collect(Collectors.toList());
+	}
+	
+	@Override
+	public Optional<Product> findByNameAndPrice(String name, Double price) {
+		return repository.findByNameAndPrice(name, price)
 		                 .map(this::map);
 	}
 	
@@ -76,23 +84,6 @@ public class ProductStorageMongo extends BaseMongoStorage implements ProductStor
 		                 .stream()
 		                 .map(this::map)
 		                 .collect(Collectors.toList());
-	}
-	
-	private ProductDocument map(Product Product) {
-		return ProductDocument.builder()
-		                      .id(Product.getId())
-		                      .name(Product.getName())
-		                      .price(Product.getPrice())
-		                      .build();
-	}
-	
-	private Product map(ProductDocument productDocument) {
-		Product product = new Product();
-		product.setId(productDocument.getId());
-		product.setName(productDocument.getName());
-		product.setPrice(productDocument.getPrice());
-		
-		return product;
 	}
 	
 }

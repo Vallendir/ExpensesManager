@@ -8,12 +8,21 @@ import java.util.Optional;
 public interface ProductStorePort extends BaseStorage<Product, String> {
 	
 	/**
-	 * Method to find product by name.
+	 * Method to find products by name.
 	 *
 	 * @param name - the name of product
+	 * @return found products list
+	 */
+	List<Product> findByName(String name);
+	
+	/**
+	 * Method to find product by name and price.
+	 *
+	 * @param name  - the name of product
+	 * @param price - the price of product
 	 * @return found product as optional
 	 */
-	Optional<Product> findByName(String name);
+	Optional<Product> findByNameAndPrice(String name, Double price);
 	
 	/**
 	 * Method to find products by price.

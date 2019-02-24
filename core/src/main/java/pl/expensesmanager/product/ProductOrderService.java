@@ -23,7 +23,7 @@ class ProductOrderService implements ProductOrderServicePort {
 	}
 	
 	@Override
-	public List<ProductOrder> searchAllByProductNameAndPrice(String name, Double price) {
+	public List<ProductOrder> searchAllByProductNameAndProductPrice(String name, Double price) {
 		return storage.findByProductNameAndProductPrice(
 			ProductValidator.validateName(name), ProductValidator.validatePrice(price));
 	}

@@ -8,12 +8,21 @@ import java.util.Optional;
 interface ProductServicePort extends BaseService<Product, String> {
 	
 	/**
-	 * Method to search product by name.
+	 * Method to search products by name.
 	 *
 	 * @param name - the name of product
+	 * @return found products list
+	 */
+	List<Product> searchByName(String name);
+	
+	/**
+	 * Method to find product by name and price.
+	 *
+	 * @param name  - the name of product
+	 * @param price - the price of product
 	 * @return found product as optional
 	 */
-	Optional<Product> searchByName(String name);
+	Optional<Product> searchByNameAndPrice(String name, Double price);
 	
 	/**
 	 * Method to search products between price range.

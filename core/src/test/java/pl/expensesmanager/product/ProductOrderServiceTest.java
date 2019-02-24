@@ -57,7 +57,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrder> actualOrderList = service.searchAllByProductNameAndPrice(PRODUCT_NAME, PRODUCT_PRICE);
+		List<ProductOrder> actualOrderList = service.searchAllByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);

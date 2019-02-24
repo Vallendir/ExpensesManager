@@ -52,7 +52,7 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 	
 	@Override
 	public List<ProductOrder> searchAllForProductNameAndProductPrice(String productName, Double price) {
-		return service.searchAllByProductNameAndPrice(productName, price);
+		return service.searchAllByProductNameAndProductPrice(productName, price);
 	}
 	
 }

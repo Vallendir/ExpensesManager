@@ -10,12 +10,21 @@ import java.util.Optional;
 public interface ProductRepositoryMongo extends MongoRepository<ProductDocument, String> {
 	
 	/**
-	 * Method to find product by name.
+	 * Method to find products by name.
 	 *
 	 * @param name - the name of product
+	 * @return found products list
+	 */
+	List<ProductDocument> findByName(String name);
+	
+	/**
+	 * Method to find product by name and price.
+	 *
+	 * @param name - the name of product
+	 * @param price - the price of product
 	 * @return found product as optional
 	 */
-	Optional<ProductDocument> findByName(String name);
+	Optional<ProductDocument> findByNameAndPrice(String name, Double price);
 	
 	/**
 	 * Method to find products by price.
