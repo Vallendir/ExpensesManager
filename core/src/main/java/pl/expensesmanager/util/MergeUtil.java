@@ -1,12 +1,12 @@
 package pl.expensesmanager.util;
 
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.List;
 
-@Slf4j
+import static pl.expensesmanager.exception.InternalExceptionFactory.illegalAccessException;
+
 @UtilityClass
 public final class MergeUtil {
 	
@@ -22,8 +22,7 @@ public final class MergeUtil {
 			try {
 				FieldUtils.writeField(object, field, FieldUtils.readField(changes, field, true), true);
 			} catch (IllegalAccessException e) {
-				// FIXME Catch this exception and do something more than only log
-				log.error(e.getMessage());
+				throw illegalAccessException(e);
 			}
 		});
 	}

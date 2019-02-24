@@ -22,11 +22,11 @@ public abstract class BaseMongoStorage implements IdValidatorPort<String> {
 		return ObjectId.isValid(id);
 	}
 	
-	protected ProductDocument map(Product Product) {
+	protected ProductDocument map(Product product) {
 		return ProductDocument.builder()
-		                      .id(Product.getId())
-		                      .name(Product.getName())
-		                      .price(Product.getPrice())
+		                      .id(product.getId())
+		                      .name(product.getName())
+		                      .price(product.getPrice())
 		                      .build();
 	}
 	

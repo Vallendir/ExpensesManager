@@ -1,14 +1,14 @@
 package pl.expensesmanager.util;
 
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
+import static pl.expensesmanager.exception.InternalExceptionFactory.illegalAccessException;
+
 @UtilityClass
 public final class FieldsUtil {
 	
@@ -21,10 +21,7 @@ public final class FieldsUtil {
 			                 try {
 				                 return FieldUtils.readField(field, object, true) != null;
 			                 } catch (IllegalAccessException e) {
-				                 // FIXME Catch this exception and do something more than only log
-				                 log.error(e.getMessage());
-				
-				                 return false;
+				                 throw illegalAccessException(e);
 			                 }
 		                 })
 		                 .map(Field::getName)
@@ -48,8 +45,7 @@ public final class FieldsUtil {
 				  .append(FieldUtils.readField(object, fieldName, true))
 				  .append("]");
 			} catch (IllegalAccessException e) {
-				// FIXME Catch this exception and do something more than only log
-				log.error(e.getMessage());
+				throw illegalAccessException(e);
 			}
 		});
 		

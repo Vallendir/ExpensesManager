@@ -56,7 +56,7 @@ class SwaggerConfig {
 	
 	@Bean
 	public Docket appApi() {
-		return new Docket(DocumentationType.SWAGGER_2).groupName(AppPath.defaultTitle())
+		return new Docket(DocumentationType.SWAGGER_2).groupName(AppPath.DEFAULT_ORDER)
 		                                              .select()
 		                                              .apis(RequestHandlerSelectors.basePackage("pl.expensesmanager"))
 		                                              .paths(AppPath.defaultPaths())
@@ -112,13 +112,15 @@ class SwaggerConfig {
 		
 		final String title;
 		
+		static String DEFAULT_ORDER = "1) Default";
+		
 		static Predicate<String> defaultPaths() {
-			return or(AppPath.PRODUCT.getPath(), AppPath.PRODUCT_ORDER.getPath(), AppPath.BILL_OF_SALE.getPath(), AppPath.BUDGET.getPath());
+			return or(
+				AppPath.PRODUCT.getPath(), AppPath.PRODUCT_ORDER.getPath(), AppPath.BILL_OF_SALE.getPath(),
+				AppPath.BUDGET.getPath()
+			);
 		}
 		
-		static String defaultTitle() {
-			return "1) Default";
-		}
 	}
 	
 }
