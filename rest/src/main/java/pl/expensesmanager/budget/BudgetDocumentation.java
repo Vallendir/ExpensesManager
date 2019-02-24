@@ -16,7 +16,7 @@ public interface BudgetDocumentation {
 		@ApiParam(value = "Budget object which will be created.", required = true) Budget budget
 	);
 	
-	/*@ApiOperation(value = "PUT-endpoint to update Budget.", nickname = "update", notes = "Method allow to update a budget.", tags = {
+	@ApiOperation(value = "PUT-endpoint to update Budget.", nickname = "update", notes = "Method allow to update a budget.", tags = {
 		"Budget",
 	})
 	Budget update(
@@ -29,7 +29,7 @@ public interface BudgetDocumentation {
 	Budget update(
 		@ApiParam(value = "ID of Budget to update.", required = true) String id,
 		@ApiParam(value = "Budget object changes to update.", required = true) Budget budget
-	);*/
+	);
 	
 	@ApiOperation(value = "DELETE-endpoint to removeById Budget.", nickname = "removeById", notes = "Method allow to removeById a budget.", tags = {
 		"Budget",

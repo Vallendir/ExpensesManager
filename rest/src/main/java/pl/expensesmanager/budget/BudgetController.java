@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.budgetNotFoundException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,28 +20,30 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 		return service.create(budget);
 	}
 	
-	/*public Budget update(Budget budget) {
+	public Budget update(Budget budget) {
 		return service.update(budget);
 	}
 	
 	public Budget update(String id, Budget budget) {
 		return service.update(budget, id);
-	}*/
+	}
 	
 	public void delete(String id) {
 		service.removeById(id);
 	}
 	
 	public Budget searchForId(String id) {
-		// FIXME
-		return service.searchById(id)
-		              .get();
+		Optional<Budget> budget = service.searchById(id);
+		checkIfBudgetNotFound(budget);
+		
+		return budget.get();
 	}
 	
 	public Budget searchForName(String name) {
-		// FIXME
-		return service.searchByName(name)
-		              .get();
+		Optional<Budget> budget = service.searchByName(name);
+		checkIfBudgetNotFound(budget);
+		
+		return budget.get();
 	}
 	
 	public List<Budget> searchAllForBudgetValue(Double budgetValue) {
@@ -57,5 +62,10 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 		return service.searchAllByLessValueThan(budgetValue);
 	}
 	
+	private void checkIfBudgetNotFound(Optional<Budget> budget) {
+		if (!budget.isPresent()) {
+			throw budgetNotFoundException();
+		}
+	}
 	
 }

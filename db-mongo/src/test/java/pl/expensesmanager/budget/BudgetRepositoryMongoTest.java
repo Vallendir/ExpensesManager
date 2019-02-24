@@ -1,4 +1,3 @@
-/*
 package pl.expensesmanager.budget;
 
 import org.junit.jupiter.api.Test;
@@ -26,13 +25,13 @@ class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByName() {
 		// Given
-		Budget expectedBudget_1 = createBudget();
+		BudgetDocument expectedBudget_1 = createBudget();
 		
 		when(storage.findByName(BUDGET_NAME)).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		Budget actualBudget = storage.findByName(BUDGET_NAME)
-		                                 .get();
+		BudgetDocument actualBudget = storage.findByName(BUDGET_NAME)
+		                                     .get();
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget_1);
@@ -41,15 +40,15 @@ class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByBudgetValue() {
 		// Given
-		Budget expectedBudget_1 = createBudget();
-		Budget expectedBudget_2 = createBudget();
+		BudgetDocument expectedBudget_1 = createBudget();
+		BudgetDocument expectedBudget_2 = createBudget();
 		
-		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<BudgetDocument> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findByBudgetValue(BUDGET_VALUE)).thenReturn(expectedBudgets);
 		
 		// When
-		List<Budget> actualBudgets = storage.findByBudgetValue(BUDGET_VALUE);
+		List<BudgetDocument> actualBudgets = storage.findByBudgetValue(BUDGET_VALUE);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -58,15 +57,15 @@ class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByBudgetValueBetween() {
 		// Given
-		Budget expectedBudget_1 = createBudget();
-		Budget expectedBudget_2 = createBudget();
+		BudgetDocument expectedBudget_1 = createBudget();
+		BudgetDocument expectedBudget_2 = createBudget();
 		
-		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<BudgetDocument> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findByBudgetValueBetween(BUDGET_VALUE_MIN, BUDGET_VALUE_MAX)).thenReturn(expectedBudgets);
 		
 		// When
-		List<Budget> actualBudgets = storage.findByBudgetValueBetween(BUDGET_VALUE_MIN, BUDGET_VALUE_MAX);
+		List<BudgetDocument> actualBudgets = storage.findByBudgetValueBetween(BUDGET_VALUE_MIN, BUDGET_VALUE_MAX);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -75,15 +74,15 @@ class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByBudgetValueGreaterThan() {
 		// Given
-		Budget expectedBudget_1 = createBudget();
-		Budget expectedBudget_2 = createBudget();
+		BudgetDocument expectedBudget_1 = createBudget();
+		BudgetDocument expectedBudget_2 = createBudget();
 		
-		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<BudgetDocument> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findByBudgetValueGreaterThan(BUDGET_VALUE_MIN)).thenReturn(expectedBudgets);
 		
 		// When
-		List<Budget> actualBudgets = storage.findByBudgetValueGreaterThan(BUDGET_VALUE_MIN);
+		List<BudgetDocument> actualBudgets = storage.findByBudgetValueGreaterThan(BUDGET_VALUE_MIN);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -92,15 +91,15 @@ class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByBudgetValueLessThan() {
 		// Given
-		Budget expectedBudget_1 = createBudget();
-		Budget expectedBudget_2 = createBudget();
+		BudgetDocument expectedBudget_1 = createBudget();
+		BudgetDocument expectedBudget_2 = createBudget();
 		
-		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<BudgetDocument> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findByBudgetValueLessThan(BUDGET_VALUE_MAX)).thenReturn(expectedBudgets);
 		
 		// When
-		List<Budget> actualBudgets = storage.findByBudgetValueLessThan(BUDGET_VALUE_MAX);
+		List<BudgetDocument> actualBudgets = storage.findByBudgetValueLessThan(BUDGET_VALUE_MAX);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -109,14 +108,14 @@ class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void add() {
 		// Given
-		Budget expectedToAdd = createBudget();
+		BudgetDocument expectedToAdd = createBudget();
 		
-		Budget expectedBudget = createBudget();
+		BudgetDocument expectedBudget = createBudget();
 		
 		when(storage.save(expectedToAdd)).thenReturn(expectedBudget);
 		
 		// When
-		Budget actualBudget = storage.save(expectedToAdd);
+		BudgetDocument actualBudget = storage.save(expectedToAdd);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
@@ -125,13 +124,13 @@ class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findById() {
 		// Given
-		Budget expectedBudget_1 = createBudget();
+		BudgetDocument expectedBudget_1 = createBudget();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		Budget actualBudget = storage.findById(ID)
-		                                 .get();
+		BudgetDocument actualBudget = storage.findById(ID)
+		                                     .get();
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget_1);
@@ -140,27 +139,27 @@ class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findAll() {
 		// Given
-		Budget expectedBudget_1 = createBudget();
-		Budget expectedBudget_2 = createBudget();
+		BudgetDocument expectedBudget_1 = createBudget();
+		BudgetDocument expectedBudget_2 = createBudget();
 		
-		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<BudgetDocument> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findAll()).thenReturn(expectedBudgets);
 		
 		// When
-		List<Budget> actualBudgets = storage.findAll();
+		List<BudgetDocument> actualBudgets = storage.findAll();
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
 	}
 	
 	private void budgetListAssertions(
-		List<Budget> actualBudgets, List<Budget> expectedBudgets, Budget expectedBudget_1,
-		Budget expectedBudget_2
+		List<BudgetDocument> actualBudgets, List<BudgetDocument> expectedBudgets, BudgetDocument expectedBudget_1,
+		BudgetDocument expectedBudget_2
 	) {
 		assertThat(actualBudgets).isEqualTo(expectedBudgets);
 		assertThat(actualBudgets.size()).isEqualTo(expectedBudgets.size());
 		assertThat(actualBudgets).containsExactlyInAnyOrder(expectedBudget_1, expectedBudget_2);
 	}
 	
-}*/
+}

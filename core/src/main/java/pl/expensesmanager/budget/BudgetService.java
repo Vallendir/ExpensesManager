@@ -8,8 +8,7 @@ import pl.expensesmanager.util.MergeUtil;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.budgetNotFoundException;
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.minBiggerThanMaxException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
 
 @RequiredArgsConstructor
 @Service
@@ -58,14 +57,20 @@ class BudgetService implements BudgetServicePort {
 	public Budget update(Budget object) {
 		BudgetValidator.validateBudget(object);
 		
-		return storage.save(object);
+		Budget budget = storage.save(object);
+		checkIfBudgetWasUpdated(budget);
+		
+		return budget;
 	}
 	
 	@Override
 	public Budget update(Budget originalObject, Budget changes) {
 		checkChangesInBudget(changes);
 		
-		return storage.save(MergeUtil.merge(originalObject, changes));
+		Budget budget = storage.save(MergeUtil.merge(originalObject, changes));
+		checkIfBudgetWasUpdated(budget);
+		
+		return budget;
 	}
 	
 	@Override
@@ -78,7 +83,10 @@ class BudgetService implements BudgetServicePort {
 			throw budgetNotFoundException();
 		}
 		
-		return storage.save(MergeUtil.merge(originalObject.get(), changes));
+		Budget budget = storage.save(MergeUtil.merge(originalObject.get(), changes));
+		checkIfBudgetWasUpdated(budget);
+		
+		return budget;
 	}
 	
 	@Override
@@ -105,6 +113,12 @@ class BudgetService implements BudgetServicePort {
 		
 		if (changes.getBudgetValue() != null) {
 			BudgetValidator.validateBudgetValue(changes.getBudgetValue());
+		}
+	}
+	
+	private void checkIfBudgetWasUpdated(Budget budget) {
+		if (budget == null) {
+			throw budgetNotUpdatedException();
 		}
 	}
 	

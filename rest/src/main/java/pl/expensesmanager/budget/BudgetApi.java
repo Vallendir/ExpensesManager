@@ -9,11 +9,11 @@ interface BudgetApi {
 	@PostMapping(value = "/budgets")
 	Budget add(@RequestBody Budget budget);
 	
-	/*@PutMapping(value = "/budgets")
+	@PutMapping(value = "/budgets")
 	Budget update(@RequestBody Budget budget);
 	
 	@PutMapping(value = "/budgets/{id}")
-	Budget update(String id, @RequestBody Budget budget);*/
+	Budget update(String id, @RequestBody Budget budget);
 	
 	@DeleteMapping(value = "/budgets/{id}")
 	void delete(String id);
@@ -27,15 +27,15 @@ interface BudgetApi {
 	@GetMapping(value = "/budgets", params = "value")
 	List<Budget> searchAllForBudgetValue(@RequestParam(value = "value") Double budgetValue);
 	
-	@GetMapping(value = "/budgets", params = { "budget-min", "budget-max" })
+	@GetMapping(value = "/budgets", params = { "budgetMin", "budgetMax" })
 	List<Budget> searchAllForBudgetValueRange(
-		@RequestParam(value = "budget-min") Double min, @RequestParam(value = "budget-max") Double max
+		@RequestParam(value = "budgetMin") Double budgetMin, @RequestParam(value = "budgetMax") Double budgetMax
 	);
 	
-	@GetMapping(value = "/budgets", params = "budget-bigger")
-	List<Budget> searchAllForBudgetValueGreater(@RequestParam(value = "budget-bigger") Double budgetValue);
+	@GetMapping(value = "/budgets", params = "budgetBigger")
+	List<Budget> searchAllForBudgetValueGreater(@RequestParam(value = "budgetBigger") Double budgetBigger);
 	
-	@GetMapping(value = "/budgets", params = "budget-lower")
-	List<Budget> searchAllForBudgetValueLower(@RequestParam(value = "budget-lower") Double budgetValue);
+	@GetMapping(value = "/budgets", params = "budgetLower")
+	List<Budget> searchAllForBudgetValueLower(@RequestParam(value = "budgetLower") Double budgetLower);
 	
 }

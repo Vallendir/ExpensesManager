@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -154,6 +155,20 @@ class BudgetServiceTest extends AbstractCoreTest {
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
+	}
+	
+	@Test
+	void checkIfNotUpdatedThrowException() {
+		// When
+		when(storage.save(any())).thenReturn(null);
+		
+		ThrowableAssert.ThrowingCallable throwable = () -> service.update(createBudget());
+		
+		// Then
+		assertThatThrownByNotUpdatedException(throwable,
+		                                      BusinessLogicExceptionFactory.ExceptionMessage.BUDGET_NOT_UPDATED,
+		                                      BusinessLogicExceptionFactory.ErrorCode.BUDGET_NOT_UPDATED
+		);
 	}
 	
 	@Test

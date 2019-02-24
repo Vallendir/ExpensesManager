@@ -3,6 +3,8 @@ package pl.expensesmanager.base;
 import org.bson.types.ObjectId;
 import pl.expensesmanager.billofsale.BillOfSale;
 import pl.expensesmanager.billofsale.BillOfSaleDocument;
+import pl.expensesmanager.budget.Budget;
+import pl.expensesmanager.budget.BudgetDocument;
 import pl.expensesmanager.product.Product;
 import pl.expensesmanager.product.ProductDocument;
 import pl.expensesmanager.product.ProductOrder;
@@ -77,6 +79,31 @@ public abstract class BaseMongoStorage implements IdValidatorPort<String> {
 		                                            .collect(Collectors.toList()));
 		
 		return billOfSale;
+	}
+	
+	protected BudgetDocument map(Budget budget) {
+		return BudgetDocument.builder()
+		                     .id(budget.getId())
+		                     .name(budget.getName())
+		                     .budgetValue(budget.getBudgetValue())
+		                     .billsOfSaleList(budget.getBillsOfSaleList()
+		                                            .stream()
+		                                            .map(this::map)
+		                                            .collect(Collectors.toList()))
+		                     .build();
+	}
+	
+	protected Budget map(BudgetDocument budgetDocument) {
+		Budget budget = new Budget();
+		budget.setId(budgetDocument.getId());
+		budget.setName(budgetDocument.getName());
+		budget.setBudgetValue(budgetDocument.getBudgetValue());
+		budget.setBillsOfSaleList(budgetDocument.getBillsOfSaleList()
+		                                        .stream()
+		                                        .map(this::map)
+		                                        .collect(Collectors.toList()));
+		
+		return budget;
 	}
 	
 }
