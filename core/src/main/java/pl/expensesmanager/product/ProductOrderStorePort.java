@@ -3,6 +3,7 @@ package pl.expensesmanager.product;
 import pl.expensesmanager.base.BaseStorage;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductOrderStorePort extends BaseStorage<ProductOrder, String> {
 	
@@ -21,7 +22,7 @@ public interface ProductOrderStorePort extends BaseStorage<ProductOrder, String>
 	 * @param price - the product price
 	 * @return found product
 	 */
-	List<ProductOrder> findByProductNameAndProductPrice(String name, Double price);
+	Optional<ProductOrder> findByProductNameAndProductPrice(String name, Double price);
 	
 	/**
 	 * Method to find product between quanity range.

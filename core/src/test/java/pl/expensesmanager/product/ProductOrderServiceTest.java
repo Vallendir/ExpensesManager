@@ -50,17 +50,15 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	void searchAllForProductNameAndProductPrice() {
 		// Given
 		ProductOrder expectedOrder_1 = createProductOrder();
-		ProductOrder expectedOrder_2 = createProductOrder();
 		
-		List<ProductOrder> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
-		
-		when(storage.findByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(expectedOrderList);
+		when(storage.findByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(
+			Optional.of(expectedOrder_1));
 		
 		// When
-		List<ProductOrder> actualOrderList = service.searchAllByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE);
+		Optional<ProductOrder> actualOrder = service.searchAllByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE);
 		
 		// Then
-		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
+		assertThat(actualOrder.get()).isEqualTo(expectedOrder_1);
 	}
 	
 	@Test

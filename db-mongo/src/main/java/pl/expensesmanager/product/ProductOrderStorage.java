@@ -27,11 +27,9 @@ public class ProductOrderStorage extends BaseMongoStorage implements ProductOrde
 	}
 	
 	@Override
-	public List<ProductOrder> findByProductNameAndProductPrice(String name, Double price) {
+	public Optional<ProductOrder> findByProductNameAndProductPrice(String name, Double price) {
 		return repository.findByProductNameAndProductPrice(name, price)
-		                 .stream()
-		                 .map(this::map)
-		                 .collect(Collectors.toList());
+		                 .map(this::map);
 	}
 	
 	@Override

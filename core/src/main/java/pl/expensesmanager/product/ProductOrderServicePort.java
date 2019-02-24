@@ -3,6 +3,7 @@ package pl.expensesmanager.product;
 import pl.expensesmanager.base.BaseService;
 
 import java.util.List;
+import java.util.Optional;
 
 interface ProductOrderServicePort extends BaseService<ProductOrder, String> {
 	
@@ -21,7 +22,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrder, String> {
 	 * @param price - the product price
 	 * @return found product
 	 */
-	List<ProductOrder> searchAllByProductNameAndProductPrice(String name, Double price);
+	Optional<ProductOrder> searchAllByProductNameAndProductPrice(String name, Double price);
 	
 	/**
 	 * Method to search product between quanity range.

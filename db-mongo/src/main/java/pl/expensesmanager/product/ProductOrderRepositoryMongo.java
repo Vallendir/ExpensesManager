@@ -2,9 +2,11 @@ package pl.expensesmanager.product;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Profile("dev")
 @Repository
@@ -16,6 +18,7 @@ public interface ProductOrderRepositoryMongo extends MongoRepository<ProductOrde
 	 * @param name - the product name
 	 * @return found products
 	 */
+	@Query(value = "{'product.name' : ?0}")
 	List<ProductOrderDocument> findByProductName(String name);
 	
 	/**
@@ -25,7 +28,8 @@ public interface ProductOrderRepositoryMongo extends MongoRepository<ProductOrde
 	 * @param price - the product price
 	 * @return found product
 	 */
-	List<ProductOrderDocument> findByProductNameAndProductPrice(String name, Double price);
+	@Query(value = "{'product.name' : ?0, 'product.price' : ?1}")
+	Optional<ProductOrderDocument> findByProductNameAndProductPrice(String name, Double price);
 	
 	/**
 	 * Method to find product between quanity range.
