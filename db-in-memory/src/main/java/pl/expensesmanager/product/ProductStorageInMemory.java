@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class ProductStorageInMemory extends IdValidationPort implements ProductStorePort {
 	
 	@Override
-	public Optional<ProductPort> findByName(String name) {
+	public Optional<Product> findByName(String name) {
 		return ProductSimulatedData.LIST.stream()
 		                                .filter(product -> product.getName()
 		                                                          .equals(name))
@@ -22,7 +22,7 @@ public class ProductStorageInMemory extends IdValidationPort implements ProductS
 	}
 	
 	@Override
-	public List<ProductPort> findByPrice(Double price) {
+	public List<Product> findByPrice(Double price) {
 		return ProductSimulatedData.LIST.stream()
 		                                .filter(product -> product.getPrice()
 		                                                          .equals(price))
@@ -30,28 +30,28 @@ public class ProductStorageInMemory extends IdValidationPort implements ProductS
 	}
 	
 	@Override
-	public List<ProductPort> findByPriceBetween(Double min, Double max) {
+	public List<Product> findByPriceBetween(Double min, Double max) {
 		return ProductSimulatedData.LIST.stream()
 		                                .filter(product -> product.getPrice() > min && product.getPrice() < max)
 		                                .collect(Collectors.toList());
 	}
 	
 	@Override
-	public List<ProductPort> findByPriceGreaterThan(Double price) {
+	public List<Product> findByPriceGreaterThan(Double price) {
 		return ProductSimulatedData.LIST.stream()
 		                                .filter(product -> product.getPrice() > price)
 		                                .collect(Collectors.toList());
 	}
 	
 	@Override
-	public List<ProductPort> findByPriceLessThan(Double price) {
+	public List<Product> findByPriceLessThan(Double price) {
 		return ProductSimulatedData.LIST.stream()
 		                                .filter(product -> product.getPrice() < price)
 		                                .collect(Collectors.toList());
 	}
 	
 	@Override
-	public ProductPort save(ProductPort object) {
+	public Product save(Product object) {
 		ProductSimulatedData.LIST.add(object);
 		
 		return object;
@@ -64,7 +64,7 @@ public class ProductStorageInMemory extends IdValidationPort implements ProductS
 	}
 	
 	@Override
-	public Optional<ProductPort> findById(String id) {
+	public Optional<Product> findById(String id) {
 		return ProductSimulatedData.LIST.stream()
 		                                .filter(product -> product.getId()
 		                                                          .equals(id))
@@ -72,7 +72,7 @@ public class ProductStorageInMemory extends IdValidationPort implements ProductS
 	}
 	
 	@Override
-	public List<ProductPort> findAll() {
+	public List<Product> findAll() {
 		return ProductSimulatedData.LIST;
 	}
 	

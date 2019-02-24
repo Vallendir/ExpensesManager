@@ -18,12 +18,12 @@ class ProductService implements ProductServicePort {
 	private final ProductStorePort storage;
 	
 	@Override
-	public Optional<ProductPort> searchByName(String name) {
+	public Optional<Product> searchByName(String name) {
 		return storage.findByName(ProductValidator.validateName(name));
 	}
 	
 	@Override
-	public List<ProductPort> searchAllByPriceRange(Double min, Double max) {
+	public List<Product> searchAllByPriceRange(Double min, Double max) {
 		if (min > max) {
 			throw minBiggerThanMaxException();
 		}
@@ -32,42 +32,42 @@ class ProductService implements ProductServicePort {
 	}
 	
 	@Override
-	public List<ProductPort> searchAllExpensiveThan(Double price) {
+	public List<Product> searchAllExpensiveThan(Double price) {
 		return storage.findByPriceGreaterThan(ProductValidator.validatePrice(price));
 	}
 	
 	@Override
-	public List<ProductPort> searchAllCheaperThan(Double price) {
+	public List<Product> searchAllCheaperThan(Double price) {
 		return storage.findByPriceLessThan(ProductValidator.validatePrice(price));
 	}
 	
 	@Override
-	public ProductPort create(ProductPort object) {
+	public Product create(Product object) {
 		ProductValidator.validateProduct(object);
 		
 		return storage.save(object);
 	}
 	
 	@Override
-	public ProductPort update(ProductPort object) {
+	public Product update(Product object) {
 		ProductValidator.validateProduct(object);
 		
 		return storage.save(object);
 	}
 	
 	@Override
-	public ProductPort update(ProductPort originalObject, ProductPort changes) {
+	public Product update(Product originalObject, Product changes) {
 		checkChangesInProduct(changes);
 		
 		return storage.save(MergeUtil.merge(originalObject, changes));
 	}
 	
 	@Override
-	public ProductPort update(ProductPort changes, String id) {
+	public Product update(Product changes, String id) {
 		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		checkChangesInProduct(changes);
 		
-		Optional<ProductPort> originalObject = searchById(id);
+		Optional<Product> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
 			throw productNotFoundException();
 		}
@@ -82,17 +82,17 @@ class ProductService implements ProductServicePort {
 	}
 	
 	@Override
-	public Optional<ProductPort> searchById(String id) {
+	public Optional<Product> searchById(String id) {
 		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		return storage.findById(id);
 	}
 	
 	@Override
-	public List<ProductPort> searchAll() {
+	public List<Product> searchAll() {
 		return storage.findAll();
 	}
 	
-	private void checkChangesInProduct(ProductPort changes) {
+	private void checkChangesInProduct(Product changes) {
 		if (changes.getName() != null) {
 			ProductValidator.validateName(changes.getName());
 		}

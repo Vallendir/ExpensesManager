@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class BudgetStorageInMemory extends IdValidationPort implements BudgetStorePort {
 	
 	@Override
-	public Optional<BudgetPort> findByName(String name) {
+	public Optional<Budget> findByName(String name) {
 		return BudgetSimulatedData.LIST.stream()
 		                               .filter(budget -> budget.getName()
 		                                                       .equals(name))
@@ -22,7 +22,7 @@ public class BudgetStorageInMemory extends IdValidationPort implements BudgetSto
 	}
 	
 	@Override
-	public List<BudgetPort> findByBudgetValue(Double budgetValue) {
+	public List<Budget> findByBudgetValue(Double budgetValue) {
 		return BudgetSimulatedData.LIST.stream()
 		                               .filter(budget -> budget.getBudgetValue()
 		                                                       .equals(budgetValue))
@@ -30,36 +30,36 @@ public class BudgetStorageInMemory extends IdValidationPort implements BudgetSto
 	}
 	
 	@Override
-	public List<BudgetPort> findByBudgetValueBetween(Double min, Double max) {
+	public List<Budget> findByBudgetValueBetween(Double min, Double max) {
 		return BudgetSimulatedData.LIST.stream()
 		                               .filter(budget -> budget.getBudgetValue() > min && budget.getBudgetValue() < max)
 		                               .collect(Collectors.toList());
 	}
 	
 	@Override
-	public List<BudgetPort> findByBudgetValueGreaterThan(Double budgetValue) {
+	public List<Budget> findByBudgetValueGreaterThan(Double budgetValue) {
 		return BudgetSimulatedData.LIST.stream()
 		                               .filter(budget -> budget.getBudgetValue() > budgetValue)
 		                               .collect(Collectors.toList());
 	}
 	
 	@Override
-	public List<BudgetPort> findByBudgetValueLessThan(Double budgetValue) {
+	public List<Budget> findByBudgetValueLessThan(Double budgetValue) {
 		return BudgetSimulatedData.LIST.stream()
 		                               .filter(budget -> budget.getBudgetValue() < budgetValue)
 		                               .collect(Collectors.toList());
 	}
 	
 	@Override
-	public BudgetPort save(BudgetPort object) {
+	public Budget save(Budget object) {
 		BudgetSimulatedData.LIST.add(object);
 		return object;
 		
 	}
 	
 	/*@Override
-	public BudgetPort update(BudgetPort object) {
-		Optional<BudgetPort> result = BudgetSimulatedData.LIST.stream()
+	public Budget update(Budget object) {
+		Optional<Budget> result = BudgetSimulatedData.LIST.stream()
 		                                                      .filter(budget -> budget.getId()
 		                                                                              .equals(object.getId()))
 		                                                      .findFirst();
@@ -68,7 +68,7 @@ public class BudgetStorageInMemory extends IdValidationPort implements BudgetSto
 			return null;
 		}
 		
-		BudgetPort updatedBudget = MergeUtil.merge(result.get(), object);
+		Budget updatedBudget = MergeUtil.merge(result.get(), object);
 		BudgetSimulatedData.LIST.remove(result.get());
 		BudgetSimulatedData.LIST.save(updatedBudget);
 		
@@ -77,8 +77,8 @@ public class BudgetStorageInMemory extends IdValidationPort implements BudgetSto
 	}
 	
 	@Override
-	public BudgetPort update(BudgetPort originalObject, BudgetPort changes) {
-		Optional<BudgetPort> result = BudgetSimulatedData.LIST.stream()
+	public Budget update(Budget originalObject, Budget changes) {
+		Optional<Budget> result = BudgetSimulatedData.LIST.stream()
 		                                                      .filter(budget -> budget.getId()
 		                                                                              .equals(originalObject.getId()))
 		                                                      .findFirst();
@@ -87,7 +87,7 @@ public class BudgetStorageInMemory extends IdValidationPort implements BudgetSto
 			return null;
 		}
 		
-		BudgetPort updatedBudget = MergeUtil.merge(result.get(), changes);
+		Budget updatedBudget = MergeUtil.merge(result.get(), changes);
 		
 		BudgetSimulatedData.LIST.remove(result.get());
 		BudgetSimulatedData.LIST.save(updatedBudget);
@@ -97,8 +97,8 @@ public class BudgetStorageInMemory extends IdValidationPort implements BudgetSto
 	}
 	
 	@Override
-	public BudgetPort update(String id, BudgetPort changes) {
-		Optional<BudgetPort> result = BudgetSimulatedData.LIST.stream()
+	public Budget update(String id, Budget changes) {
+		Optional<Budget> result = BudgetSimulatedData.LIST.stream()
 		                                                      .filter(budget -> budget.getId()
 		                                                                              .equals(id))
 		                                                      .findFirst();
@@ -107,7 +107,7 @@ public class BudgetStorageInMemory extends IdValidationPort implements BudgetSto
 			return null;
 		}
 		
-		BudgetPort updatedBudget = MergeUtil.merge(result.get(), changes);
+		Budget updatedBudget = MergeUtil.merge(result.get(), changes);
 		
 		BudgetSimulatedData.LIST.remove(BudgetSimulatedData.LIST.indexOf(result.get()));
 		BudgetSimulatedData.LIST.save(updatedBudget);
@@ -122,7 +122,7 @@ public class BudgetStorageInMemory extends IdValidationPort implements BudgetSto
 	}
 	
 	@Override
-	public Optional<BudgetPort> findById(String id) {
+	public Optional<Budget> findById(String id) {
 		return BudgetSimulatedData.LIST.stream()
 		                               .filter(budget -> budget.getId()
 		                                                       .equals(id))
@@ -130,7 +130,7 @@ public class BudgetStorageInMemory extends IdValidationPort implements BudgetSto
 	}
 	
 	@Override
-	public List<BudgetPort> findAll() {
+	public List<Budget> findAll() {
 		return BudgetSimulatedData.LIST;
 	}
 	

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class BillOfSaleStorageInMemory extends IdValidationPort implements BillOfSaleStorePort {
 	
 	@Override
-	public Optional<BillOfSalePort> findByDescription(String description) {
+	public Optional<BillOfSale> findByDescription(String description) {
 		return BillOfSaleSimulatedData.LIST.stream()
 		                                   .filter(billOfSale -> billOfSale.getDescription()
 		                                                                   .equals(description))
@@ -23,7 +23,7 @@ public class BillOfSaleStorageInMemory extends IdValidationPort implements BillO
 	}
 	
 	@Override
-	public List<BillOfSalePort> findByBoughtDate(Instant boughtDate) {
+	public List<BillOfSale> findByBoughtDate(Instant boughtDate) {
 		return BillOfSaleSimulatedData.LIST.stream()
 		                                   .filter(billOfSale -> billOfSale.getBoughtDate()
 		                                                                   .equals(boughtDate))
@@ -31,7 +31,7 @@ public class BillOfSaleStorageInMemory extends IdValidationPort implements BillO
 	}
 	
 	@Override
-	public List<BillOfSalePort> findByBoughtDateBetween(Instant min, Instant max) {
+	public List<BillOfSale> findByBoughtDateBetween(Instant min, Instant max) {
 		return BillOfSaleSimulatedData.LIST.stream()
 		                                   .filter(billOfSale -> billOfSale.getBoughtDate()
 		                                                                   .isAfter(min) && billOfSale.getBoughtDate()
@@ -40,7 +40,7 @@ public class BillOfSaleStorageInMemory extends IdValidationPort implements BillO
 	}
 	
 	@Override
-	public BillOfSalePort save(BillOfSalePort object) {
+	public BillOfSale save(BillOfSale object) {
 		BillOfSaleSimulatedData.LIST.add(object);
 		return object;
 		
@@ -53,7 +53,7 @@ public class BillOfSaleStorageInMemory extends IdValidationPort implements BillO
 	}
 	
 	@Override
-	public Optional<BillOfSalePort> findById(String id) {
+	public Optional<BillOfSale> findById(String id) {
 		return BillOfSaleSimulatedData.LIST.stream()
 		                                   .filter(billOfSale -> billOfSale.getId()
 		                                                                   .equals(id))
@@ -61,7 +61,7 @@ public class BillOfSaleStorageInMemory extends IdValidationPort implements BillO
 	}
 	
 	@Override
-	public List<BillOfSalePort> findAll() {
+	public List<BillOfSale> findAll() {
 		return BillOfSaleSimulatedData.LIST;
 	}
 	

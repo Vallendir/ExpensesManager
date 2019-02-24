@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.expensesmanager.billofsale.BillOfSalePort;
+import pl.expensesmanager.billofsale.BillOfSale;
 
 import java.util.List;
 
@@ -22,6 +22,6 @@ public class BudgetDocument {
 	
 	private Double budgetValue;
 	
-	private List<BillOfSalePort> billsOfSaleList;
+	private List<BillOfSale> billsOfSaleList;
 	
 }

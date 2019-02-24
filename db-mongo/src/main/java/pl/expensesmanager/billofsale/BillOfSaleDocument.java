@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.expensesmanager.product.ProductOrderPort;
+import pl.expensesmanager.product.ProductOrder;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,7 +19,7 @@ public class BillOfSaleDocument {
 	
 	private String id;
 	
-	private List<ProductOrderPort> productList;
+	private List<ProductOrder> productList;
 	
 	private Instant boughtDate;
 	

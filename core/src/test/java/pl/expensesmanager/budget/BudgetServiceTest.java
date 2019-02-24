@@ -30,12 +30,12 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void searchForName() {
 		// Given
-		BudgetPort expectedBudget_1 = createBudget();
+		Budget expectedBudget_1 = createBudget();
 		
 		when(storage.findByName(BUDGET_NAME)).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		BudgetPort actualBudget = service.searchByName(BUDGET_NAME)
+		Budget actualBudget = service.searchByName(BUDGET_NAME)
 		                                 .get();
 		
 		// Then
@@ -45,15 +45,15 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForBudgetValue() {
 		// Given
-		BudgetPort expectedBudget_1 = createBudget();
-		BudgetPort expectedBudget_2 = createBudget();
+		Budget expectedBudget_1 = createBudget();
+		Budget expectedBudget_2 = createBudget();
 		
-		List<BudgetPort> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findByBudgetValue(BUDGET_VALUE)).thenReturn(expectedBudgets);
 		
 		// When
-		List<BudgetPort> actualBudgets = service.searchAllByValue(BUDGET_VALUE);
+		List<Budget> actualBudgets = service.searchAllByValue(BUDGET_VALUE);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -62,15 +62,15 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForBudgetValueRange() {
 		// Given
-		BudgetPort expectedBudget_1 = createBudget();
-		BudgetPort expectedBudget_2 = createBudget();
+		Budget expectedBudget_1 = createBudget();
+		Budget expectedBudget_2 = createBudget();
 		
-		List<BudgetPort> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findByBudgetValueBetween(BUDGET_VALUE_MIN, BUDGET_VALUE_MAX)).thenReturn(expectedBudgets);
 		
 		// When
-		List<BudgetPort> actualBudgets = service.searchAllByValueRange(BUDGET_VALUE_MIN, BUDGET_VALUE_MAX);
+		List<Budget> actualBudgets = service.searchAllByValueRange(BUDGET_VALUE_MIN, BUDGET_VALUE_MAX);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -79,15 +79,15 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForBudgetValueGreater() {
 		// Given
-		BudgetPort expectedBudget_1 = createBudget();
-		BudgetPort expectedBudget_2 = createBudget();
+		Budget expectedBudget_1 = createBudget();
+		Budget expectedBudget_2 = createBudget();
 		
-		List<BudgetPort> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findByBudgetValueGreaterThan(BUDGET_VALUE_MIN)).thenReturn(expectedBudgets);
 		
 		// When
-		List<BudgetPort> actualBudgets = service.searchAllByBiggerValueThan(BUDGET_VALUE_MIN);
+		List<Budget> actualBudgets = service.searchAllByBiggerValueThan(BUDGET_VALUE_MIN);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -96,15 +96,15 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForBudgetValueLower() {
 		// Given
-		BudgetPort expectedBudget_1 = createBudget();
-		BudgetPort expectedBudget_2 = createBudget();
+		Budget expectedBudget_1 = createBudget();
+		Budget expectedBudget_2 = createBudget();
 		
-		List<BudgetPort> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findByBudgetValueLessThan(BUDGET_VALUE_MAX)).thenReturn(expectedBudgets);
 		
 		// When
-		List<BudgetPort> actualBudgets = service.searchAllByLessValueThan(BUDGET_VALUE_MAX);
+		List<Budget> actualBudgets = service.searchAllByLessValueThan(BUDGET_VALUE_MAX);
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
@@ -113,13 +113,13 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void create() {
 		// Given
-		BudgetPort expectedToAdd = createBudget();
-		BudgetPort expectedBudget = createBudget();
+		Budget expectedToAdd = createBudget();
+		Budget expectedBudget = createBudget();
 		
 		when(storage.save(expectedToAdd)).thenReturn(expectedBudget);
 		
 		// When
-		BudgetPort actualBudget = service.create(expectedToAdd);
+		Budget actualBudget = service.create(expectedToAdd);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
@@ -128,13 +128,13 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void updateByObject() {
 		// Given
-		BudgetPort expectedToChange = createBudget();
-		BudgetPort expectedBudget = createBudget(500.5);
+		Budget expectedToChange = createBudget();
+		Budget expectedBudget = createBudget(500.5);
 		
 		when(storage.save(expectedToChange)).thenReturn(expectedBudget);
 		
 		// When
-		BudgetPort actualBudget = service.update(expectedToChange);
+		Budget actualBudget = service.update(expectedToChange);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
@@ -143,14 +143,14 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void updateById() {
 		// Given
-		BudgetPort expectedChanges = createBudget(500.5);
-		BudgetPort expectedBudget = createBudget();
+		Budget expectedChanges = createBudget(500.5);
+		Budget expectedBudget = createBudget();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget));
 		when(storage.save(MergeUtil.merge(expectedChanges, expectedChanges))).thenReturn(expectedBudget);
 		
 		// When
-		BudgetPort actualBudget = service.update(expectedChanges, ID);
+		Budget actualBudget = service.update(expectedChanges, ID);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
@@ -159,14 +159,14 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void updateOriginalAndChanges() {
 		// Given
-		BudgetPort expectedToChange = createBudget();
-		BudgetPort expectedChanges = createBudget(500.5);
-		BudgetPort expectedBudget = createBudget(500.5);
+		Budget expectedToChange = createBudget();
+		Budget expectedChanges = createBudget(500.5);
+		Budget expectedBudget = createBudget(500.5);
 		
 		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedBudget);
 		
 		// When
-		BudgetPort actualBudget = service.update(expectedToChange, expectedChanges);
+		Budget actualBudget = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
@@ -175,12 +175,12 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void searchForId() {
 		// Given
-		BudgetPort expectedBudget_1 = createBudget();
+		Budget expectedBudget_1 = createBudget();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		BudgetPort actualBudget = service.searchById(ID)
+		Budget actualBudget = service.searchById(ID)
 		                                 .get();
 		
 		// Then
@@ -190,23 +190,23 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAll() {
 		// Given
-		BudgetPort expectedBudget_1 = createBudget();
-		BudgetPort expectedBudget_2 = createBudget();
+		Budget expectedBudget_1 = createBudget();
+		Budget expectedBudget_2 = createBudget();
 		
-		List<BudgetPort> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
+		List<Budget> expectedBudgets = List.of(expectedBudget_1, expectedBudget_2);
 		
 		when(storage.findAll()).thenReturn(expectedBudgets);
 		
 		// When
-		List<BudgetPort> actualBudgets = service.searchAll();
+		List<Budget> actualBudgets = service.searchAll();
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
 	}
 	
 	private void budgetListAssertions(
-		List<BudgetPort> actualBudgets, List<BudgetPort> expectedBudgets, BudgetPort expectedBudget_1,
-		BudgetPort expectedBudget_2
+		List<Budget> actualBudgets, List<Budget> expectedBudgets, Budget expectedBudget_1,
+		Budget expectedBudget_2
 	) {
 		assertThat(actualBudgets).isEqualTo(expectedBudgets);
 		assertThat(actualBudgets.size()).isEqualTo(expectedBudgets.size());

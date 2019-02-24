@@ -48,7 +48,7 @@ class ProductValidatorTest extends AbstractCoreTest {
 	@Test
 	void validateProduct() {
 		// Given
-		ProductPort product = createProduct();
+		Product product = createProduct();
 		
 		ThrowingCallable throwable_1 = () -> ProductValidator.validateProduct(null);
 		
@@ -60,8 +60,8 @@ class ProductValidatorTest extends AbstractCoreTest {
 	@Test
 	void validateOrder() {
 		// Given
-		ProductPort product = createProduct();
-		ProductOrderPort order = createProductOrder();
+		Product product = createProduct();
+		ProductOrder order = createProductOrder();
 		
 		ThrowingCallable throwable_1 = () -> ProductValidator.validateProduct(null);
 		ThrowingCallable throwable_2 = () -> ProductValidator.validateOrder(null);

@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-interface BillOfSaleServicePort extends BaseService<BillOfSalePort, String> {
+interface BillOfSaleServicePort extends BaseService<BillOfSale, String> {
 	
 	/**
 	 * Method to search bill of sale by description.
@@ -14,7 +14,7 @@ interface BillOfSaleServicePort extends BaseService<BillOfSalePort, String> {
 	 * @param description - the description of bill of sale
 	 * @return found bill of sale as optional
 	 */
-	Optional<BillOfSalePort> searchByDescription(String description);
+	Optional<BillOfSale> searchByDescription(String description);
 	
 	/**
 	 * Method to search bill of sale by bought date.
@@ -22,7 +22,7 @@ interface BillOfSaleServicePort extends BaseService<BillOfSalePort, String> {
 	 * @param boughtDate - the bought date of bill of sale
 	 * @return found bills of sale list
 	 */
-	List<BillOfSalePort> searchAllByBoughtDate(Instant boughtDate);
+	List<BillOfSale> searchAllByBoughtDate(Instant boughtDate);
 	
 	/**
 	 * Method to search bill of sale by bought date range.
@@ -31,6 +31,6 @@ interface BillOfSaleServicePort extends BaseService<BillOfSalePort, String> {
 	 * @param max - end bought date
 	 * @return found bills of sale list
 	 */
-	List<BillOfSalePort> searchAllByBoughtDateRange(Instant min, Instant max);
+	List<BillOfSale> searchAllByBoughtDateRange(Instant min, Instant max);
 	
 }

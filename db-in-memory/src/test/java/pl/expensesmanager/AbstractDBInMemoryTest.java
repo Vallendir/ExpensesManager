@@ -1,12 +1,12 @@
 package pl.expensesmanager;
 
 import pl.expensesmanager.billofsale.BillOfSale;
-import pl.expensesmanager.billofsale.BillOfSalePort;
+import pl.expensesmanager.billofsale.BillOfSale;
 import pl.expensesmanager.budget.Budget;
 import pl.expensesmanager.product.Product;
 import pl.expensesmanager.product.ProductOrder;
-import pl.expensesmanager.product.ProductOrderPort;
-import pl.expensesmanager.product.ProductPort;
+import pl.expensesmanager.product.ProductOrder;
+import pl.expensesmanager.product.Product;
 
 import java.time.Instant;
 import java.util.List;
@@ -30,12 +30,12 @@ public abstract class AbstractDBInMemoryTest {
 	protected static final Double BUDGET_VALUE = 350.0;
 	
 	
-	protected ProductPort createProduct() {
+	protected Product createProduct() {
 		return createProduct(ID, PRODUCT_NAME, PRODUCT_PRICE);
 	}
 	
-	protected ProductPort createProduct(String id, String name, Double price) {
-		ProductPort expectedProduct = new Product();
+	protected Product createProduct(String id, String name, Double price) {
+		Product expectedProduct = new Product();
 		expectedProduct.setId(id);
 		expectedProduct.setName(name);
 		expectedProduct.setPrice(price);
@@ -43,12 +43,12 @@ public abstract class AbstractDBInMemoryTest {
 		return expectedProduct;
 	}
 	
-	protected ProductPort createProduct(Double price) {
+	protected Product createProduct(Double price) {
 		return createProduct(ID, PRODUCT_NAME, price);
 	}
 	
-	protected ProductOrderPort createProductOrder(Integer quanity) {
-		ProductOrderPort order = new ProductOrder();
+	protected ProductOrder createProductOrder(Integer quanity) {
+		ProductOrder order = new ProductOrder();
 		order.setId(ID);
 		order.setQuanity(quanity);
 		order.setProduct(createProduct(ID, PRODUCT_NAME, PRODUCT_PRICE));
@@ -56,12 +56,12 @@ public abstract class AbstractDBInMemoryTest {
 		return order;
 	}
 	
-	protected ProductOrderPort createProductOrder() {
+	protected ProductOrder createProductOrder() {
 		return createProductOrder(PRODUCT_QUANITY);
 	}
 	
-	protected BillOfSalePort createBillOfSale() {
-		BillOfSalePort billOfSale = new BillOfSale();
+	protected BillOfSale createBillOfSale() {
+		BillOfSale billOfSale = new BillOfSale();
 		billOfSale.setId(ID);
 		billOfSale.setBoughtDate(BOUGHT_DATE);
 		billOfSale.setDescription(BILL_OF_SALE_DESCRIPTION);

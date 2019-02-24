@@ -30,15 +30,15 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForProductName() {
 		// Given
-		ProductOrderPort expectedOrder_1 = createProductOrder();
-		ProductOrderPort expectedOrder_2 = createProductOrder();
+		ProductOrder expectedOrder_1 = createProductOrder();
+		ProductOrder expectedOrder_2 = createProductOrder();
 		
-		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		List<ProductOrder> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
 		
 		when(storage.findByProductName(PRODUCT_NAME)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllByProductName(PRODUCT_NAME);
+		List<ProductOrder> actualOrderList = service.searchAllByProductName(PRODUCT_NAME);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
@@ -47,15 +47,15 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForProductNameAndProductPrice() {
 		// Given
-		ProductOrderPort expectedOrder_1 = createProductOrder();
-		ProductOrderPort expectedOrder_2 = createProductOrder();
+		ProductOrder expectedOrder_1 = createProductOrder();
+		ProductOrder expectedOrder_2 = createProductOrder();
 		
-		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		List<ProductOrder> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
 		
 		when(storage.findByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllByProductNameAndPrice(
+		List<ProductOrder> actualOrderList = service.searchAllByProductNameAndPrice(
 			PRODUCT_NAME, PRODUCT_PRICE);
 		
 		// Then
@@ -65,15 +65,15 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForQuanityRange() {
 		// Given
-		ProductOrderPort expectedOrder_1 = createProductOrder();
-		ProductOrderPort expectedOrder_2 = createProductOrder();
+		ProductOrder expectedOrder_1 = createProductOrder();
+		ProductOrder expectedOrder_2 = createProductOrder();
 		
-		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		List<ProductOrder> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
 		
 		when(storage.findByQuanityBetween(QUANITY_MIN, QUANITY_MAX)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllByQuanityRange(QUANITY_MIN, QUANITY_MAX);
+		List<ProductOrder> actualOrderList = service.searchAllByQuanityRange(QUANITY_MIN, QUANITY_MAX);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
@@ -82,15 +82,15 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForQuanityGreater() {
 		// Given
-		ProductOrderPort expectedOrder_1 = createProductOrder();
-		ProductOrderPort expectedOrder_2 = createProductOrder();
+		ProductOrder expectedOrder_1 = createProductOrder();
+		ProductOrder expectedOrder_2 = createProductOrder();
 		
-		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		List<ProductOrder> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
 		
 		when(storage.findByQuanityGreaterThan(QUANITY_MIN)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllByBiggerQuanityThan(QUANITY_MIN);
+		List<ProductOrder> actualOrderList = service.searchAllByBiggerQuanityThan(QUANITY_MIN);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
@@ -99,15 +99,15 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForQuanityLower() {
 		// Given
-		ProductOrderPort expectedOrder_1 = createProductOrder();
-		ProductOrderPort expectedOrder_2 = createProductOrder();
+		ProductOrder expectedOrder_1 = createProductOrder();
+		ProductOrder expectedOrder_2 = createProductOrder();
 		
-		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		List<ProductOrder> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
 		
 		when(storage.findByQuanityLessThan(QUANITY_MAX)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAllByLessQuanityThan(QUANITY_MAX);
+		List<ProductOrder> actualOrderList = service.searchAllByLessQuanityThan(QUANITY_MAX);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
@@ -116,13 +116,13 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void create() {
 		// Given
-		ProductOrderPort expectedToAdd = createProductOrder();
-		ProductOrderPort expectedOrder = createProductOrder();
+		ProductOrder expectedToAdd = createProductOrder();
+		ProductOrder expectedOrder = createProductOrder();
 		
 		when(storage.save(expectedToAdd)).thenReturn(expectedOrder);
 		
 		// When
-		ProductOrderPort actualOrder = service.create(expectedToAdd);
+		ProductOrder actualOrder = service.create(expectedToAdd);
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder);
@@ -131,14 +131,14 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void updateByObject() {
 		// Given
-		ProductOrderPort expectedToChange = createProductOrder(null);
-		ProductOrderPort expectedOrder = createProductOrder();
+		ProductOrder expectedToChange = createProductOrder(null);
+		ProductOrder expectedOrder = createProductOrder();
 		expectedToChange.setQuanity(PRODUCT_QUANITY);
 		
 		when(storage.save(expectedToChange)).thenReturn(expectedOrder);
 		
 		// When
-		ProductOrderPort actualOrder = service.update(expectedToChange);
+		ProductOrder actualOrder = service.update(expectedToChange);
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder);
@@ -147,17 +147,17 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void updateById() {
 		// Given
-		ProductOrderPort expectedToChange = createProductOrder(null);
-		ProductOrderPort expectedChanges = new ProductOrder();
+		ProductOrder expectedToChange = createProductOrder(null);
+		ProductOrder expectedChanges = new ProductOrder();
 		expectedChanges.setQuanity(PRODUCT_QUANITY);
 		
-		ProductOrderPort expectedOrder = createProductOrder();
+		ProductOrder expectedOrder = createProductOrder();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder));
 		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedOrder);
 		
 		// When
-		ProductOrderPort actualOrder = service.update(expectedChanges, expectedToChange.getId());
+		ProductOrder actualOrder = service.update(expectedChanges, expectedToChange.getId());
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder);
@@ -166,15 +166,15 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void updateOriginalAndChanges() {
 		// Given
-		ProductOrderPort expectedToChange = createProductOrder(null);
-		ProductOrderPort expectedChanges = new ProductOrder();
+		ProductOrder expectedToChange = createProductOrder(null);
+		ProductOrder expectedChanges = new ProductOrder();
 		expectedChanges.setQuanity(PRODUCT_QUANITY);
-		ProductOrderPort expectedOrder = createProductOrder();
+		ProductOrder expectedOrder = createProductOrder();
 		
 		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedOrder);
 		
 		// When
-		ProductOrderPort actualOrder = service.update(expectedToChange, expectedChanges);
+		ProductOrder actualOrder = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder);
@@ -183,12 +183,12 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void searchForId() {
 		// Given
-		ProductOrderPort expectedOrder_1 = createProductOrder();
+		ProductOrder expectedOrder_1 = createProductOrder();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder_1));
 		
 		// When
-		ProductOrderPort actualOrder = service.searchById(ID)
+		ProductOrder actualOrder = service.searchById(ID)
 		                                      .get();
 		
 		// Then
@@ -198,31 +198,31 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAll() {
 		// Given
-		ProductOrderPort expectedOrder_1 = createProductOrder();
-		ProductOrderPort expectedOrder_2 = createProductOrder();
+		ProductOrder expectedOrder_1 = createProductOrder();
+		ProductOrder expectedOrder_2 = createProductOrder();
 		
-		List<ProductOrderPort> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
+		List<ProductOrder> expectedOrderList = List.of(expectedOrder_1, expectedOrder_2);
 		
 		when(storage.findAll()).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrderPort> actualOrderList = service.searchAll();
+		List<ProductOrder> actualOrderList = service.searchAll();
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
 	}
 	
 	private void productOrderListAssertions(
-		List<ProductOrderPort> actualOrderList, List<ProductOrderPort> expectedOrderList,
-		ProductOrderPort expectedOrder_1, ProductOrderPort expectedOrder_2
+		List<ProductOrder> actualOrderList, List<ProductOrder> expectedOrderList,
+		ProductOrder expectedOrder_1, ProductOrder expectedOrder_2
 	) {
 		assertThat(actualOrderList).isEqualTo(expectedOrderList);
 		assertThat(actualOrderList.size()).isEqualTo(expectedOrderList.size());
 		assertThat(actualOrderList).containsExactlyInAnyOrder(expectedOrder_1, expectedOrder_2);
 		assertThat(actualOrderList.stream()
-		                          .mapToDouble(ProductOrderPort::summaryPrice)
+		                          .mapToDouble(ProductOrder::summaryPrice)
 		                          .sum()).isEqualTo(expectedOrderList.stream()
-		                                                             .mapToDouble(ProductOrderPort::summaryPrice)
+		                                                             .mapToDouble(ProductOrder::summaryPrice)
 		                                                             .sum());
 	}
 	

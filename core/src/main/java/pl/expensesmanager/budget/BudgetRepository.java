@@ -5,7 +5,7 @@ import pl.expensesmanager.base.BaseRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface BudgetRepository extends BaseRepository<BudgetPort, String> {
+public interface BudgetRepository extends BaseRepository<Budget, String> {
 	
 	/**
 	 * Method to find budget by name.
@@ -13,7 +13,7 @@ public interface BudgetRepository extends BaseRepository<BudgetPort, String> {
 	 * @param name - the name of budget
 	 * @return found budget as optional
 	 */
-	Optional<BudgetPort> findByName(String name);
+	Optional<Budget> findByName(String name);
 	
 	/**
 	 * Method to find budgets by budget value.
@@ -21,7 +21,7 @@ public interface BudgetRepository extends BaseRepository<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budgets objects
 	 */
-	List<BudgetPort> findByBudgetValue(Double budgetValue);
+	List<Budget> findByBudgetValue(Double budgetValue);
 	
 	/**
 	 * Method to find budgets between budget value range.
@@ -30,7 +30,7 @@ public interface BudgetRepository extends BaseRepository<BudgetPort, String> {
 	 * @param max - maximal budget value
 	 * @return found budget objects
 	 */
-	List<BudgetPort> findByBudgetValueBetween(Double min, Double max);
+	List<Budget> findByBudgetValueBetween(Double min, Double max);
 	
 	/**
 	 * Method to find budgets bigger than value.
@@ -38,7 +38,7 @@ public interface BudgetRepository extends BaseRepository<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<BudgetPort> findByBudgetValueGreaterThan(Double budgetValue);
+	List<Budget> findByBudgetValueGreaterThan(Double budgetValue);
 	
 	/**
 	 * Method to find budgets less than value.
@@ -46,7 +46,7 @@ public interface BudgetRepository extends BaseRepository<BudgetPort, String> {
 	 * @param budgetValue - budget value
 	 * @return found budget objects
 	 */
-	List<BudgetPort> findByBudgetValueLessThan(Double budgetValue);
+	List<Budget> findByBudgetValueLessThan(Double budgetValue);
 	
 	
 }

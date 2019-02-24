@@ -11,8 +11,8 @@ class ProductController implements ProductApi, ProductDocumentation {
 	
 	private final ProductService service;
 	
-	public ProductPort add(Product product) {
-		ProductPort p = new Product();
+	public Product add(Product product) {
+		Product p = new Product();
 		p.setName("jakas nazwa");
 		p.setPrice(5.75);
 		
@@ -22,11 +22,11 @@ class ProductController implements ProductApi, ProductDocumentation {
 		return service.create(product);
 	}
 	
-	/*public ProductPort update(Product product) {
+	/*public Product update(Product product) {
 		return service.update(product);
 	}
 	
-	public ProductPort update(String id, Product product) {
+	public Product update(String id, Product product) {
 		return service.update(product, id);
 	}*/
 	
@@ -34,9 +34,9 @@ class ProductController implements ProductApi, ProductDocumentation {
 		service.removeById(id);
 	}
 	
-	public ProductPort searchForId(String id) {
+	public Product searchForId(String id) {
 		// FIXME
-		ProductPort p = service.searchById(id)
+		Product p = service.searchById(id)
 		                       .get();
 		
 		System.err.println(p);
@@ -44,21 +44,21 @@ class ProductController implements ProductApi, ProductDocumentation {
 		return p;
 	}
 	
-	public ProductPort searchForName(String name) {
+	public Product searchForName(String name) {
 		// FIXME
 		return service.searchByName(name)
 		              .get();
 	}
 	
-	public List<ProductPort> searchAllForPriceRange(Double min, Double max) {
+	public List<Product> searchAllForPriceRange(Double min, Double max) {
 		return service.searchAllByPriceRange(min, max);
 	}
 	
-	public List<ProductPort> searchAllForPriceGreater(Double price) {
+	public List<Product> searchAllForPriceGreater(Double price) {
 		return service.searchAllExpensiveThan(price);
 	}
 	
-	public List<ProductPort> searchAllForPriceLower(Double price) {
+	public List<Product> searchAllForPriceLower(Double price) {
 		return service.searchAllCheaperThan(price);
 	}
 	

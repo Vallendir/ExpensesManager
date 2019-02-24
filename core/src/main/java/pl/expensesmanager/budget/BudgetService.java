@@ -16,17 +16,17 @@ class BudgetService implements BudgetServicePort {
 	private final BudgetStorePort storage;
 	
 	@Override
-	public Optional<BudgetPort> searchByName(String name) {
+	public Optional<Budget> searchByName(String name) {
 		return storage.findByName(BudgetValidator.validateName(name));
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllByValue(Double budgetValue) {
+	public List<Budget> searchAllByValue(Double budgetValue) {
 		return storage.findByBudgetValue(BudgetValidator.validateBudgetValue(budgetValue));
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllByValueRange(Double min, Double max) {
+	public List<Budget> searchAllByValueRange(Double min, Double max) {
 		if (min > max) {
 			throw new RuntimeException();
 		}
@@ -36,41 +36,41 @@ class BudgetService implements BudgetServicePort {
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllByBiggerValueThan(Double budgetValue) {
+	public List<Budget> searchAllByBiggerValueThan(Double budgetValue) {
 		return storage.findByBudgetValueGreaterThan(BudgetValidator.validateBudgetValue(budgetValue));
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllByLessValueThan(Double budgetValue) {
+	public List<Budget> searchAllByLessValueThan(Double budgetValue) {
 		return storage.findByBudgetValueLessThan(BudgetValidator.validateBudgetValue(budgetValue));
 	}
 	
 	@Override
-	public BudgetPort create(BudgetPort object) {
+	public Budget create(Budget object) {
 		BudgetValidator.validateBudget(object);
 		
 		return storage.save(object);
 	}
 	
 	@Override
-	public BudgetPort update(BudgetPort object) {
+	public Budget update(Budget object) {
 		BudgetValidator.validateBudget(object);
 		
 		return storage.save(object);
 	}
 	
 	@Override
-	public BudgetPort update(BudgetPort originalObject, BudgetPort changes) {
+	public Budget update(Budget originalObject, Budget changes) {
 		checkChangesInBudget(changes);
 		
 		return storage.save(MergeUtil.merge(originalObject, changes));
 	}
 	
 	@Override
-	public BudgetPort update(BudgetPort changes, String id) {
+	public Budget update(Budget changes, String id) {
 		checkChangesInBudget(changes);
 		
-		Optional<BudgetPort> originalObject = searchById(id);
+		Optional<Budget> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
 			throw invalidIdFormatException();
 		}
@@ -84,16 +84,16 @@ class BudgetService implements BudgetServicePort {
 	}
 	
 	@Override
-	public Optional<BudgetPort> searchById(String id) {
+	public Optional<Budget> searchById(String id) {
 		return storage.findById(id);
 	}
 	
 	@Override
-	public List<BudgetPort> searchAll() {
+	public List<Budget> searchAll() {
 		return storage.findAll();
 	}
 	
-	private void checkChangesInBudget(BudgetPort changes) {
+	private void checkChangesInBudget(Budget changes) {
 		if (changes.getName() != null) {
 			BudgetValidator.validateName(changes.getName());
 		}

@@ -1,6 +1,6 @@
 package pl.expensesmanager.budget;
 
-import pl.expensesmanager.billofsale.BillOfSalePort;
+import pl.expensesmanager.billofsale.BillOfSale;
 import pl.expensesmanager.billofsale.BillOfSaleSimulatedData;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,13 @@ public class BudgetSimulatedData {
 	
 	public static final int LIST_SIZE = 2;
 	
-	public static List<BudgetPort> LIST;
+	public static List<Budget> LIST;
 	
 	static {
 		LIST = new ArrayList<>();
 		double budgetValue = 0.0;
 		
-		List<BillOfSalePort> billsOfSale_1 = List.of(
+		List<BillOfSale> billsOfSale_1 = List.of(
 			BillOfSaleSimulatedData.LIST.get(0),
 			BillOfSaleSimulatedData.LIST.get(2),
 			BillOfSaleSimulatedData.LIST.get(3),
@@ -44,7 +44,7 @@ public class BudgetSimulatedData {
 		createBudget(1, billsOfSale_1, budgetValue);
 		
 		
-		List<BillOfSalePort> billsOfSale_2 = List.of(BillOfSaleSimulatedData.LIST.get(1),
+		List<BillOfSale> billsOfSale_2 = List.of(BillOfSaleSimulatedData.LIST.get(1),
 		                                             BillOfSaleSimulatedData.LIST.get(4),
 		                                             BillOfSaleSimulatedData.LIST.get(6)
 		);
@@ -65,8 +65,8 @@ public class BudgetSimulatedData {
 		createBudget(2, billsOfSale_2, budgetValue);
 	}
 	
-	private static void createBudget(int id, List<BillOfSalePort> billsOfSale, double budgetValue) {
-		BudgetPort budget = new Budget(NAME_ALIAS + id, budgetValue, billsOfSale);
+	private static void createBudget(int id, List<BillOfSale> billsOfSale, double budgetValue) {
+		Budget budget = new Budget(NAME_ALIAS + id, budgetValue, billsOfSale);
 		budget.setId(ID_ALIAS + id);
 		
 		LIST.add(budget);

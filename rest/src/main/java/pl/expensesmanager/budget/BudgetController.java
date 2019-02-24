@@ -13,15 +13,15 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 	
 	private final BudgetServicePort service;
 	
-	public BudgetPort add(Budget budget) {
+	public Budget add(Budget budget) {
 		return service.create(budget);
 	}
 	
-	/*public BudgetPort update(Budget budget) {
+	/*public Budget update(Budget budget) {
 		return service.update(budget);
 	}
 	
-	public BudgetPort update(String id, Budget budget) {
+	public Budget update(String id, Budget budget) {
 		return service.update(budget, id);
 	}*/
 	
@@ -29,31 +29,31 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 		service.removeById(id);
 	}
 	
-	public BudgetPort searchForId(String id) {
+	public Budget searchForId(String id) {
 		// FIXME
 		return service.searchById(id)
 		              .get();
 	}
 	
-	public BudgetPort searchForName(String name) {
+	public Budget searchForName(String name) {
 		// FIXME
 		return service.searchByName(name)
 		              .get();
 	}
 	
-	public List<BudgetPort> searchAllForBudgetValue(Double budgetValue) {
+	public List<Budget> searchAllForBudgetValue(Double budgetValue) {
 		return service.searchAllByValue(budgetValue);
 	}
 	
-	public List<BudgetPort> searchAllForBudgetValueRange(Double min, Double max) {
+	public List<Budget> searchAllForBudgetValueRange(Double min, Double max) {
 		return service.searchAllByValueRange(min, max);
 	}
 	
-	public List<BudgetPort> searchAllForBudgetValueGreater(Double budgetValue) {
+	public List<Budget> searchAllForBudgetValueGreater(Double budgetValue) {
 		return service.searchAllByBiggerValueThan(budgetValue);
 	}
 	
-	public List<BudgetPort> searchAllForBudgetValueLower(Double budgetValue) {
+	public List<Budget> searchAllForBudgetValueLower(Double budgetValue) {
 		return service.searchAllByLessValueThan(budgetValue);
 	}
 	

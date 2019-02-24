@@ -4,7 +4,7 @@ import pl.expensesmanager.base.BaseService;
 
 import java.util.List;
 
-interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> {
+interface ProductOrderServicePort extends BaseService<ProductOrder, String> {
 	
 	/**
 	 * Method to find order by product name.
@@ -12,7 +12,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param name - the product name
 	 * @return found products
 	 */
-	List<ProductOrderPort> searchAllByProductName(String name);
+	List<ProductOrder> searchAllByProductName(String name);
 	
 	/**
 	 * Method to find order by product name and price.
@@ -21,7 +21,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param price - the product price
 	 * @return found product
 	 */
-	List<ProductOrderPort> searchAllByProductNameAndPrice(String name, Double price);
+	List<ProductOrder> searchAllByProductNameAndPrice(String name, Double price);
 	
 	/**
 	 * Method to search product between quanity range.
@@ -30,7 +30,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param max - maximal quanity
 	 * @return found product objects
 	 */
-	List<ProductOrderPort> searchAllByQuanityRange(Integer min, Integer max);
+	List<ProductOrder> searchAllByQuanityRange(Integer min, Integer max);
 	
 	/**
 	 * Method to search product which have more quanity than value.
@@ -38,7 +38,7 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param quanity - quanity
 	 * @return found product objects
 	 */
-	List<ProductOrderPort> searchAllByBiggerQuanityThan(Integer quanity);
+	List<ProductOrder> searchAllByBiggerQuanityThan(Integer quanity);
 	
 	/**
 	 * Method to search product which have more quanity than value.
@@ -46,6 +46,6 @@ interface ProductOrderServicePort extends BaseService<ProductOrderPort, String> 
 	 * @param quanity - quanity
 	 * @return found product objects
 	 */
-	List<ProductOrderPort> searchAllByLessQuanityThan(Integer quanity);
+	List<ProductOrder> searchAllByLessQuanityThan(Integer quanity);
 	
 }

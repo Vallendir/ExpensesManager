@@ -5,7 +5,7 @@ import pl.expensesmanager.base.BaseRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository<T extends ProductPort> extends BaseRepository<T, String> {
+public interface ProductRepository<T> extends BaseRepository<T, String> {
 	
 	/**
 	 * Method to find product by name.

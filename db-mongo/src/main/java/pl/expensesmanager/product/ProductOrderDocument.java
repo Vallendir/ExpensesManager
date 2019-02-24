@@ -15,7 +15,7 @@ public class ProductOrderDocument {
 	
 	private String id;
 	
-	private ProductPort product;
+	private Product product;
 	
 	private Integer quanity;
 	

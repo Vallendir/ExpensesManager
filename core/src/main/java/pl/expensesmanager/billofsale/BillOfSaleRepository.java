@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-public interface BillOfSaleRepository extends BaseRepository<BillOfSalePort, String> {
+public interface BillOfSaleRepository extends BaseRepository<BillOfSale, String> {
 	
 	/**
 	 * Method to find bill of sale by description.
@@ -14,7 +14,7 @@ public interface BillOfSaleRepository extends BaseRepository<BillOfSalePort, Str
 	 * @param description - the description of bill of sale
 	 * @return found bill of sale as optional
 	 */
-	Optional<BillOfSalePort> findByDescription(String description);
+	Optional<BillOfSale> findByDescription(String description);
 	
 	/**
 	 * Method to find bill of sale by bought date.
@@ -22,7 +22,7 @@ public interface BillOfSaleRepository extends BaseRepository<BillOfSalePort, Str
 	 * @param boughtDate - the bought date of bill of sale
 	 * @return found bills of sale list
 	 */
-	List<BillOfSalePort> findByBoughtDate(Instant boughtDate);
+	List<BillOfSale> findByBoughtDate(Instant boughtDate);
 	
 	/**
 	 * Method to find bill of sale by bought date range.
@@ -31,6 +31,6 @@ public interface BillOfSaleRepository extends BaseRepository<BillOfSalePort, Str
 	 * @param max - end bought date
 	 * @return found bills of sale list
 	 */
-	List<BillOfSalePort> findByBoughtDateBetween(Instant min, Instant max);
+	List<BillOfSale> findByBoughtDateBetween(Instant min, Instant max);
 	
 }

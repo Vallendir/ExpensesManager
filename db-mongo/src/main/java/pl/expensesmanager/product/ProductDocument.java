@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "product")
-public class ProductDocument implements ProductPort {
+public class ProductDocument {
 	
 	private String id;
 	

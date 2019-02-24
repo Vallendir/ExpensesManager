@@ -17,32 +17,32 @@ public class BudgetStorage extends BaseMongoStorage implements BudgetStorePort {
 	private final BudgetRepositoryMongo repository;
 	
 	@Override
-	public Optional<BudgetPort> findByName(String name) {
+	public Optional<Budget> findByName(String name) {
 		return repository.findByName(name);
 	}
 	
 	@Override
-	public List<BudgetPort> findByBudgetValue(Double budgetValue) {
+	public List<Budget> findByBudgetValue(Double budgetValue) {
 		return repository.findByBudgetValue(budgetValue);
 	}
 	
 	@Override
-	public List<BudgetPort> findByBudgetValueBetween(Double min, Double max) {
+	public List<Budget> findByBudgetValueBetween(Double min, Double max) {
 		return repository.findByBudgetValueBetween(min, max);
 	}
 	
 	@Override
-	public List<BudgetPort> findByBudgetValueGreaterThan(Double budgetValue) {
+	public List<Budget> findByBudgetValueGreaterThan(Double budgetValue) {
 		return repository.findByBudgetValueGreaterThan(budgetValue);
 	}
 	
 	@Override
-	public List<BudgetPort> findByBudgetValueLessThan(Double budgetValue) {
+	public List<Budget> findByBudgetValueLessThan(Double budgetValue) {
 		return repository.findByBudgetValueLessThan(budgetValue);
 	}
 	
 	@Override
-	public BudgetPort save(BudgetPort object) {
+	public Budget save(Budget object) {
 		return repository.save(object);
 	}
 	
@@ -52,12 +52,12 @@ public class BudgetStorage extends BaseMongoStorage implements BudgetStorePort {
 	}
 	
 	@Override
-	public Optional<BudgetPort> findById(String id) {
+	public Optional<Budget> findById(String id) {
 		return repository.findById(id);
 	}
 	
 	@Override
-	public List<BudgetPort> findAll() {
+	public List<Budget> findAll() {
 		return repository.findAll();
 	}
 	

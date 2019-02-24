@@ -30,7 +30,7 @@ class BillOfSaleValidator {
 		}
 	}
 	
-	static BillOfSalePort validateBillOfSale(BillOfSalePort billOfSale) {
+	static BillOfSale validateBillOfSale(BillOfSale billOfSale) {
 		if (billOfSale == null) {
 			throw billOfSaleException();
 		}

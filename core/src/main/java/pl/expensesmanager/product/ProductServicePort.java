@@ -5,7 +5,7 @@ import pl.expensesmanager.base.BaseService;
 import java.util.List;
 import java.util.Optional;
 
-interface ProductServicePort extends BaseService<ProductPort, String> {
+interface ProductServicePort extends BaseService<Product, String> {
 	
 	/**
 	 * Method to search product by name.
@@ -13,7 +13,7 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param name - the name of product
 	 * @return found product as optional
 	 */
-	Optional<ProductPort> searchByName(String name);
+	Optional<Product> searchByName(String name);
 	
 	/**
 	 * Method to search products between price range.
@@ -22,7 +22,7 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param max - maximal price
 	 * @return found product objects
 	 */
-	List<ProductPort> searchAllByPriceRange(Double min, Double max);
+	List<Product> searchAllByPriceRange(Double min, Double max);
 	
 	/**
 	 * Method to search products more expensive than price.
@@ -30,7 +30,7 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param price - price
 	 * @return found product objects
 	 */
-	List<ProductPort> searchAllExpensiveThan(Double price);
+	List<Product> searchAllExpensiveThan(Double price);
 	
 	/**
 	 * Method to search product cheaper than price.
@@ -38,6 +38,6 @@ interface ProductServicePort extends BaseService<ProductPort, String> {
 	 * @param price - price
 	 * @return found product objects
 	 */
-	List<ProductPort> searchAllCheaperThan(Double price);
+	List<Product> searchAllCheaperThan(Double price);
 	
 }

@@ -29,7 +29,7 @@ class BudgetValidator {
 		}
 	}
 	
-	static BudgetPort validateBudget(BudgetPort budget) {
+	static Budget validateBudget(Budget budget) {
 		if (budget == null) {
 			throw budgetException();
 		}

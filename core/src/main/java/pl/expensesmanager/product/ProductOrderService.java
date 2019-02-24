@@ -16,18 +16,18 @@ class ProductOrderService implements ProductOrderServicePort {
 	private final ProductOrderStorePort storage;
 	
 	@Override
-	public List<ProductOrderPort> searchAllByProductName(String name) {
+	public List<ProductOrder> searchAllByProductName(String name) {
 		return storage.findByProductName(ProductValidator.validateName(name));
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllByProductNameAndPrice(String name, Double price) {
+	public List<ProductOrder> searchAllByProductNameAndPrice(String name, Double price) {
 		return storage.findByProductNameAndProductPrice(
 			ProductValidator.validateName(name), ProductValidator.validatePrice(price));
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllByQuanityRange(Integer min, Integer max) {
+	public List<ProductOrder> searchAllByQuanityRange(Integer min, Integer max) {
 		if (min > max) {
 			throw new RuntimeException();
 		}
@@ -37,41 +37,41 @@ class ProductOrderService implements ProductOrderServicePort {
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllByBiggerQuanityThan(Integer quanity) {
+	public List<ProductOrder> searchAllByBiggerQuanityThan(Integer quanity) {
 		return storage.findByQuanityGreaterThan(ProductValidator.validateQuanity(quanity));
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllByLessQuanityThan(Integer quanity) {
+	public List<ProductOrder> searchAllByLessQuanityThan(Integer quanity) {
 		return storage.findByQuanityLessThan(ProductValidator.validateQuanity(quanity));
 	}
 	
 	@Override
-	public ProductOrderPort create(ProductOrderPort object) {
+	public ProductOrder create(ProductOrder object) {
 		ProductValidator.validateOrder(object);
 		
 		return storage.save(object);
 	}
 	
 	@Override
-	public ProductOrderPort update(ProductOrderPort object) {
+	public ProductOrder update(ProductOrder object) {
 		ProductValidator.validateOrder(object);
 		
 		return storage.save(object);
 	}
 	
 	@Override
-	public ProductOrderPort update(ProductOrderPort originalObject, ProductOrderPort changes) {
+	public ProductOrder update(ProductOrder originalObject, ProductOrder changes) {
 		checkChangesInOrder(changes);
 		
 		return storage.save(MergeUtil.merge(originalObject, changes));
 	}
 	
 	@Override
-	public ProductOrderPort update(ProductOrderPort changes, String id) {
+	public ProductOrder update(ProductOrder changes, String id) {
 		checkChangesInOrder(changes);
 		
-		Optional<ProductOrderPort> originalObject = searchById(id);
+		Optional<ProductOrder> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
 			throw invalidIdFormatException();
 		}
@@ -85,16 +85,16 @@ class ProductOrderService implements ProductOrderServicePort {
 	}
 	
 	@Override
-	public Optional<ProductOrderPort> searchById(String id) {
+	public Optional<ProductOrder> searchById(String id) {
 		return storage.findById(id);
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAll() {
+	public List<ProductOrder> searchAll() {
 		return storage.findAll();
 	}
 	
-	private void checkChangesInOrder(ProductOrderPort changes) {
+	private void checkChangesInOrder(ProductOrder changes) {
 		if (changes.getQuanity() != null) {
 			ProductValidator.validateQuanity(changes.getQuanity());
 		}

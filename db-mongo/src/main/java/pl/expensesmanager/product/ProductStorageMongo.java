@@ -17,13 +17,13 @@ public class ProductStorageMongo extends BaseMongoStorage implements ProductStor
 	private final ProductRepositoryMongo repository;
 	
 	@Override
-	public Optional<ProductPort> findByName(String name) {
+	public Optional<Product> findByName(String name) {
 		return repository.findByName(name)
 		                 .map(this::map);
 	}
 	
 	@Override
-	public List<ProductPort> findByPrice(Double price) {
+	public List<Product> findByPrice(Double price) {
 		return repository.findByPrice(price)
 		                 .stream()
 		                 .map(this::map)
@@ -31,7 +31,7 @@ public class ProductStorageMongo extends BaseMongoStorage implements ProductStor
 	}
 	
 	@Override
-	public List<ProductPort> findByPriceBetween(Double min, Double max) {
+	public List<Product> findByPriceBetween(Double min, Double max) {
 		return repository.findByPriceBetween(min, max)
 		                 .stream()
 		                 .map(this::map)
@@ -39,7 +39,7 @@ public class ProductStorageMongo extends BaseMongoStorage implements ProductStor
 	}
 	
 	@Override
-	public List<ProductPort> findByPriceGreaterThan(Double price) {
+	public List<Product> findByPriceGreaterThan(Double price) {
 		return repository.findByPriceGreaterThan(price)
 		                 .stream()
 		                 .map(this::map)
@@ -47,7 +47,7 @@ public class ProductStorageMongo extends BaseMongoStorage implements ProductStor
 	}
 	
 	@Override
-	public List<ProductPort> findByPriceLessThan(Double price) {
+	public List<Product> findByPriceLessThan(Double price) {
 		return repository.findByPriceLessThan(price)
 		                 .stream()
 		                 .map(this::map)
@@ -55,14 +55,14 @@ public class ProductStorageMongo extends BaseMongoStorage implements ProductStor
 	}
 	
 	@Override
-	public Optional<ProductPort> findById(String id) {
+	public Optional<Product> findById(String id) {
 		return repository.findById(id)
 		                 .map(this::map);
 	}
 	
 	@Override
-	public ProductPort save(ProductPort object) {
-		return repository.save(map(object));
+	public Product save(Product object) {
+		return map(repository.save(map(object)));
 	}
 	
 	@Override
@@ -71,27 +71,28 @@ public class ProductStorageMongo extends BaseMongoStorage implements ProductStor
 	}
 	
 	@Override
-	public List<ProductPort> findAll() {
+	public List<Product> findAll() {
 		return repository.findAll()
 		                 .stream()
 		                 .map(this::map)
 		                 .collect(Collectors.toList());
 	}
 	
-	private ProductDocument map(ProductPort productPort) {
+	private ProductDocument map(Product Product) {
 		return ProductDocument.builder()
-		                      .id(productPort.getId())
-		                      .name(productPort.getName())
-		                      .price(productPort.getPrice())
+		                      .id(Product.getId())
+		                      .name(Product.getName())
+		                      .price(Product.getPrice())
 		                      .build();
 	}
 	
-	private ProductPort map(ProductDocument productDocument) {
-		return ProductDocument.builder()
-		                      .id(productDocument.getId())
-		                      .name(productDocument.getName())
-		                      .price(productDocument.getPrice())
-		                      .build();
+	private Product map(ProductDocument productDocument) {
+		Product product = new Product();
+		product.setId(productDocument.getId());
+		product.setName(productDocument.getName());
+		product.setPrice(productDocument.getPrice());
+		
+		return product;
 	}
 	
 }

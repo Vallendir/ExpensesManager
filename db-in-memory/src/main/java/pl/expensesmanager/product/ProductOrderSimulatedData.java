@@ -13,19 +13,19 @@ public final class ProductOrderSimulatedData {
 	
 	public static final int LIST_SIZE = 100;
 	
-	public static List<ProductOrderPort> LIST;
+	public static List<ProductOrder> LIST;
 	
 	static {
 		LIST = new ArrayList<>();
 		
 		
 		for (int i = 0; i < ProductSimulatedData.LIST_SIZE; i++) {
-			ProductOrderPort order;
-			ProductOrderPort nextOrder;
+			ProductOrder order;
+			ProductOrder nextOrder;
 			int id = i + 1;
 			int nextId = LIST_SIZE - i;
 			
-			ProductPort product = ProductSimulatedData.LIST.get(i);
+			Product product = ProductSimulatedData.LIST.get(i);
 			int min, max;
 			
 			if (product.getPrice() < 2) {

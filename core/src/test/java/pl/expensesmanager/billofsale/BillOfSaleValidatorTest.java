@@ -40,7 +40,7 @@ class BillOfSaleValidatorTest extends AbstractCoreTest {
 	@Test
 	void validateBillOfSale() {
 		// Given
-		BillOfSalePort billOfSale = createBillOfSale();
+		BillOfSale billOfSale = createBillOfSale();
 		
 		ThrowingCallable throwable_1 = () -> BillOfSaleValidator.validateBillOfSale(null);
 		

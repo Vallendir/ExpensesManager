@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class ProductOrderStorageInMemory extends IdValidationPort implements ProductOrderStorePort {
 	
 	@Override
-	public List<ProductOrderPort> findByProductName(String name) {
+	public List<ProductOrder> findByProductName(String name) {
 		return ProductOrderSimulatedData.LIST.stream()
 		                                     .filter(order -> order.getProduct()
 		                                                           .getName()
@@ -23,7 +23,7 @@ public class ProductOrderStorageInMemory extends IdValidationPort implements Pro
 	}
 	
 	@Override
-	public List<ProductOrderPort> findByProductNameAndProductPrice(String name, Double price) {
+	public List<ProductOrder> findByProductNameAndProductPrice(String name, Double price) {
 		return ProductOrderSimulatedData.LIST.stream()
 		                                     .filter(order -> order.getProduct()
 		                                                           .getName()
@@ -33,7 +33,7 @@ public class ProductOrderStorageInMemory extends IdValidationPort implements Pro
 	}
 	
 	@Override
-	public List<ProductOrderPort> findByQuanityBetween(Integer min, Integer max) {
+	public List<ProductOrder> findByQuanityBetween(Integer min, Integer max) {
 		return ProductOrderSimulatedData.LIST.stream()
 		                                     .filter(
 			                                     product -> product.getQuanity() > min && product.getQuanity() < max)
@@ -41,21 +41,21 @@ public class ProductOrderStorageInMemory extends IdValidationPort implements Pro
 	}
 	
 	@Override
-	public List<ProductOrderPort> findByQuanityGreaterThan(Integer quanity) {
+	public List<ProductOrder> findByQuanityGreaterThan(Integer quanity) {
 		return ProductOrderSimulatedData.LIST.stream()
 		                                     .filter(product -> product.getQuanity() > quanity)
 		                                     .collect(Collectors.toList());
 	}
 	
 	@Override
-	public List<ProductOrderPort> findByQuanityLessThan(Integer quanity) {
+	public List<ProductOrder> findByQuanityLessThan(Integer quanity) {
 		return ProductOrderSimulatedData.LIST.stream()
 		                                     .filter(product -> product.getQuanity() < quanity)
 		                                     .collect(Collectors.toList());
 	}
 	
 	@Override
-	public ProductOrderPort save(ProductOrderPort object) {
+	public ProductOrder save(ProductOrder object) {
 		ProductOrderSimulatedData.LIST.add(object);
 		return object;
 		
@@ -68,7 +68,7 @@ public class ProductOrderStorageInMemory extends IdValidationPort implements Pro
 	}
 	
 	@Override
-	public Optional<ProductOrderPort> findById(String id) {
+	public Optional<ProductOrder> findById(String id) {
 		return ProductOrderSimulatedData.LIST.stream()
 		                                     .filter(product -> product.getId()
 		                                                               .equals(id))
@@ -76,7 +76,7 @@ public class ProductOrderStorageInMemory extends IdValidationPort implements Pro
 	}
 	
 	@Override
-	public List<ProductOrderPort> findAll() {
+	public List<ProductOrder> findAll() {
 		return ProductOrderSimulatedData.LIST;
 	}
 	

@@ -14,7 +14,7 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	
 	private final BillOfSaleService service;
 	
-	public BillOfSalePort add(BillOfSale billOfSale) {
+	public BillOfSale add(BillOfSale billOfSale) {
 		return service.create(billOfSale);
 	}
 	
@@ -22,7 +22,7 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 		return (BillOfSale) service.update(billOfSale);
 	}
 	
-	public BillOfSalePort update(String id, BillOfSale billOfSale) {
+	public BillOfSale update(String id, BillOfSale billOfSale) {
 		return service.update(billOfSale, id);
 	}*/
 	
@@ -30,21 +30,21 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 		service.removeById(id);
 	}
 	
-	public BillOfSalePort searchForId(String id) {
+	public BillOfSale searchForId(String id) {
 		// FIXME
 		return service.searchById(id).get();
 	}
 	
-	public BillOfSalePort searchForDescription(String description) {
+	public BillOfSale searchForDescription(String description) {
 		// FIXME
 		return service.searchByDescription(description).get();
 	}
 	
-	public List<BillOfSalePort> searchForBoughtDate(Instant boughtDate) {
+	public List<BillOfSale> searchForBoughtDate(Instant boughtDate) {
 		return service.searchAllByBoughtDate(boughtDate);
 	}
 	
-	public List<BillOfSalePort> searchAllForBoughtDateRange(Instant min, Instant max) {
+	public List<BillOfSale> searchAllForBoughtDateRange(Instant min, Instant max) {
 		return service.searchAllByBoughtDateRange(min, max);
 	}
 	

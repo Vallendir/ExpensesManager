@@ -14,7 +14,7 @@ public final class ProductSimulatedData {
 	
 	public static final int LIST_SIZE = 50;
 	
-	public static List<ProductPort> LIST;
+	public static List<Product> LIST;
 	
 	static {
 		LIST = new ArrayList<>();
@@ -23,7 +23,7 @@ public final class ProductSimulatedData {
 		for (int i = 0; i < LIST_SIZE; i++) {
 			int id = i + 1;
 			
-			ProductPort product = new Product(NAME_ALIAS + id, priceStart);
+			Product product = new Product(NAME_ALIAS + id, priceStart);
 			
 			product.setId(ID_ALIAS + id);
 			LIST.add(product);

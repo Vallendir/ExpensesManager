@@ -17,17 +17,17 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	private final BillOfSaleStorePort storage;
 	
 	@Override
-	public Optional<BillOfSalePort> searchByDescription(String description) {
+	public Optional<BillOfSale> searchByDescription(String description) {
 		return storage.findByDescription(BillOfSaleValidator.validateDescription(description));
 	}
 	
 	@Override
-	public List<BillOfSalePort> searchAllByBoughtDate(Instant boughtDate) {
+	public List<BillOfSale> searchAllByBoughtDate(Instant boughtDate) {
 		return storage.findByBoughtDate(BillOfSaleValidator.validateBoughtDate(boughtDate));
 	}
 	
 	@Override
-	public List<BillOfSalePort> searchAllByBoughtDateRange(Instant min, Instant max) {
+	public List<BillOfSale> searchAllByBoughtDateRange(Instant min, Instant max) {
 		if (min.isAfter(max)) {
 			throw new RuntimeException();
 		}
@@ -37,31 +37,31 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	}
 	
 	@Override
-	public BillOfSalePort create(BillOfSalePort object) {
+	public BillOfSale create(BillOfSale object) {
 		BillOfSaleValidator.validateBillOfSale(object);
 		
 		return storage.save(object);
 	}
 	
 	@Override
-	public BillOfSalePort update(BillOfSalePort object) {
+	public BillOfSale update(BillOfSale object) {
 		BillOfSaleValidator.validateBillOfSale(object);
 		
 		return storage.save(object);
 	}
 	
 	@Override
-	public BillOfSalePort update(BillOfSalePort originalObject, BillOfSalePort changes) {
+	public BillOfSale update(BillOfSale originalObject, BillOfSale changes) {
 		checkChangesInBillOfSale(changes);
 		
 		return storage.save(MergeUtil.merge(originalObject, changes));
 	}
 	
 	@Override
-	public BillOfSalePort update(BillOfSalePort changes, String id) {
+	public BillOfSale update(BillOfSale changes, String id) {
 		checkChangesInBillOfSale(changes);
 		
-		Optional<BillOfSalePort> originalObject = searchById(id);
+		Optional<BillOfSale> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
 			throw invalidIdFormatException();
 		}
@@ -75,16 +75,16 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	}
 	
 	@Override
-	public Optional<BillOfSalePort> searchById(String id) {
+	public Optional<BillOfSale> searchById(String id) {
 		return storage.findById(id);
 	}
 	
 	@Override
-	public List<BillOfSalePort> searchAll() {
+	public List<BillOfSale> searchAll() {
 		return storage.findAll();
 	}
 	
-	private void checkChangesInBillOfSale(BillOfSalePort changes) {
+	private void checkChangesInBillOfSale(BillOfSale changes) {
 		if (changes.getDescription() != null) {
 			BillOfSaleValidator.validateDescription(changes.getDescription());
 		}

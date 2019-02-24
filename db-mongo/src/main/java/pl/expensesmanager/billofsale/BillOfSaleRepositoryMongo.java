@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Profile("dev")
 @Repository
-public interface BillOfSaleRepositoryMongo extends BillOfSaleRepository, MongoRepository<BillOfSalePort, String> {
+public interface BillOfSaleRepositoryMongo extends BillOfSaleRepository, MongoRepository<BillOfSale, String> {
 
 }

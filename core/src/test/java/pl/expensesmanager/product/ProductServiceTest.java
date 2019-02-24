@@ -30,12 +30,12 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void searchForName() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
+		Product expectedProduct_1 = createProduct();
 		
 		when(storage.findByName(PRODUCT_NAME)).thenReturn(Optional.of(expectedProduct_1));
 		
 		// When
-		ProductPort actualProduct = service.searchByName(PRODUCT_NAME)
+		Product actualProduct = service.searchByName(PRODUCT_NAME)
 		                                   .get();
 		
 		// Then
@@ -45,15 +45,15 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForPriceRange() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRODUCT_PRICE + 0.75);
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct(PRODUCT_PRICE + 0.75);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceBetween(PRICE_MIN, PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAllByPriceRange(PRICE_MIN, PRICE_MAX);
+		List<Product> actualProductList = service.searchAllByPriceRange(PRICE_MIN, PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -62,15 +62,15 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForPriceGreater() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct(PRODUCT_PRICE + 0.25);
-		ProductPort expectedProduct_2 = createProduct(PRODUCT_PRICE + 0.75);
+		Product expectedProduct_1 = createProduct(PRODUCT_PRICE + 0.25);
+		Product expectedProduct_2 = createProduct(PRODUCT_PRICE + 0.75);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceGreaterThan(PRODUCT_PRICE)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAllExpensiveThan(PRODUCT_PRICE);
+		List<Product> actualProductList = service.searchAllExpensiveThan(PRODUCT_PRICE);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -79,15 +79,15 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForPriceLower() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRICE_MAX);
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct(PRICE_MAX);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceLessThan(PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAllCheaperThan(PRICE_MAX);
+		List<Product> actualProductList = service.searchAllCheaperThan(PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -96,13 +96,13 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void create() {
 		// Given
-		ProductPort expectedToAdd = createProduct();
-		ProductPort expectedProduct_1 = createProduct();
+		Product expectedToAdd = createProduct();
+		Product expectedProduct_1 = createProduct();
 		
 		when(storage.save(expectedToAdd)).thenReturn(expectedProduct_1);
 		
 		// When
-		ProductPort actualProduct = service.create(expectedToAdd);
+		Product actualProduct = service.create(expectedToAdd);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct_1);
@@ -111,13 +111,13 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void updateByObject() {
 		// Given
-		ProductPort expectedToChange = createProduct(null);
-		ProductPort expectedProduct_1 = createProduct(expectedToChange, PRODUCT_PRICE);
+		Product expectedToChange = createProduct(null);
+		Product expectedProduct_1 = createProduct(expectedToChange, PRODUCT_PRICE);
 		
 		when(storage.save(expectedToChange)).thenReturn(expectedProduct_1);
 		
 		// When
-		ProductPort actualProduct = service.update(expectedToChange);
+		Product actualProduct = service.update(expectedToChange);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct_1);
@@ -126,15 +126,15 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void updateById() {
 		// Given
-		ProductPort expectedToChange = createProduct(null);
-		ProductPort expectedChanges = createProduct(expectedToChange, PRICE_MIN);
-		ProductPort expectedProduct = createProduct(PRICE_MIN);
+		Product expectedToChange = createProduct(null);
+		Product expectedChanges = createProduct(expectedToChange, PRICE_MIN);
+		Product expectedProduct = createProduct(PRICE_MIN);
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedProduct));
 		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedProduct);
 		
 		// When
-		ProductPort actualProduct = service.update(expectedChanges, expectedToChange.getId());
+		Product actualProduct = service.update(expectedChanges, expectedToChange.getId());
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
@@ -143,14 +143,14 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void updateOriginalAndChanges() {
 		// Given
-		ProductPort expectedToChange = createProduct(null);
-		ProductPort expectedChanges = createProduct(expectedToChange, PRICE_MAX);
-		ProductPort expectedProduct = createProduct(PRICE_MAX);
+		Product expectedToChange = createProduct(null);
+		Product expectedChanges = createProduct(expectedToChange, PRICE_MAX);
+		Product expectedProduct = createProduct(PRICE_MAX);
 		
 		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedProduct);
 		
 		// When
-		ProductPort actualProduct = service.update(expectedToChange, expectedChanges);
+		Product actualProduct = service.update(expectedToChange, expectedChanges);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
@@ -159,12 +159,12 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void searchForId() {
 		// Given
-		ProductPort expectedProduct = createProduct();
+		Product expectedProduct = createProduct();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedProduct));
 		
 		// When
-		ProductPort actualProduct = service.searchById(ID)
+		Product actualProduct = service.searchById(ID)
 		                                   .get();
 		
 		// Then
@@ -174,23 +174,23 @@ class ProductServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAll() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRICE_MAX);
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct(PRICE_MAX);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findAll()).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = service.searchAll();
+		List<Product> actualProductList = service.searchAll();
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
 	}
 	
 	private void productListAssertions(
-		List<ProductPort> actualProductList, List<ProductPort> expectedProductList, ProductPort expectedProduct_1,
-		ProductPort expectedProduct_2
+		List<Product> actualProductList, List<Product> expectedProductList, Product expectedProduct_1,
+		Product expectedProduct_2
 	) {
 		assertThat(actualProductList).isEqualTo(expectedProductList);
 		assertThat(actualProductList.size()).isEqualTo(expectedProductList.size());

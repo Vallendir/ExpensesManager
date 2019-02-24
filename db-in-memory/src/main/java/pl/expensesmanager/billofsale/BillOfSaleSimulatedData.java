@@ -1,6 +1,6 @@
 package pl.expensesmanager.billofsale;
 
-import pl.expensesmanager.product.ProductOrderPort;
+import pl.expensesmanager.product.ProductOrder;
 import pl.expensesmanager.product.ProductOrderSimulatedData;
 
 import java.time.Instant;
@@ -18,7 +18,7 @@ public class BillOfSaleSimulatedData {
 	
 	public static final int LIST_SIZE = 8;
 	
-	public static List<BillOfSalePort> LIST;
+	public static List<BillOfSale> LIST;
 	
 	static {
 		LIST = new ArrayList<>();
@@ -92,15 +92,15 @@ public class BillOfSaleSimulatedData {
 	}
 	
 	private static void addBillOfSaleWithProductsToList(
-		int id, List<ProductOrderPort> productsList, List<BillOfSalePort> list
+		int id, List<ProductOrder> productsList, List<BillOfSale> list
 	) {
-		BillOfSalePort billOfSale = createBillOfSale(id, productsList);
+		BillOfSale billOfSale = createBillOfSale(id, productsList);
 		billOfSale.setId(ID_ALIAS + id);
 		
 		list.add(billOfSale);
 	}
 	
-	private static BillOfSalePort createBillOfSale(int id, List<ProductOrderPort> productsList) {
+	private static BillOfSale createBillOfSale(int id, List<ProductOrder> productsList) {
 		return new BillOfSale(productsList, Instant.now(), NAME_ALIAS + id + " Description.");
 	}
 	

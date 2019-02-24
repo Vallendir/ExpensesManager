@@ -25,12 +25,12 @@ class ProductStorageInMemoryTest extends AbstractDBInMemoryTest {
 	@Test
 	void findByName() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
+		Product expectedProduct_1 = createProduct();
 		
 		when(storage.findByName(PRODUCT_NAME)).thenReturn(Optional.of(expectedProduct_1));
 		
 		// When
-		ProductPort actualProduct = storage.findByName(PRODUCT_NAME)
+		Product actualProduct = storage.findByName(PRODUCT_NAME)
 		                                   .get();
 		
 		// Then
@@ -40,15 +40,15 @@ class ProductStorageInMemoryTest extends AbstractDBInMemoryTest {
 	@Test
 	void findByPrice() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct();
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct();
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPrice(PRODUCT_PRICE)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findByPrice(PRODUCT_PRICE);
+		List<Product> actualProductList = storage.findByPrice(PRODUCT_PRICE);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -57,15 +57,15 @@ class ProductStorageInMemoryTest extends AbstractDBInMemoryTest {
 	@Test
 	void findByPriceBetween() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRODUCT_PRICE + 1.75);
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct(PRODUCT_PRICE + 1.75);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceBetween(PRICE_MIN, PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findByPriceBetween(PRICE_MIN, PRICE_MAX);
+		List<Product> actualProductList = storage.findByPriceBetween(PRICE_MIN, PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -74,15 +74,15 @@ class ProductStorageInMemoryTest extends AbstractDBInMemoryTest {
 	@Test
 	void findByPriceGreaterThan() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct(PRODUCT_PRICE + 1.25);
-		ProductPort expectedProduct_2 = createProduct(PRODUCT_PRICE + 1.55);
+		Product expectedProduct_1 = createProduct(PRODUCT_PRICE + 1.25);
+		Product expectedProduct_2 = createProduct(PRODUCT_PRICE + 1.55);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceGreaterThan(PRODUCT_PRICE)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findByPriceGreaterThan(PRODUCT_PRICE);
+		List<Product> actualProductList = storage.findByPriceGreaterThan(PRODUCT_PRICE);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -91,15 +91,15 @@ class ProductStorageInMemoryTest extends AbstractDBInMemoryTest {
 	@Test
 	void findByPriceLessThan() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRICE_MAX);
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct(PRICE_MAX);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceLessThan(PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findByPriceLessThan(PRICE_MAX);
+		List<Product> actualProductList = storage.findByPriceLessThan(PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -108,13 +108,13 @@ class ProductStorageInMemoryTest extends AbstractDBInMemoryTest {
 	@Test
 	void add() {
 		// Given
-		ProductPort expectedToAdd = createProduct();
-		ProductPort expectedProduct = createProduct();
+		Product expectedToAdd = createProduct();
+		Product expectedProduct = createProduct();
 		
 		when(storage.save(expectedToAdd)).thenReturn(expectedProduct);
 		
 		// When
-		ProductPort actualProduct = storage.save(expectedToAdd);
+		Product actualProduct = storage.save(expectedToAdd);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
@@ -123,12 +123,12 @@ class ProductStorageInMemoryTest extends AbstractDBInMemoryTest {
 	@Test
 	void findById() {
 		// Given
-		ProductPort expectedProduct = createProduct();
+		Product expectedProduct = createProduct();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedProduct));
 		
 		// When
-		ProductPort actualProduct = storage.findById(ID)
+		Product actualProduct = storage.findById(ID)
 		                                   .get();
 		
 		// Then
@@ -138,23 +138,23 @@ class ProductStorageInMemoryTest extends AbstractDBInMemoryTest {
 	@Test
 	void findAll() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRICE_MAX);
+		Product expectedProduct_1 = createProduct();
+		Product expectedProduct_2 = createProduct(PRICE_MAX);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<Product> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findAll()).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findAll();
+		List<Product> actualProductList = storage.findAll();
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
 	}
 	
 	private void productListAssertions(
-		List<ProductPort> actualProductList, List<ProductPort> expectedProductList, ProductPort expectedProduct,
-		ProductPort secondEpectedProduct
+		List<Product> actualProductList, List<Product> expectedProductList, Product expectedProduct,
+		Product secondEpectedProduct
 	) {
 		assertThat(actualProductList).isEqualTo(expectedProductList);
 		assertThat(actualProductList.size()).isEqualTo(2);

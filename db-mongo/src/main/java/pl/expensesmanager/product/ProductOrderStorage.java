@@ -17,32 +17,32 @@ public class ProductOrderStorage extends BaseMongoStorage implements ProductOrde
 	private final ProductOrderRepositoryMongo repository;
 	
 	@Override
-	public List<ProductOrderPort> findByProductName(String name) {
+	public List<ProductOrder> findByProductName(String name) {
 		return repository.findByProductName(name);
 	}
 	
 	@Override
-	public List<ProductOrderPort> findByProductNameAndProductPrice(String name, Double price) {
+	public List<ProductOrder> findByProductNameAndProductPrice(String name, Double price) {
 		return repository.findByProductNameAndProductPrice(name, price);
 	}
 	
 	@Override
-	public List<ProductOrderPort> findByQuanityBetween(Integer min, Integer max) {
+	public List<ProductOrder> findByQuanityBetween(Integer min, Integer max) {
 		return repository.findByQuanityBetween(min, max);
 	}
 	
 	@Override
-	public List<ProductOrderPort> findByQuanityGreaterThan(Integer quanity) {
+	public List<ProductOrder> findByQuanityGreaterThan(Integer quanity) {
 		return repository.findByQuanityGreaterThan(quanity);
 	}
 	
 	@Override
-	public List<ProductOrderPort> findByQuanityLessThan(Integer quanity) {
+	public List<ProductOrder> findByQuanityLessThan(Integer quanity) {
 		return repository.findByQuanityLessThan(quanity);
 	}
 	
 	@Override
-	public ProductOrderPort save(ProductOrderPort object) {
+	public ProductOrder save(ProductOrder object) {
 		return repository.save(object);
 	}
 	
@@ -52,12 +52,12 @@ public class ProductOrderStorage extends BaseMongoStorage implements ProductOrde
 	}
 	
 	@Override
-	public Optional<ProductOrderPort> findById(String id) {
+	public Optional<ProductOrder> findById(String id) {
 		return repository.findById(id);
 	}
 	
 	@Override
-	public List<ProductOrderPort> findAll() {
+	public List<ProductOrder> findAll() {
 		return repository.findAll();
 	}
 	

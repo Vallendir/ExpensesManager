@@ -1,6 +1,7 @@
 package pl.expensesmanager.product;
 
 import lombok.*;
+import pl.expensesmanager.base.BaseModel;
 
 /**
  * Representation of Product order.
@@ -10,13 +11,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public final class ProductOrder extends ProductOrderPort.BaseModel implements ProductOrderPort {
+public final class ProductOrder extends BaseModel {
 	
-	private ProductPort product;
+	private Product product;
 	
 	private Integer quanity;
 	
-	@Override
 	public Double summaryPrice() {
 		return product.getPrice() * quanity;
 	}
