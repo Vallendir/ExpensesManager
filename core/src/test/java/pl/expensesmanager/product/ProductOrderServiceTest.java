@@ -1,11 +1,13 @@
 package pl.expensesmanager.product;
 
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
@@ -55,8 +57,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findByProductNameAndProductPrice(PRODUCT_NAME, PRODUCT_PRICE)).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrder> actualOrderList = service.searchAllByProductNameAndPrice(
-			PRODUCT_NAME, PRODUCT_PRICE);
+		List<ProductOrder> actualOrderList = service.searchAllByProductNameAndPrice(PRODUCT_NAME, PRODUCT_PRICE);
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
@@ -77,6 +78,18 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
+	}
+	
+	@Test
+	void searchAllForQuanityRange_throwMinIsBiggerThanMax() {
+		// Then
+		ThrowableAssert.ThrowingCallable throwable = () -> service.searchAllByQuanityRange(QUANITY_MAX, QUANITY_MIN);
+		
+		// Then
+		assertThatThrownByPassedValueIsInvalidException(throwable,
+		                                                BusinessLogicExceptionFactory.ExceptionMessage.MIN_BIGGER_THAN_MAX,
+		                                                BusinessLogicExceptionFactory.ErrorCode.MIN_BIGGER_THAN_MAX
+		);
 	}
 	
 	@Test
@@ -153,6 +166,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		
 		ProductOrder expectedOrder = createProductOrder();
 		
+		when(storage.isValid(ID)).thenReturn(true);
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder));
 		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedOrder);
 		
@@ -161,6 +175,22 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder);
+	}
+	
+	@Test
+	void updateById_throw() {
+		// When
+		ProductOrder expectedChanges = new ProductOrder();
+		
+		when(storage.isValid(ID)).thenReturn(true);
+		when(storage.findById(ID)).thenReturn(Optional.empty());
+		ThrowableAssert.ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		// Then
+		assertThatThrownByNotFoundException(throwable,
+		                                    BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_ORDER_NOT_FOUND,
+		                                    BusinessLogicExceptionFactory.ErrorCode.PRODUCT_ORDER_NOT_FOUND
+		);
 	}
 	
 	@Test
@@ -185,11 +215,12 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		// Given
 		ProductOrder expectedOrder_1 = createProductOrder();
 		
+		when(storage.isValid(ID)).thenReturn(true);
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder_1));
 		
 		// When
 		ProductOrder actualOrder = service.searchById(ID)
-		                                      .get();
+		                                  .get();
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder_1);
@@ -213,8 +244,8 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	}
 	
 	private void productOrderListAssertions(
-		List<ProductOrder> actualOrderList, List<ProductOrder> expectedOrderList,
-		ProductOrder expectedOrder_1, ProductOrder expectedOrder_2
+		List<ProductOrder> actualOrderList, List<ProductOrder> expectedOrderList, ProductOrder expectedOrder_1,
+		ProductOrder expectedOrder_2
 	) {
 		assertThat(actualOrderList).isEqualTo(expectedOrderList);
 		assertThat(actualOrderList.size()).isEqualTo(expectedOrderList.size());

@@ -17,6 +17,11 @@ public final class ProductOrder extends BaseModel {
 	
 	private Integer quanity;
 	
+	/**
+	 * Method to get the summary price of product with quanity.
+	 *
+	 * @return product summary price
+	 */
 	public Double summaryPrice() {
 		return product.getPrice() * quanity;
 	}

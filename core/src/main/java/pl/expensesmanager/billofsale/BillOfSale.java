@@ -23,6 +23,11 @@ public final class BillOfSale extends BaseModel {
 	
 	private String description;
 	
+	/**
+	 * Method to get the final price of bill of sale.
+	 *
+	 * @return the final price of bill of sale
+	 */
 	public Double finalPrice() {
 		return productList.stream()
 		                  .mapToDouble(ProductOrder::summaryPrice)

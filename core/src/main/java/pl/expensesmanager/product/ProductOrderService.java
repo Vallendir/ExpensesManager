@@ -2,12 +2,14 @@ package pl.expensesmanager.product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.IdValidateUtil;
 import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdFormatException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.minBiggerThanMaxException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.productOrderNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ class ProductOrderService implements ProductOrderServicePort {
 	@Override
 	public List<ProductOrder> searchAllByQuanityRange(Integer min, Integer max) {
 		if (min > max) {
-			throw new RuntimeException();
+			throw minBiggerThanMaxException();
 		}
 		
 		return storage.findByQuanityBetween(
@@ -69,11 +71,12 @@ class ProductOrderService implements ProductOrderServicePort {
 	
 	@Override
 	public ProductOrder update(ProductOrder changes, String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		checkChangesInOrder(changes);
 		
 		Optional<ProductOrder> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
-			throw invalidIdFormatException();
+			throw productOrderNotFoundException();
 		}
 		
 		return storage.save(MergeUtil.merge(originalObject.get(), changes));
@@ -81,11 +84,13 @@ class ProductOrderService implements ProductOrderServicePort {
 	
 	@Override
 	public void removeById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		storage.deleteById(id);
 	}
 	
 	@Override
 	public Optional<ProductOrder> searchById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		return storage.findById(id);
 	}
 	

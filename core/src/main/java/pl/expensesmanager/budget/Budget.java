@@ -22,6 +22,11 @@ public class Budget extends BaseModel {
 	
 	private List<BillOfSale> billsOfSaleList;
 	
+	/**
+	 * Method to get the budget spent.
+	 *
+	 * @return budget spent
+	 */
 	public Double budgetSpent() {
 		return billsOfSaleList.stream()
 		                      .mapToDouble(BillOfSale::finalPrice)
@@ -29,6 +34,11 @@ public class Budget extends BaseModel {
 		                      .getSum();
 	}
 	
+	/**
+	 * Method to get the budget left.
+	 *
+	 * @return budget left
+	 */
 	public Double budgetLeft() {
 		return budgetValue - budgetSpent();
 	}

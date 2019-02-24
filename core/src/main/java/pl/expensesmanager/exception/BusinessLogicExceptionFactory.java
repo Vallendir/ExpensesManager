@@ -2,6 +2,7 @@ package pl.expensesmanager.exception;
 
 import lombok.experimental.UtilityClass;
 import pl.expensesmanager.exception.business.ObjectNotFoundException;
+import pl.expensesmanager.exception.business.PassedValueIsInvalidException;
 
 /**
  * Factory of business logic exceptions reused in system
@@ -16,7 +17,7 @@ public final class BusinessLogicExceptionFactory {
 		
 		public static final String PRODUCT_ORDER_NOT_FOUND = code("product.order.not.found");
 		
-		public static final String BILL_OFS_ALE_NOT_FOUND = code("billofsale.not.found");
+		public static final String BILL_OF_SALE_NOT_FOUND = code("billofsale.not.found");
 		
 		public static final String BUDGET_NOT_FOUND = code("budget.not.found");
 		
@@ -35,7 +36,7 @@ public final class BusinessLogicExceptionFactory {
 		
 		public static final String PRODUCT_ORDER_NOT_FOUND = "Product order not found.";
 		
-		public static final String BILL_OFS_ALE_NOT_FOUND = "Bill of sale not found.";
+		public static final String BILL_OF_SALE_NOT_FOUND = "Bill of sale not found.";
 		
 		public static final String BUDGET_NOT_FOUND = "Budget not found.";
 		
@@ -52,7 +53,7 @@ public final class BusinessLogicExceptionFactory {
 	}
 	
 	public static BusinessLogicException billOfSaleNotFoundException() {
-		throw new ObjectNotFoundException(ExceptionMessage.BILL_OFS_ALE_NOT_FOUND, ErrorCode.BILL_OFS_ALE_NOT_FOUND);
+		throw new ObjectNotFoundException(ExceptionMessage.BILL_OF_SALE_NOT_FOUND, ErrorCode.BILL_OF_SALE_NOT_FOUND);
 	}
 	
 	public static BusinessLogicException budgetNotFoundException() {
@@ -60,7 +61,7 @@ public final class BusinessLogicExceptionFactory {
 	}
 	
 	public static BusinessLogicException minBiggerThanMaxException() {
-		throw new ObjectNotFoundException(ExceptionMessage.MIN_BIGGER_THAN_MAX, ErrorCode.MIN_BIGGER_THAN_MAX);
+		throw new PassedValueIsInvalidException(ExceptionMessage.MIN_BIGGER_THAN_MAX, ErrorCode.MIN_BIGGER_THAN_MAX);
 	}
 	
 }

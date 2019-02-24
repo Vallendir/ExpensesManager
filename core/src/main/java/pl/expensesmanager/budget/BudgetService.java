@@ -2,12 +2,14 @@ package pl.expensesmanager.budget;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.IdValidateUtil;
 import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdFormatException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.budgetNotFoundException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.minBiggerThanMaxException;
 
 @RequiredArgsConstructor
 @Service
@@ -28,7 +30,7 @@ class BudgetService implements BudgetServicePort {
 	@Override
 	public List<Budget> searchAllByValueRange(Double min, Double max) {
 		if (min > max) {
-			throw new RuntimeException();
+			throw minBiggerThanMaxException();
 		}
 		
 		return storage.findByBudgetValueBetween(
@@ -68,11 +70,12 @@ class BudgetService implements BudgetServicePort {
 	
 	@Override
 	public Budget update(Budget changes, String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		checkChangesInBudget(changes);
 		
 		Optional<Budget> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
-			throw invalidIdFormatException();
+			throw budgetNotFoundException();
 		}
 		
 		return storage.save(MergeUtil.merge(originalObject.get(), changes));
@@ -80,11 +83,13 @@ class BudgetService implements BudgetServicePort {
 	
 	@Override
 	public void removeById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		storage.deleteById(id);
 	}
 	
 	@Override
 	public Optional<Budget> searchById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		return storage.findById(id);
 	}
 	

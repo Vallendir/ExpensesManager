@@ -2,16 +2,15 @@ package pl.expensesmanager;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import pl.expensesmanager.billofsale.BillOfSale;
-import pl.expensesmanager.billofsale.BillOfSale;
 import pl.expensesmanager.budget.Budget;
+import pl.expensesmanager.exception.business.ObjectNotFoundException;
+import pl.expensesmanager.exception.business.PassedValueIsInvalidException;
 import pl.expensesmanager.exception.validation.ValidateDateException;
 import pl.expensesmanager.exception.validation.ValidateNumberException;
 import pl.expensesmanager.exception.validation.ValidateObjectException;
 import pl.expensesmanager.exception.validation.ValidateTextException;
 import pl.expensesmanager.product.Product;
 import pl.expensesmanager.product.ProductOrder;
-import pl.expensesmanager.product.ProductOrder;
-import pl.expensesmanager.product.Product;
 
 import java.time.Instant;
 import java.util.List;
@@ -115,6 +114,12 @@ public abstract class AbstractCoreTest {
 		return budget;
 	}
 	
+	protected void assertThatThrownByValidateIdException(
+		ThrowingCallable throwable, String hasMessage, String errorCode
+	) {
+		assertException(ValidateTextException.class, throwable, hasMessage, errorCode);
+	}
+	
 	protected void assertThatThrownByValidateTextException(
 		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
@@ -137,6 +142,18 @@ public abstract class AbstractCoreTest {
 		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
 		assertException(ValidateObjectException.class, throwable, hasMessage, errorCode);
+	}
+	
+	protected void assertThatThrownByNotFoundException(
+		ThrowingCallable throwable, String hasMessage, String errorCode
+	) {
+		assertException(ObjectNotFoundException.class, throwable, hasMessage, errorCode);
+	}
+	
+	protected void assertThatThrownByPassedValueIsInvalidException(
+		ThrowingCallable throwable, String hasMessage, String errorCode
+	) {
+		assertException(PassedValueIsInvalidException.class, throwable, hasMessage, errorCode);
 	}
 	
 	private void assertException(

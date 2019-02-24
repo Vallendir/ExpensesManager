@@ -2,13 +2,15 @@ package pl.expensesmanager.billofsale;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.IdValidateUtil;
 import pl.expensesmanager.util.MergeUtil;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.ValidationExceptionFactory.invalidIdFormatException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.billOfSaleNotFoundException;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.minBiggerThanMaxException;
 
 @RequiredArgsConstructor
 @Service
@@ -29,7 +31,7 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	@Override
 	public List<BillOfSale> searchAllByBoughtDateRange(Instant min, Instant max) {
 		if (min.isAfter(max)) {
-			throw new RuntimeException();
+			throw minBiggerThanMaxException();
 		}
 		
 		return storage.findByBoughtDateBetween(
@@ -59,11 +61,12 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	
 	@Override
 	public BillOfSale update(BillOfSale changes, String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		checkChangesInBillOfSale(changes);
 		
 		Optional<BillOfSale> originalObject = searchById(id);
 		if (!originalObject.isPresent()) {
-			throw invalidIdFormatException();
+			throw billOfSaleNotFoundException();
 		}
 		
 		return storage.save(MergeUtil.merge(originalObject.get(), changes));
@@ -71,11 +74,13 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	
 	@Override
 	public void removeById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		storage.deleteById(id);
 	}
 	
 	@Override
 	public Optional<BillOfSale> searchById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		return storage.findById(id);
 	}
 	

@@ -1,11 +1,14 @@
 package pl.expensesmanager.billofsale;
 
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
+import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.util.MergeUtil;
 
 import java.time.Instant;
@@ -35,7 +38,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		
 		// When
 		BillOfSale actualBillOfSale = service.searchByDescription(BILL_OF_SALE_DESCRIPTION)
-		                                         .get();
+		                                     .get();
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale_1);
@@ -75,6 +78,19 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		// Then
 		billOfSaleListAssertions(
 			actualBillOfSaleList, expectedBillOfSaleList, expectedBillOfSale_1, expectedBillOfSale_2);
+	}
+	
+	@Test
+	void searchAllForBoughtDateRange_throwMinIsBiggerThanMax() {
+		// Then
+		ThrowingCallable throwable = () -> service.searchAllByBoughtDateRange(
+			BOUGHT_DATE_MAX.plusMillis(56456465), BOUGHT_DATE);
+		
+		// Then
+		assertThatThrownByPassedValueIsInvalidException(throwable,
+		                                                BusinessLogicExceptionFactory.ExceptionMessage.MIN_BIGGER_THAN_MAX,
+		                                                BusinessLogicExceptionFactory.ErrorCode.MIN_BIGGER_THAN_MAX
+		);
 	}
 	
 	@Test
@@ -126,6 +142,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		
 		BillOfSale expectedBillOfSaleList = createBillOfSale();
 		
+		when(storage.isValid(ID)).thenReturn(true);
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSaleList));
 		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedBillOfSaleList);
 		
@@ -134,6 +151,37 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		
 		// Then
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
+	}
+	
+	@Test
+	void updateById_throw() {
+		// When
+		BillOfSale expectedChanges = new BillOfSale();
+		
+		when(storage.isValid(ID)).thenReturn(true);
+		when(storage.findById(ID)).thenReturn(Optional.empty());
+		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		// Then
+		assertThatThrownByNotFoundException(throwable,
+		                                    BusinessLogicExceptionFactory.ExceptionMessage.BILL_OF_SALE_NOT_FOUND,
+		                                    BusinessLogicExceptionFactory.ErrorCode.BILL_OF_SALE_NOT_FOUND
+		);
+	}
+	
+	@Test
+	void ifIdIsNotValid_throw() {
+		// Given
+		when(storage.isValid(ID)).thenReturn(false);
+		
+		// When
+		ThrowingCallable throwable = () -> service.searchById(ID)
+		                                          .get();
+		
+		// Then
+		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
+		                                      ValidationExceptionFactory.ErrorCode.INVALID_ID_FORMAT
+		);
 	}
 	
 	@Test
@@ -161,11 +209,12 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		// Given
 		BillOfSale expectedBillOfSale_1 = createBillOfSale();
 		
+		when(storage.isValid(ID)).thenReturn(true);
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
 		BillOfSale actualBillOfSale = service.searchById(ID)
-		                                         .get();
+		                                     .get();
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale_1);
@@ -190,8 +239,8 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	}
 	
 	private void billOfSaleListAssertions(
-		List<BillOfSale> actualBillOfSaleList, List<BillOfSale> expectedBillOfSaleList,
-		BillOfSale expectedBillOfSale_1, BillOfSale expectedBillOfSale_2
+		List<BillOfSale> actualBillOfSaleList, List<BillOfSale> expectedBillOfSaleList, BillOfSale expectedBillOfSale_1,
+		BillOfSale expectedBillOfSale_2
 	) {
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
 		assertThat(actualBillOfSaleList.size()).isEqualTo(expectedBillOfSaleList.size());

@@ -1,11 +1,14 @@
 package pl.expensesmanager.budget;
 
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
+import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
@@ -36,7 +39,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		
 		// When
 		Budget actualBudget = service.searchByName(BUDGET_NAME)
-		                                 .get();
+		                             .get();
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget_1);
@@ -74,6 +77,19 @@ class BudgetServiceTest extends AbstractCoreTest {
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);
+	}
+	
+	@Test
+	void searchAllForBoughtDateRange_throwMinIsBiggerThanMax() {
+		// Then
+		ThrowableAssert.ThrowingCallable throwable = () -> service.searchAllByValueRange(
+			BUDGET_VALUE_MAX, BUDGET_VALUE_MIN);
+		
+		// Then
+		assertThatThrownByPassedValueIsInvalidException(throwable,
+		                                                BusinessLogicExceptionFactory.ExceptionMessage.MIN_BIGGER_THAN_MAX,
+		                                                BusinessLogicExceptionFactory.ErrorCode.MIN_BIGGER_THAN_MAX
+		);
 	}
 	
 	@Test
@@ -146,6 +162,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		Budget expectedChanges = createBudget(500.5);
 		Budget expectedBudget = createBudget();
 		
+		when(storage.isValid(ID)).thenReturn(true);
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget));
 		when(storage.save(MergeUtil.merge(expectedChanges, expectedChanges))).thenReturn(expectedBudget);
 		
@@ -154,6 +171,36 @@ class BudgetServiceTest extends AbstractCoreTest {
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
+	}
+	
+	@Test
+	void updateById_throw() {
+		// When
+		Budget expectedChanges = createBudget(500.5);
+		
+		when(storage.isValid(ID)).thenReturn(true);
+		when(storage.findById(ID)).thenReturn(Optional.empty());
+		ThrowableAssert.ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		// Then
+		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.BUDGET_NOT_FOUND,
+		                                    BusinessLogicExceptionFactory.ErrorCode.BUDGET_NOT_FOUND
+		);
+	}
+	
+	@Test
+	void ifIdIsNotValid_throw() {
+		// Given
+		when(storage.isValid(ID)).thenReturn(false);
+		
+		// When
+		ThrowableAssert.ThrowingCallable throwable = () -> service.searchById(ID)
+		                                                          .get();
+		
+		// Then
+		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
+		                                      ValidationExceptionFactory.ErrorCode.INVALID_ID_FORMAT
+		);
 	}
 	
 	@Test
@@ -177,11 +224,12 @@ class BudgetServiceTest extends AbstractCoreTest {
 		// Given
 		Budget expectedBudget_1 = createBudget();
 		
+		when(storage.isValid(ID)).thenReturn(true);
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
 		Budget actualBudget = service.searchById(ID)
-		                                 .get();
+		                             .get();
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget_1);
@@ -205,8 +253,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 	}
 	
 	private void budgetListAssertions(
-		List<Budget> actualBudgets, List<Budget> expectedBudgets, Budget expectedBudget_1,
-		Budget expectedBudget_2
+		List<Budget> actualBudgets, List<Budget> expectedBudgets, Budget expectedBudget_1, Budget expectedBudget_2
 	) {
 		assertThat(actualBudgets).isEqualTo(expectedBudgets);
 		assertThat(actualBudgets.size()).isEqualTo(expectedBudgets.size());

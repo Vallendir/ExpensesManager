@@ -17,7 +17,7 @@ public interface ProductOrderStorePort extends BaseStorage<ProductOrder, String>
 	/**
 	 * Method to find order by product name and price.
 	 *
-	 * @param name - the product name
+	 * @param name  - the product name
 	 * @param price - the product price
 	 * @return found product
 	 */
