@@ -18,32 +18,32 @@ public class ProductOrderStorage extends BaseMongoStorage implements ProductOrde
 	
 	@Override
 	public List<ProductOrder> findByProductName(String name) {
-		return repository.findByProductName(name);
+		return null;
 	}
 	
 	@Override
 	public List<ProductOrder> findByProductNameAndProductPrice(String name, Double price) {
-		return repository.findByProductNameAndProductPrice(name, price);
+		return null;
 	}
 	
 	@Override
 	public List<ProductOrder> findByQuanityBetween(Integer min, Integer max) {
-		return repository.findByQuanityBetween(min, max);
+		return null;
 	}
 	
 	@Override
 	public List<ProductOrder> findByQuanityGreaterThan(Integer quanity) {
-		return repository.findByQuanityGreaterThan(quanity);
+		return null;
 	}
 	
 	@Override
 	public List<ProductOrder> findByQuanityLessThan(Integer quanity) {
-		return repository.findByQuanityLessThan(quanity);
+		return null;
 	}
 	
 	@Override
 	public ProductOrder save(ProductOrder object) {
-		return repository.save(object);
+		return null;
 	}
 	
 	@Override
@@ -53,12 +53,12 @@ public class ProductOrderStorage extends BaseMongoStorage implements ProductOrde
 	
 	@Override
 	public Optional<ProductOrder> findById(String id) {
-		return repository.findById(id);
+		return null;
 	}
 	
 	@Override
 	public List<ProductOrder> findAll() {
-		return repository.findAll();
+		return null;
 	}
 	
 	@Override

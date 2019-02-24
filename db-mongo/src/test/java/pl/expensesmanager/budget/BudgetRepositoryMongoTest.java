@@ -1,3 +1,4 @@
+/*
 package pl.expensesmanager.budget;
 
 import org.junit.jupiter.api.Test;
@@ -162,4 +163,4 @@ class BudgetRepositoryMongoTest extends AbstractMongoDBTest {
 		assertThat(actualBudgets).containsExactlyInAnyOrder(expectedBudget_1, expectedBudget_2);
 	}
 	
-}
+}*/

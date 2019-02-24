@@ -19,22 +19,22 @@ public class BillOfSaleStorage extends BaseMongoStorage implements BillOfSaleSto
 	
 	@Override
 	public Optional<BillOfSale> findByDescription(String description) {
-		return repository.findByDescription(description);
+		return null;
 	}
 	
 	@Override
 	public List<BillOfSale> findByBoughtDate(Instant boughtDate) {
-		return repository.findByBoughtDate(boughtDate);
+		return null;
 	}
 	
 	@Override
 	public List<BillOfSale> findByBoughtDateBetween(Instant min, Instant max) {
-		return repository.findByBoughtDateBetween(min, max);
+		return null;
 	}
 	
 	@Override
 	public BillOfSale save(BillOfSale object) {
-		return repository.save(object);
+		return null;
 	}
 	
 	@Override
@@ -44,12 +44,12 @@ public class BillOfSaleStorage extends BaseMongoStorage implements BillOfSaleSto
 	
 	@Override
 	public Optional<BillOfSale> findById(String id) {
-		return repository.findById(id);
+		return null;
 	}
 	
 	@Override
 	public List<BillOfSale> findAll() {
-		return repository.findAll();
+		return null;
 	}
 	
 	@Override
