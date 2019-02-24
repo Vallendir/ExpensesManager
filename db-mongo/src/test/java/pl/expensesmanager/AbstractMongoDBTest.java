@@ -1,12 +1,9 @@
 package pl.expensesmanager;
 
-import pl.expensesmanager.billofsale.BillOfSale;
-import pl.expensesmanager.billofsale.BillOfSalePort;
-import pl.expensesmanager.budget.Budget;
-import pl.expensesmanager.product.Product;
-import pl.expensesmanager.product.ProductOrder;
-import pl.expensesmanager.product.ProductOrderPort;
-import pl.expensesmanager.product.ProductPort;
+import pl.expensesmanager.billofsale.BillOfSaleDocument;
+import pl.expensesmanager.budget.BudgetDocument;
+import pl.expensesmanager.product.ProductDocument;
+import pl.expensesmanager.product.ProductOrderDocument;
 
 import java.time.Instant;
 import java.util.List;
@@ -25,17 +22,17 @@ public abstract class AbstractMongoDBTest {
 	
 	protected static final String BILL_OF_SALE_DESCRIPTION = "Description test mongo";
 	
-	protected static final String BUDGET_NAME = "Budget name mongo";
+	protected static final String BUDGET_NAME = "BudgetDocument name mongo";
 	
 	protected static final Double BUDGET_VALUE = 375.0;
 	
 	
-	protected ProductPort createProduct() {
+	protected ProductDocument createProduct() {
 		return createProduct(ID, PRODUCT_NAME, PRODUCT_PRICE);
 	}
 	
-	protected ProductPort createProduct(String id, String name, Double price) {
-		ProductPort expectedProduct = new Product();
+	protected ProductDocument createProduct(String id, String name, Double price) {
+		ProductDocument expectedProduct = new ProductDocument();
 		expectedProduct.setId(id);
 		expectedProduct.setName(name);
 		expectedProduct.setPrice(price);
@@ -43,12 +40,12 @@ public abstract class AbstractMongoDBTest {
 		return expectedProduct;
 	}
 	
-	protected ProductPort createProduct(Double price) {
+	protected ProductDocument createProduct(Double price) {
 		return createProduct(ID, PRODUCT_NAME, price);
 	}
 	
-	protected ProductOrderPort createProductOrder(Integer quanity) {
-		ProductOrderPort order = new ProductOrder();
+	protected ProductOrderDocument createProductOrder(Integer quanity) {
+		ProductOrderDocument order = new ProductOrderDocument();
 		order.setId(ID);
 		order.setQuanity(quanity);
 		order.setProduct(createProduct(ID, PRODUCT_NAME, PRODUCT_PRICE));
@@ -56,12 +53,12 @@ public abstract class AbstractMongoDBTest {
 		return order;
 	}
 	
-	protected ProductOrderPort createProductOrder() {
+	protected ProductOrderDocument createProductOrder() {
 		return createProductOrder(PRODUCT_QUANITY);
 	}
 	
-	protected BillOfSalePort createBillOfSale() {
-		BillOfSalePort billOfSale = new BillOfSale();
+	protected BillOfSaleDocument createBillOfSale() {
+		BillOfSaleDocument billOfSale = new BillOfSaleDocument();
 		billOfSale.setId(ID);
 		billOfSale.setBoughtDate(BOUGHT_DATE);
 		billOfSale.setDescription(BILL_OF_SALE_DESCRIPTION);
@@ -70,8 +67,8 @@ public abstract class AbstractMongoDBTest {
 		return billOfSale;
 	}
 	
-	protected Budget createBudget() {
-		Budget budget = new Budget();
+	protected BudgetDocument createBudget() {
+		BudgetDocument budget = new BudgetDocument();
 		budget.setId(ID);
 		budget.setName(BUDGET_NAME);
 		budget.setBillsOfSaleList(List.of(createBillOfSale()));

@@ -2,16 +2,16 @@ package pl.expensesmanager;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import pl.expensesmanager.billofsale.BillOfSale;
-import pl.expensesmanager.billofsale.BillOfSalePort;
 import pl.expensesmanager.budget.Budget;
+import pl.expensesmanager.exception.business.CannotUpdateObjectException;
+import pl.expensesmanager.exception.business.ObjectNotFoundException;
+import pl.expensesmanager.exception.business.PassedValueIsInvalidException;
 import pl.expensesmanager.exception.validation.ValidateDateException;
 import pl.expensesmanager.exception.validation.ValidateNumberException;
 import pl.expensesmanager.exception.validation.ValidateObjectException;
 import pl.expensesmanager.exception.validation.ValidateTextException;
 import pl.expensesmanager.product.Product;
 import pl.expensesmanager.product.ProductOrder;
-import pl.expensesmanager.product.ProductOrderPort;
-import pl.expensesmanager.product.ProductPort;
 
 import java.time.Instant;
 import java.util.List;
@@ -49,12 +49,12 @@ public abstract class AbstractCoreTest {
 	private static final String ERROR_CODE_FIELD_TO_EXTRACT = "errorCode";
 	
 	
-	protected ProductPort createProduct() {
+	protected Product createProduct() {
 		return createProduct(ID, PRODUCT_NAME, PRODUCT_PRICE);
 	}
 	
-	protected ProductPort createProduct(String id, String name, Double price) {
-		ProductPort expectedProduct = new Product();
+	protected Product createProduct(String id, String name, Double price) {
+		Product expectedProduct = new Product();
 		expectedProduct.setId(id);
 		expectedProduct.setName(name);
 		expectedProduct.setPrice(price);
@@ -62,18 +62,18 @@ public abstract class AbstractCoreTest {
 		return expectedProduct;
 	}
 	
-	protected ProductPort createProduct(Double price) {
+	protected Product createProduct(Double price) {
 		return createProduct(ID, PRODUCT_NAME, price);
 	}
 	
-	protected ProductPort createProduct(ProductPort product, Double price) {
+	protected Product createProduct(Product product, Double price) {
 		product.setPrice(price);
 		
 		return product;
 	}
 	
-	protected ProductOrderPort createProductOrder(Integer quanity) {
-		ProductOrderPort order = new ProductOrder();
+	protected ProductOrder createProductOrder(Integer quanity) {
+		ProductOrder order = new ProductOrder();
 		order.setId(ID);
 		order.setQuanity(quanity);
 		order.setProduct(createProduct(ID, PRODUCT_NAME, PRODUCT_PRICE));
@@ -81,12 +81,12 @@ public abstract class AbstractCoreTest {
 		return order;
 	}
 	
-	protected ProductOrderPort createProductOrder() {
+	protected ProductOrder createProductOrder() {
 		return createProductOrder(PRODUCT_QUANITY);
 	}
 	
-	protected BillOfSalePort createBillOfSale() {
-		BillOfSalePort billOfSale = new BillOfSale();
+	protected BillOfSale createBillOfSale() {
+		BillOfSale billOfSale = new BillOfSale();
 		billOfSale.setId(ID);
 		billOfSale.setBoughtDate(BOUGHT_DATE);
 		billOfSale.setDescription(BILL_OF_SALE_DESCRIPTION);
@@ -115,6 +115,12 @@ public abstract class AbstractCoreTest {
 		return budget;
 	}
 	
+	protected void assertThatThrownByValidateIdException(
+		ThrowingCallable throwable, String hasMessage, String errorCode
+	) {
+		assertException(ValidateTextException.class, throwable, hasMessage, errorCode);
+	}
+	
 	protected void assertThatThrownByValidateTextException(
 		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
@@ -137,6 +143,24 @@ public abstract class AbstractCoreTest {
 		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
 		assertException(ValidateObjectException.class, throwable, hasMessage, errorCode);
+	}
+	
+	protected void assertThatThrownByNotFoundException(
+		ThrowingCallable throwable, String hasMessage, String errorCode
+	) {
+		assertException(ObjectNotFoundException.class, throwable, hasMessage, errorCode);
+	}
+	
+	protected void assertThatThrownByNotUpdatedException(
+		ThrowingCallable throwable, String hasMessage, String errorCode
+	) {
+		assertException(CannotUpdateObjectException.class, throwable, hasMessage, errorCode);
+	}
+	
+	protected void assertThatThrownByPassedValueIsInvalidException(
+		ThrowingCallable throwable, String hasMessage, String errorCode
+	) {
+		assertException(PassedValueIsInvalidException.class, throwable, hasMessage, errorCode);
 	}
 	
 	private void assertException(

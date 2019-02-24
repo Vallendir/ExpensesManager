@@ -25,30 +25,30 @@ class ProductRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByName() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
+		ProductDocument expectedProduct_1 = createProduct();
+		List<ProductDocument> expectedProduct = List.of(expectedProduct_1);
 		
-		when(storage.findByName(PRODUCT_NAME)).thenReturn(Optional.of(expectedProduct_1));
+		when(storage.findByName(PRODUCT_NAME)).thenReturn(expectedProduct);
 		
 		// When
-		ProductPort actualProduct = storage.findByName(PRODUCT_NAME)
-		                                   .get();
+		List<ProductDocument> actualProduct = storage.findByName(PRODUCT_NAME);
 		
 		// Then
-		assertThat(actualProduct).isEqualTo(expectedProduct_1);
+		assertThat(actualProduct).isEqualTo(expectedProduct);
 	}
 	
 	@Test
 	void findByPrice() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct();
+		ProductDocument expectedProduct_1 = createProduct();
+		ProductDocument expectedProduct_2 = createProduct();
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<ProductDocument> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPrice(PRODUCT_PRICE)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findByPrice(PRODUCT_PRICE);
+		List<ProductDocument> actualProductList = storage.findByPrice(PRODUCT_PRICE);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -57,15 +57,15 @@ class ProductRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByPriceBetween() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRODUCT_PRICE + 1.75);
+		ProductDocument expectedProduct_1 = createProduct();
+		ProductDocument expectedProduct_2 = createProduct(PRODUCT_PRICE + 1.75);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<ProductDocument> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceBetween(PRICE_MIN, PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findByPriceBetween(PRICE_MIN, PRICE_MAX);
+		List<ProductDocument> actualProductList = storage.findByPriceBetween(PRICE_MIN, PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -74,15 +74,15 @@ class ProductRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByPriceGreaterThan() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct(PRODUCT_PRICE + 1.25);
-		ProductPort expectedProduct_2 = createProduct(PRODUCT_PRICE + 1.55);
+		ProductDocument expectedProduct_1 = createProduct(PRODUCT_PRICE + 1.25);
+		ProductDocument expectedProduct_2 = createProduct(PRODUCT_PRICE + 1.55);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<ProductDocument> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceGreaterThan(PRODUCT_PRICE)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findByPriceGreaterThan(PRODUCT_PRICE);
+		List<ProductDocument> actualProductList = storage.findByPriceGreaterThan(PRODUCT_PRICE);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -91,15 +91,15 @@ class ProductRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findByPriceLessThan() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRICE_MAX);
+		ProductDocument expectedProduct_1 = createProduct();
+		ProductDocument expectedProduct_2 = createProduct(PRICE_MAX);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<ProductDocument> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findByPriceLessThan(PRICE_MAX)).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findByPriceLessThan(PRICE_MAX);
+		List<ProductDocument> actualProductList = storage.findByPriceLessThan(PRICE_MAX);
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
@@ -108,13 +108,13 @@ class ProductRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void add() {
 		// Given
-		ProductPort expectedToAdd = createProduct();
-		ProductPort expectedProduct = createProduct();
+		ProductDocument expectedToAdd = createProduct();
+		ProductDocument expectedProduct = createProduct();
 		
 		when(storage.save(expectedToAdd)).thenReturn(expectedProduct);
 		
 		// When
-		ProductPort actualProduct = storage.save(expectedToAdd);
+		ProductDocument actualProduct = storage.save(expectedToAdd);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
@@ -123,13 +123,13 @@ class ProductRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findById() {
 		// Given
-		ProductPort expectedProduct = createProduct();
+		ProductDocument expectedProduct = createProduct();
 		
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedProduct));
 		
 		// When
-		ProductPort actualProduct = storage.findById(ID)
-		                                   .get();
+		ProductDocument actualProduct = storage.findById(ID)
+		                                       .get();
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
@@ -138,23 +138,23 @@ class ProductRepositoryMongoTest extends AbstractMongoDBTest {
 	@Test
 	void findAll() {
 		// Given
-		ProductPort expectedProduct_1 = createProduct();
-		ProductPort expectedProduct_2 = createProduct(PRICE_MAX);
+		ProductDocument expectedProduct_1 = createProduct();
+		ProductDocument expectedProduct_2 = createProduct(PRICE_MAX);
 		
-		List<ProductPort> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
+		List<ProductDocument> expectedProductList = List.of(expectedProduct_1, expectedProduct_2);
 		
 		when(storage.findAll()).thenReturn(expectedProductList);
 		
 		// When
-		List<ProductPort> actualProductList = storage.findAll();
+		List<ProductDocument> actualProductList = storage.findAll();
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
 	}
 	
 	private void productListAssertions(
-		List<ProductPort> actualProductList, List<ProductPort> expectedProductList, ProductPort expectedProduct,
-		ProductPort secondEpectedProduct
+		List<ProductDocument> actualProductList, List<ProductDocument> expectedProductList,
+		ProductDocument expectedProduct, ProductDocument secondEpectedProduct
 	) {
 		assertThat(actualProductList).isEqualTo(expectedProductList);
 		assertThat(actualProductList.size()).isEqualTo(2);

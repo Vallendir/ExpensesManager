@@ -2,9 +2,13 @@ package pl.expensesmanager.budget;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.IdValidateUtil;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
 
 @RequiredArgsConstructor
 @Service
@@ -13,19 +17,19 @@ class BudgetService implements BudgetServicePort {
 	private final BudgetStorePort storage;
 	
 	@Override
-	public Optional<BudgetPort> searchForName(String name) {
+	public Optional<Budget> searchByName(String name) {
 		return storage.findByName(BudgetValidator.validateName(name));
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllForBudgetValue(Double budgetValue) {
+	public List<Budget> searchAllByValue(Double budgetValue) {
 		return storage.findByBudgetValue(BudgetValidator.validateBudgetValue(budgetValue));
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllForBudgetValueRange(Double min, Double max) {
+	public List<Budget> searchAllByValueRange(Double min, Double max) {
 		if (min > max) {
-			throw new RuntimeException();
+			throw minBiggerThanMaxException();
 		}
 		
 		return storage.findByBudgetValueBetween(
@@ -33,65 +37,88 @@ class BudgetService implements BudgetServicePort {
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllForBudgetValueGreater(Double budgetValue) {
+	public List<Budget> searchAllByBiggerValueThan(Double budgetValue) {
 		return storage.findByBudgetValueGreaterThan(BudgetValidator.validateBudgetValue(budgetValue));
 	}
 	
 	@Override
-	public List<BudgetPort> searchAllForBudgetValueLower(Double budgetValue) {
+	public List<Budget> searchAllByLessValueThan(Double budgetValue) {
 		return storage.findByBudgetValueLessThan(BudgetValidator.validateBudgetValue(budgetValue));
 	}
 	
 	@Override
-	public BudgetPort create(BudgetPort object) {
+	public Budget create(Budget object) {
 		BudgetValidator.validateBudget(object);
 		
 		return storage.save(object);
 	}
 	
-	/*@Override
-	public BudgetPort update(BudgetPort object) {
+	@Override
+	public Budget update(Budget object) {
 		BudgetValidator.validateBudget(object);
 		
-		return storage.update(object);
+		Budget budget = storage.save(object);
+		checkIfBudgetWasUpdated(budget);
+		
+		return budget;
 	}
 	
 	@Override
-	public BudgetPort update(BudgetPort originalObject, BudgetPort changes) {
+	public Budget update(Budget originalObject, Budget changes) {
 		checkChangesInBudget(changes);
 		
-		return storage.update(originalObject, changes);
+		Budget budget = storage.save(MergeUtil.merge(originalObject, changes));
+		checkIfBudgetWasUpdated(budget);
+		
+		return budget;
 	}
 	
 	@Override
-	public BudgetPort update(BudgetPort changes, String id) {
+	public Budget update(Budget changes, String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		checkChangesInBudget(changes);
 		
-		return storage.update(id, changes);
-	}*/
+		Optional<Budget> originalObject = searchById(id);
+		if (!originalObject.isPresent()) {
+			throw budgetNotFoundException();
+		}
+		
+		Budget budget = storage.save(MergeUtil.merge(originalObject.get(), changes));
+		checkIfBudgetWasUpdated(budget);
+		
+		return budget;
+	}
 	
 	@Override
-	public void deleteById(String id) {
+	public void removeById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		storage.deleteById(id);
 	}
 	
 	@Override
-	public Optional<BudgetPort> searchForId(String id) {
+	public Optional<Budget> searchById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		return storage.findById(id);
 	}
 	
 	@Override
-	public List<BudgetPort> searchAll() {
+	public List<Budget> searchAll() {
 		return storage.findAll();
 	}
 	
-	private void checkChangesInBudget(BudgetPort changes) {
+	private void checkChangesInBudget(Budget changes) {
 		if (changes.getName() != null) {
 			BudgetValidator.validateName(changes.getName());
 		}
 		
 		if (changes.getBudgetValue() != null) {
 			BudgetValidator.validateBudgetValue(changes.getBudgetValue());
+		}
+	}
+	
+	private void checkIfBudgetWasUpdated(Budget budget) {
+		if (budget == null) {
+			throw budgetNotUpdatedException();
 		}
 	}
 	

@@ -37,7 +37,7 @@ class ProductValidator {
 		}
 	}
 	
-	static ProductPort validateProduct(ProductPort product) {
+	static Product validateProduct(Product product) {
 		if (product == null) {
 			throw productException();
 		}
@@ -48,7 +48,7 @@ class ProductValidator {
 		return product;
 	}
 	
-	static ProductOrderPort validateOrder(ProductOrderPort order) {
+	static ProductOrder validateOrder(ProductOrder order) {
 		if (order == null) {
 			throw orderException();
 		}

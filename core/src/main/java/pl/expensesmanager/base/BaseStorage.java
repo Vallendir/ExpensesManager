@@ -3,7 +3,7 @@ package pl.expensesmanager.base;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseStorage<T, I> {
+public interface BaseStorage<T, I> extends IdValidatorPort<I> {
 	
 	/**
 	 * Method to store object.
@@ -14,10 +14,10 @@ public interface BaseStorage<T, I> {
 	T save(T object);
 	
 	/**
-	 * Method to deleteById object from storage.
+	 * Method to removeById object from storage.
 	 *
-	 * @param id - id of object which will be removed
-	 * @return true if was removed and false if not
+	 * @param id - id of object which will be deleted
+	 * @return true if was deleted and false if not
 	 */
 	void deleteById(I id);
 	

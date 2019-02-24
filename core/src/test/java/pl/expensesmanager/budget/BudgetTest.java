@@ -10,7 +10,7 @@ class BudgetTest extends AbstractCoreTest {
 	@Test
 	void testBudgetSpent() {
 		// Given
-		BudgetPort expectedBudget = createBudget();
+		Budget expectedBudget = createBudget();
 		Double expectedBudgetSpent = PRODUCT_QUANITY * PRODUCT_PRICE;
 		
 		// When
@@ -22,7 +22,7 @@ class BudgetTest extends AbstractCoreTest {
 	@Test
 	void testBudgetLeft() {
 		// Given
-		BudgetPort expectedBudget = createBudget();
+		Budget expectedBudget = createBudget();
 		Double expectedBudgetLeft = BUDGET_VALUE - (PRODUCT_QUANITY * PRODUCT_PRICE);
 		
 		// When

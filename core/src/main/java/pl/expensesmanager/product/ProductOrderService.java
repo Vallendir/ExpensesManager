@@ -2,9 +2,13 @@ package pl.expensesmanager.product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.IdValidateUtil;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
 
 @Service
 @RequiredArgsConstructor
@@ -13,20 +17,20 @@ class ProductOrderService implements ProductOrderServicePort {
 	private final ProductOrderStorePort storage;
 	
 	@Override
-	public List<ProductOrderPort> searchAllForProductName(String name) {
+	public List<ProductOrder> searchAllByProductName(String name) {
 		return storage.findByProductName(ProductValidator.validateName(name));
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllForProductNameAndProductPrice(String name, Double price) {
+	public Optional<ProductOrder> searchAllByProductNameAndProductPrice(String name, Double price) {
 		return storage.findByProductNameAndProductPrice(
 			ProductValidator.validateName(name), ProductValidator.validatePrice(price));
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllForQuanityRange(Integer min, Integer max) {
+	public List<ProductOrder> searchAllByQuanityRange(Integer min, Integer max) {
 		if (min > max) {
-			throw new RuntimeException();
+			throw minBiggerThanMaxException();
 		}
 		
 		return storage.findByQuanityBetween(
@@ -34,65 +38,88 @@ class ProductOrderService implements ProductOrderServicePort {
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllForQuanityGreater(Integer quanity) {
+	public List<ProductOrder> searchAllByBiggerQuanityThan(Integer quanity) {
 		return storage.findByQuanityGreaterThan(ProductValidator.validateQuanity(quanity));
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllForQuanityLower(Integer quanity) {
+	public List<ProductOrder> searchAllByLessQuanityThan(Integer quanity) {
 		return storage.findByQuanityLessThan(ProductValidator.validateQuanity(quanity));
 	}
 	
 	@Override
-	public ProductOrderPort create(ProductOrderPort object) {
+	public ProductOrder create(ProductOrder object) {
 		ProductValidator.validateOrder(object);
 		
 		return storage.save(object);
 	}
 	
-	/*@Override
-	public ProductOrderPort update(ProductOrderPort object) {
+	@Override
+	public ProductOrder update(ProductOrder object) {
 		ProductValidator.validateOrder(object);
 		
-		return storage.update(object);
+		ProductOrder order = storage.save(object);
+		checkIfProductOrderWasUpdated(order);
+		
+		return order;
 	}
 	
 	@Override
-	public ProductOrderPort update(ProductOrderPort originalObject, ProductOrderPort changes) {
+	public ProductOrder update(ProductOrder originalObject, ProductOrder changes) {
 		checkChangesInOrder(changes);
 		
-		return storage.update(originalObject, changes);
+		ProductOrder order = storage.save(MergeUtil.merge(originalObject, changes));
+		checkIfProductOrderWasUpdated(order);
+		
+		return order;
 	}
 	
 	@Override
-	public ProductOrderPort update(ProductOrderPort changes, String id) {
+	public ProductOrder update(ProductOrder changes, String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		checkChangesInOrder(changes);
 		
-		return storage.update(id, changes);
-	}*/
+		Optional<ProductOrder> originalObject = searchById(id);
+		if (!originalObject.isPresent()) {
+			throw productOrderNotFoundException();
+		}
+		
+		ProductOrder order = storage.save(MergeUtil.merge(originalObject.get(), changes));
+		checkIfProductOrderWasUpdated(order);
+		
+		return order;
+	}
 	
 	@Override
-	public void deleteById(String id) {
+	public void removeById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		storage.deleteById(id);
 	}
 	
 	@Override
-	public Optional<ProductOrderPort> searchForId(String id) {
+	public Optional<ProductOrder> searchById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		return storage.findById(id);
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAll() {
+	public List<ProductOrder> searchAll() {
 		return storage.findAll();
 	}
 	
-	private void checkChangesInOrder(ProductOrderPort changes) {
+	private void checkChangesInOrder(ProductOrder changes) {
 		if (changes.getQuanity() != null) {
 			ProductValidator.validateQuanity(changes.getQuanity());
 		}
 		
 		if (changes.getProduct() != null) {
 			ProductValidator.validateProduct(changes.getProduct());
+		}
+	}
+	
+	private void checkIfProductOrderWasUpdated(ProductOrder order) {
+		if (order == null) {
+			throw productOrderNotUpdatedException();
 		}
 	}
 	

@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.productOrderNotFoundException;
 
 @RequiredArgsConstructor
 @RestController
@@ -11,48 +14,58 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 	
 	private final ProductOrderService service;
 	
-	public ProductOrderPort add(ProductOrder product) {
+	public ProductOrder add(ProductOrder product) {
 		return service.create(product);
 	}
 	
-	/*public ProductOrderPort update(ProductOrder product) {
+	public ProductOrder update(ProductOrder product) {
 		return service.update(product);
 	}
 	
-	public ProductOrderPort update(String id, ProductOrder product) {
+	public ProductOrder update(String id, ProductOrder product) {
 		return service.update(product, id);
-	}*/
+	}
 	
 	public void delete(String id) {
-		service.deleteById(id);
+		service.removeById(id);
 	}
 	
-	public ProductOrderPort searchForId(String id) {
-		// FIXME
-		return service.searchForId(id)
-		              .get();
+	public ProductOrder searchForId(String id) {
+		Optional<ProductOrder> order = service.searchById(id);
+		checkIfProductOrderWasFound(order);
+		
+		return order.get();
 	}
 	
-	public List<ProductOrderPort> searchAllForQuanityRange(Integer min, Integer max) {
-		return service.searchAllForQuanityRange(min, max);
+	public List<ProductOrder> searchAllForQuanityRange(Integer quanityMin, Integer quanityMax) {
+		return service.searchAllByQuanityRange(quanityMin, quanityMax);
 	}
 	
-	public List<ProductOrderPort> searchAllForQuanityGreater(Integer quanity) {
-		return service.searchAllForQuanityGreater(quanity);
+	public List<ProductOrder> searchAllForQuanityGreater(Integer quanityBigger) {
+		return service.searchAllByBiggerQuanityThan(quanityBigger);
 	}
 	
-	public List<ProductOrderPort> searchAllForQuanityLower(Integer quanity) {
-		return service.searchAllForQuanityLower(quanity);
-	}
-	
-	@Override
-	public List<ProductOrderPort> searchAllForProductName(String productName) {
-		return service.searchAllForProductName(productName);
+	public List<ProductOrder> searchAllForQuanityLower(Integer quanityLower) {
+		return service.searchAllByLessQuanityThan(quanityLower);
 	}
 	
 	@Override
-	public List<ProductOrderPort> searchAllForProductNameAndProductPrice(String productName, Double price) {
-		return service.searchAllForProductNameAndProductPrice(productName, price);
+	public List<ProductOrder> searchAllForProductName(String productName) {
+		return service.searchAllByProductName(productName);
+	}
+	
+	@Override
+	public ProductOrder searchAllForProductNameAndProductPrice(String productName, Double productPrice) {
+		Optional<ProductOrder> order = service.searchAllByProductNameAndProductPrice(productName, productPrice);
+		checkIfProductOrderWasFound(order);
+		
+		return order.get();
+	}
+	
+	private void checkIfProductOrderWasFound(Optional<ProductOrder> order) {
+		if (!order.isPresent()) {
+			throw productOrderNotFoundException();
+		}
 	}
 	
 }

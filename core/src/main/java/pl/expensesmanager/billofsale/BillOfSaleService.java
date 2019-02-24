@@ -2,10 +2,14 @@ package pl.expensesmanager.billofsale;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.expensesmanager.util.IdValidateUtil;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
 
 @RequiredArgsConstructor
 @Service
@@ -14,19 +18,19 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	private final BillOfSaleStorePort storage;
 	
 	@Override
-	public Optional<BillOfSalePort> searchForDescription(String description) {
+	public Optional<BillOfSale> searchByDescription(String description) {
 		return storage.findByDescription(BillOfSaleValidator.validateDescription(description));
 	}
 	
 	@Override
-	public List<BillOfSalePort> searchForBoughtDate(Instant boughtDate) {
+	public List<BillOfSale> searchAllByBoughtDate(Instant boughtDate) {
 		return storage.findByBoughtDate(BillOfSaleValidator.validateBoughtDate(boughtDate));
 	}
 	
 	@Override
-	public List<BillOfSalePort> searchAllForBoughtDateRange(Instant min, Instant max) {
+	public List<BillOfSale> searchAllByBoughtDateRange(Instant min, Instant max) {
 		if (min.isAfter(max)) {
-			throw new RuntimeException();
+			throw minBiggerThanMaxException();
 		}
 		
 		return storage.findByBoughtDateBetween(
@@ -34,55 +38,78 @@ class BillOfSaleService implements BillOfSaleServicePort {
 	}
 	
 	@Override
-	public BillOfSalePort create(BillOfSalePort object) {
+	public BillOfSale create(BillOfSale object) {
 		BillOfSaleValidator.validateBillOfSale(object);
 		
 		return storage.save(object);
 	}
 	
-	/*@Override
-	public BillOfSalePort update(BillOfSalePort object) {
+	@Override
+	public BillOfSale update(BillOfSale object) {
 		BillOfSaleValidator.validateBillOfSale(object);
 		
-		return storage.update(object);
+		BillOfSale billOfSale = storage.save(object);
+		checkIfBillOfSaleWasUpdated(billOfSale);
+		
+		return billOfSale;
 	}
 	
 	@Override
-	public BillOfSalePort update(BillOfSalePort originalObject, BillOfSalePort changes) {
+	public BillOfSale update(BillOfSale originalObject, BillOfSale changes) {
 		checkChangesInBillOfSale(changes);
 		
-		return storage.update(originalObject, changes);
+		BillOfSale billOfSale = storage.save(MergeUtil.merge(originalObject, changes));
+		checkIfBillOfSaleWasUpdated(billOfSale);
+		
+		return billOfSale;
 	}
 	
 	@Override
-	public BillOfSalePort update(BillOfSalePort changes, String id) {
+	public BillOfSale update(BillOfSale changes, String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		checkChangesInBillOfSale(changes);
 		
-		return storage.update(id, changes);
-	}*/
+		Optional<BillOfSale> originalObject = searchById(id);
+		if (!originalObject.isPresent()) {
+			throw billOfSaleNotFoundException();
+		}
+		
+		BillOfSale billOfSale = storage.save(MergeUtil.merge(originalObject.get(), changes));
+		checkIfBillOfSaleWasUpdated(billOfSale);
+		
+		return billOfSale;
+	}
 	
 	@Override
-	public void deleteById(String id) {
+	public void removeById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		storage.deleteById(id);
 	}
 	
 	@Override
-	public Optional<BillOfSalePort> searchForId(String id) {
+	public Optional<BillOfSale> searchById(String id) {
+		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
 		return storage.findById(id);
 	}
 	
 	@Override
-	public List<BillOfSalePort> searchAll() {
+	public List<BillOfSale> searchAll() {
 		return storage.findAll();
 	}
 	
-	private void checkChangesInBillOfSale(BillOfSalePort changes) {
+	private void checkChangesInBillOfSale(BillOfSale changes) {
 		if (changes.getDescription() != null) {
 			BillOfSaleValidator.validateDescription(changes.getDescription());
 		}
 		
 		if (changes.getBoughtDate() != null) {
 			BillOfSaleValidator.validateBoughtDate(changes.getBoughtDate());
+		}
+	}
+	
+	private void checkIfBillOfSaleWasUpdated(BillOfSale billOfSale) {
+		if (billOfSale == null) {
+			throw billOfSaleNotUpdatedException();
 		}
 	}
 	

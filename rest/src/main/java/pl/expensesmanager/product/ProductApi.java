@@ -7,32 +7,32 @@ import java.util.List;
 interface ProductApi {
 	
 	@PostMapping(value = "/products")
-	ProductPort add(@RequestBody Product product);
+	Product add(@RequestBody Product product);
 	
-	/*@PutMapping(value = "/products")
-	ProductPort update(@RequestBody Product product);
+	@PutMapping(value = "/products")
+	Product update(@RequestBody Product product);
 	
 	@PutMapping(value = "/products/{id}")
-	ProductPort update(@PathVariable("id") String id, @RequestBody Product product);*/
+	Product update(@PathVariable("id") String id, @RequestBody Product product);
 	
 	@DeleteMapping(value = "/products/{id}")
 	void delete(@PathVariable("id") String id);
 	
 	@GetMapping(value = "/products/{id}")
-	ProductPort searchForId(@PathVariable("id") String id);
+	Product searchForId(@PathVariable("id") String id);
 	
 	@GetMapping(value = "/products", params = "name")
-	ProductPort searchForName(@RequestParam(value = "name") String name);
+	List<Product> searchForName(@RequestParam(value = "name") String name);
 	
-	@GetMapping(value = "/products", params = { "price-min", "price-max" })
-	List<ProductPort> searchAllForPriceRange(
-		@RequestParam(value = "price-min") Double min, @RequestParam(value = "price-max") Double max
+	@GetMapping(value = "/products", params = { "priceMin", "priceMax" })
+	List<Product> searchAllForPriceRange(
+		@RequestParam(value = "priceMin") Double priceMin, @RequestParam(value = "priceMax") Double priceMax
 	);
 	
-	@GetMapping(value = "/products", params = "price-bigger")
-	List<ProductPort> searchAllForPriceGreater(@RequestParam(value = "price-bigger") Double price);
+	@GetMapping(value = "/products", params = "priceBigger")
+	List<Product> searchAllForPriceGreater(@RequestParam(value = "priceBigger") Double priceBigger);
 	
-	@GetMapping(value = "/products", params = "price-lower")
-	List<ProductPort> searchAllForPriceLower(@RequestParam(value = "price-lower") Double price);
+	@GetMapping(value = "/products", params = "priceLower")
+	List<Product> searchAllForPriceLower(@RequestParam(value = "priceLower") Double priceLower);
 	
 }

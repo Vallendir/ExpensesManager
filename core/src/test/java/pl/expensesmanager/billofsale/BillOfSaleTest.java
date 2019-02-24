@@ -10,7 +10,7 @@ class BillOfSaleTest extends AbstractCoreTest {
 	@Test
 	void testFinalPrice() {
 		// Given
-		BillOfSalePort expectedBillOfSale = createBillOfSale();
+		BillOfSale expectedBillOfSale = createBillOfSale();
 		Double expectedBillOfSaleFinalPrice = PRODUCT_PRICE * PRODUCT_QUANITY;
 		
 		// When
