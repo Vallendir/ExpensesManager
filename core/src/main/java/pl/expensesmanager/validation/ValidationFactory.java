@@ -1,4 +1,4 @@
-package pl.expensesmanager.validate;
+package pl.expensesmanager.validation;
 
 import lombok.experimental.UtilityClass;
 import pl.expensesmanager.billofsale.BillOfSale;

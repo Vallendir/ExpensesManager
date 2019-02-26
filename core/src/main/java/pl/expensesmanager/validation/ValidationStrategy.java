@@ -1,4 +1,4 @@
-package pl.expensesmanager.validate;
+package pl.expensesmanager.validation;
 
 /**
  * Interface to strategy objects.

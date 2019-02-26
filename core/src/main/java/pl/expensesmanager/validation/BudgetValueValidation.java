@@ -1,12 +1,12 @@
-package pl.expensesmanager.validate;
+package pl.expensesmanager.validation;
 
 import lombok.RequiredArgsConstructor;
 import pl.expensesmanager.exception.validation.ValidateNumberException;
 
-import static pl.expensesmanager.exception.ValidationExceptionFactory.productPriceException;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.budgetValueException;
 
 @RequiredArgsConstructor
-public class ProductPriceValidation implements ValidationStrategy {
+public class BudgetValueValidation implements ValidationStrategy {
 	
 	private final Double value;
 	
@@ -15,7 +15,7 @@ public class ProductPriceValidation implements ValidationStrategy {
 		try {
 			validate(new DoubleValidation(value));
 		} catch (ValidateNumberException exception) {
-			throw productPriceException();
+			throw budgetValueException();
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package pl.expensesmanager.validate;
+package pl.expensesmanager.validation;
 
 import lombok.RequiredArgsConstructor;
 import pl.expensesmanager.budget.Budget;

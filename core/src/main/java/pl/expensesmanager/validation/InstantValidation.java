@@ -1,4 +1,4 @@
-package pl.expensesmanager.validate;
+package pl.expensesmanager.validation;
 
 import lombok.RequiredArgsConstructor;
 
@@ -7,7 +7,7 @@ import java.time.Instant;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.dateNullException;
 
 /**
- * Classto validate Instant value.
+ * Classto validation Instant value.
  */
 @RequiredArgsConstructor
 public class InstantValidation implements ValidationStrategy {

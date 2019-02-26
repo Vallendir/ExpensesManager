@@ -1,4 +1,4 @@
-package pl.expensesmanager.validate;
+package pl.expensesmanager.validation;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.blankTextException;
 
 /**
- * Classto validate string value
+ * Classto validation string value
  */
 @RequiredArgsConstructor
 public class StringValidation implements ValidationStrategy {

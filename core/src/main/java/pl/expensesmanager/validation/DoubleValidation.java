@@ -1,4 +1,4 @@
-package pl.expensesmanager.validate;
+package pl.expensesmanager.validation;
 
 import lombok.RequiredArgsConstructor;
 
@@ -6,7 +6,7 @@ import static pl.expensesmanager.exception.ValidationExceptionFactory.numberNANE
 import static pl.expensesmanager.exception.ValidationExceptionFactory.numberNullException;
 
 /**
- * Class to validate double value.
+ * Class to validation double value.
  */
 @RequiredArgsConstructor
 public class DoubleValidation implements ValidationStrategy {
