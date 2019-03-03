@@ -1,6 +1,6 @@
 package pl.expensesmanager.budget;
 
-import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -83,8 +82,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForBoughtDateRange_throwMinIsBiggerThanMax() {
 		// Then
-		ThrowableAssert.ThrowingCallable throwable = () -> service.searchAllByValueRange(
-			BUDGET_VALUE_MAX, BUDGET_VALUE_MIN);
+		ThrowingCallable throwable = () -> service.searchAllByValueRange(BUDGET_VALUE_MAX, BUDGET_VALUE_MIN);
 		
 		// Then
 		assertThatThrownByPassedValueIsInvalidException(throwable,
@@ -151,55 +149,66 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.save(expectedToChange)).thenReturn(expectedBudget);
 		
 		// When
-		Budget actualBudget = service.update(expectedToChange);
+		Budget actualBudget = service.create(expectedToChange);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget);
-	}
-	
-	@Test
-	void checkIfNotUpdatedThrowException() {
-		// When
-		when(storage.save(any())).thenReturn(null);
-		
-		ThrowableAssert.ThrowingCallable throwable = () -> service.update(createBudget());
-		
-		// Then
-		assertThatThrownByNotUpdatedException(throwable,
-		                                      BusinessLogicExceptionFactory.ExceptionMessage.BUDGET_NOT_UPDATED,
-		                                      BusinessLogicExceptionFactory.ErrorCode.BUDGET_NOT_UPDATED
-		);
 	}
 	
 	@Test
 	void updateById() {
 		// Given
-		Budget expectedChanges = createBudget(500.5);
-		Budget expectedBudget = createBudget();
+		Budget toChange = Budget.builder()
+		                        .name("TEST")
+		                        .build();
+		toChange.setId(ID);
+		
+		Budget changes = Budget.builder()
+		                       .budgetValue(BUDGET_VALUE)
+		                       .build();
+		
+		Budget expected = Budget.builder()
+		                        .name("TEST")
+		                        .budgetValue(BUDGET_VALUE)
+		                        .build();
+		expected.setId(ID);
 		
 		when(storage.isValid(ID)).thenReturn(true);
-		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget));
-		when(storage.save(MergeUtil.merge(expectedChanges, expectedChanges))).thenReturn(expectedBudget);
+		when(storage.findById(ID)).thenReturn(Optional.of(expected));
+		when(storage.save(MergeUtil.merge(toChange, changes))).thenReturn(expected);
 		
 		// When
-		Budget actualBudget = service.update(expectedChanges, ID);
+		Budget actualBudget = service.update(changes, ID);
 		
 		// Then
-		assertThat(actualBudget).isEqualTo(expectedBudget);
+		assertThat(actualBudget).isEqualTo(expected);
 	}
 	
 	@Test
-	void updateById_throw() {
+	void updateById_throwObjectNotFound() {
 		// When
 		Budget expectedChanges = createBudget(500.5);
 		
 		when(storage.isValid(ID)).thenReturn(true);
-		when(storage.findById(ID)).thenReturn(Optional.empty());
-		ThrowableAssert.ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
 		
 		// Then
 		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.BUDGET_NOT_FOUND,
 		                                    BusinessLogicExceptionFactory.ErrorCode.BUDGET_NOT_FOUND
+		);
+	}
+	
+	@Test
+	void updateById_throwInvalidIdFormat() {
+		// When
+		Budget expectedChanges = new Budget();
+		
+		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		// Then
+		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
+		                                      ValidationExceptionFactory.ErrorCode.INVALID_ID_FORMAT
 		);
 	}
 	
@@ -209,8 +218,8 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.isValid(ID)).thenReturn(false);
 		
 		// When
-		ThrowableAssert.ThrowingCallable throwable = () -> service.searchById(ID)
-		                                                          .get();
+		ThrowingCallable throwable = () -> service.searchObjectById(ID)
+		                                          .get();
 		
 		// Then
 		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
@@ -243,7 +252,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		Budget actualBudget = service.searchById(ID)
+		Budget actualBudget = service.searchObjectById(ID)
 		                             .get();
 		
 		// Then
@@ -261,7 +270,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.findAll()).thenReturn(expectedBudgets);
 		
 		// When
-		List<Budget> actualBudgets = service.searchAll();
+		List<Budget> actualBudgets = service.searchAllObjects();
 		
 		// Then
 		budgetListAssertions(actualBudgets, expectedBudgets, expectedBudget_1, expectedBudget_2);

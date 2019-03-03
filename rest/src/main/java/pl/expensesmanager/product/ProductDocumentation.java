@@ -9,26 +9,26 @@ import java.util.List;
 @Api(tags = { "Product" })
 public interface ProductDocumentation {
 	
-	@ApiOperation(value = "POST-endpoint to create Product.", nickname = "save", notes = "Method allow to create a new product.", tags = {
+	@ApiOperation(value = "POST-endpoint to createObject Product.", nickname = "save", notes = "Method allow to createObject a new product.", tags = {
 		"Product",
 	})
 	Product add(
 		@ApiParam(value = "Product object which will be created.", required = true) Product product
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update Product.", nickname = "update", notes = "Method allow to update a product.", tags = {
+	@ApiOperation(value = "PUT-endpoint to updateObject Product.", nickname = "updateObject", notes = "Method allow to updateObject a product.", tags = {
 		"Product",
 	})
 	Product update(
 		@ApiParam(value = "Product object which will be updated.", required = true) Product product
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update Product of id.", nickname = "update", notes = "Method allow to update a product by id.", tags = {
+	@ApiOperation(value = "PUT-endpoint to updateObject Product of id.", nickname = "updateObject", notes = "Method allow to updateObject a product by id.", tags = {
 		"Product",
 	})
 	Product update(
-		@ApiParam(value = "ID of Product to update.", required = true) String id,
-		@ApiParam(value = "Product object changes to update.", required = true) Product product
+		@ApiParam(value = "ID of Product to updateObject.", required = true) String id,
+		@ApiParam(value = "Product object changes to updateObject.", required = true) Product product
 	);
 	
 	@ApiOperation(value = "DELETE-endpoint to removeById Product.", nickname = "removeById", notes = "Method allow to removeById a product.", tags = {

@@ -19,7 +19,7 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 	}
 	
 	public ProductOrder update(ProductOrder product) {
-		return service.update(product);
+		return service.create(product);
 	}
 	
 	public ProductOrder update(String id, ProductOrder product) {
@@ -27,11 +27,11 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 	}
 	
 	public void delete(String id) {
-		service.removeById(id);
+		service.removeObjectById(id);
 	}
 	
 	public ProductOrder searchForId(String id) {
-		Optional<ProductOrder> order = service.searchById(id);
+		Optional<ProductOrder> order = service.searchObjectById(id);
 		checkIfProductOrderWasFound(order);
 		
 		return order.get();

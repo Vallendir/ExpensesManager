@@ -14,14 +14,14 @@ import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.budgetN
 @RestController
 class BudgetController implements BudgetApi, BudgetDocumentation {
 	
-	private final BudgetServicePort service;
+	private final BudgetService service;
 	
 	public Budget add(Budget budget) {
 		return service.create(budget);
 	}
 	
 	public Budget update(Budget budget) {
-		return service.update(budget);
+		return service.create(budget);
 	}
 	
 	public Budget update(String id, Budget budget) {
@@ -29,11 +29,11 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 	}
 	
 	public void delete(String id) {
-		service.removeById(id);
+		service.removeObjectById(id);
 	}
 	
 	public Budget searchForId(String id) {
-		Optional<Budget> budget = service.searchById(id);
+		Optional<Budget> budget = service.searchObjectById(id);
 		checkIfBudgetNotFound(budget);
 		
 		return budget.get();

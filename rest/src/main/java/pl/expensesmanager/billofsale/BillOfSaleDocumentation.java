@@ -10,26 +10,26 @@ import java.util.List;
 @Api(tags = { "BillOfSale" })
 public interface BillOfSaleDocumentation {
 	
-	@ApiOperation(value = "POST-endpoint to create BillOfSale.", nickname = "save", notes = "Method allow to create a new bill of sale.", tags = {
+	@ApiOperation(value = "POST-endpoint to createObject BillOfSale.", nickname = "save", notes = "Method allow to createObject a new bill of sale.", tags = {
 		"BillOfSale",
 	})
 	BillOfSale add(
 		@ApiParam(value = "BillOfSale object which will be created.", required = true) BillOfSale billOfSale
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update BillOfSale.", nickname = "update", notes = "Method allow to update a bill of sale.", tags = {
+	@ApiOperation(value = "PUT-endpoint to updateObject BillOfSale.", nickname = "updateObject", notes = "Method allow to updateObject a bill of sale.", tags = {
 		"BillOfSale",
 	})
 	BillOfSale update(
 		@ApiParam(value = "BillOfSale object which will be updated.", required = true) BillOfSale billOfSale
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update BillOfSale of id.", nickname = "update", notes = "Method allow to update a bill of sale by id.", tags = {
+	@ApiOperation(value = "PUT-endpoint to updateObject BillOfSale of id.", nickname = "updateObject", notes = "Method allow to updateObject a bill of sale by id.", tags = {
 		"BillOfSale",
 	})
 	BillOfSale update(
-		@ApiParam(value = "ID of BillOfSale to update.", required = true) String id,
-		@ApiParam(value = "BillOfSale object changes to update.", required = true) BillOfSale billOfSale
+		@ApiParam(value = "ID of BillOfSale to updateObject.", required = true) String id,
+		@ApiParam(value = "BillOfSale object changes to updateObject.", required = true) BillOfSale billOfSale
 	);
 	
 	@ApiOperation(value = "DELETE-endpoint to removeById BillOfSale.", nickname = "removeById", notes = "Method allow to removeById a bill of sale.", tags = {

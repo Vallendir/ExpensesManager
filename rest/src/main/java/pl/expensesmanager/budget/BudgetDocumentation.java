@@ -9,26 +9,26 @@ import java.util.List;
 @Api(tags = { "Budget" })
 public interface BudgetDocumentation {
 	
-	@ApiOperation(value = "POST-endpoint to create Budget.", nickname = "save", notes = "Method allow to create a new budget.", tags = {
+	@ApiOperation(value = "POST-endpoint to createObject Budget.", nickname = "save", notes = "Method allow to createObject a new budget.", tags = {
 		"Budget",
 	})
 	Budget add(
 		@ApiParam(value = "Budget object which will be created.", required = true) Budget budget
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update Budget.", nickname = "update", notes = "Method allow to update a budget.", tags = {
+	@ApiOperation(value = "PUT-endpoint to updateObject Budget.", nickname = "updateObject", notes = "Method allow to updateObject a budget.", tags = {
 		"Budget",
 	})
 	Budget update(
 		@ApiParam(value = "Budget object which will be updated.", required = true) Budget budget
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update Budget of id.", nickname = "update", notes = "Method allow to update a budget by id.", tags = {
+	@ApiOperation(value = "PUT-endpoint to updateObject Budget of id.", nickname = "updateObject", notes = "Method allow to updateObject a budget by id.", tags = {
 		"Budget",
 	})
 	Budget update(
-		@ApiParam(value = "ID of Budget to update.", required = true) String id,
-		@ApiParam(value = "Budget object changes to update.", required = true) Budget budget
+		@ApiParam(value = "ID of Budget to updateObject.", required = true) String id,
+		@ApiParam(value = "Budget object changes to updateObject.", required = true) Budget budget
 	);
 	
 	@ApiOperation(value = "DELETE-endpoint to removeById Budget.", nickname = "removeById", notes = "Method allow to removeById a budget.", tags = {

@@ -1,6 +1,5 @@
 package pl.expensesmanager.billofsale;
 
-import org.assertj.core.api.ThrowableAssert;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -125,57 +123,48 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		when(storage.save(expectedToChange)).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		BillOfSale actualBillOfSaleList = service.update(expectedToChange);
+		BillOfSale actualBillOfSaleList = service.create(expectedToChange);
 		
 		// Then
 		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
-	}
-	
-	@Test
-	void checkIfNotUpdatedThrowException() {
-		// When
-		when(storage.save(any())).thenReturn(null);
-		
-		ThrowableAssert.ThrowingCallable throwable = () -> service.update(createBillOfSale());
-		
-		// Then
-		assertThatThrownByNotUpdatedException(throwable,
-		                                      BusinessLogicExceptionFactory.ExceptionMessage.BILL_OF_SALE_NOT_UPDATED,
-		                                      BusinessLogicExceptionFactory.ErrorCode.BILL_OF_SALE_NOT_UPDATED
-		);
 	}
 	
 	@Test
 	void updateById() {
 		// Given
-		BillOfSale expectedToChange = new BillOfSale();
-		expectedToChange.setId(ID);
-		expectedToChange.setDescription(BILL_OF_SALE_DESCRIPTION);
-		expectedToChange.setProductList(List.of(createProductOrder()));
+		BillOfSale toChange = BillOfSale.builder()
+		                                .description(BILL_OF_SALE_DESCRIPTION)
+		                                .build();
+		toChange.setId(ID);
 		
-		BillOfSale expectedChanges = new BillOfSale();
-		expectedChanges.setBoughtDate(BOUGHT_DATE);
+		BillOfSale changes = BillOfSale.builder()
+		                               .boughtDate(BOUGHT_DATE)
+		                               .build();
 		
-		BillOfSale expectedBillOfSaleList = createBillOfSale();
+		BillOfSale expected = BillOfSale.builder()
+		                                .description(BILL_OF_SALE_DESCRIPTION)
+		                                .boughtDate(BOUGHT_DATE)
+		                                .build();
+		expected.setId(ID);
 		
 		when(storage.isValid(ID)).thenReturn(true);
-		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSaleList));
-		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedBillOfSaleList);
+		when(storage.findById(ID)).thenReturn(Optional.of(expected));
+		when(storage.save(MergeUtil.merge(toChange, changes))).thenReturn(expected);
 		
 		// When
-		BillOfSale actualBillOfSaleList = service.update(expectedChanges, ID);
+		BillOfSale actualBillOfSaleList = service.update(changes, ID);
 		
 		// Then
-		assertThat(actualBillOfSaleList).isEqualTo(expectedBillOfSaleList);
+		assertThat(actualBillOfSaleList).isEqualTo(expected);
 	}
 	
 	@Test
-	void updateById_throw() {
+	void updateById_throwObjectNotFound() {
 		// When
 		BillOfSale expectedChanges = new BillOfSale();
 		
 		when(storage.isValid(ID)).thenReturn(true);
-		when(storage.findById(ID)).thenReturn(Optional.empty());
+		
 		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
 		
 		// Then
@@ -186,12 +175,25 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	}
 	
 	@Test
+	void updateById_throwInvalidIdFormat() {
+		// When
+		BillOfSale expectedChanges = new BillOfSale();
+		
+		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		// Then
+		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
+		                                      ValidationExceptionFactory.ErrorCode.INVALID_ID_FORMAT
+		);
+	}
+	
+	@Test
 	void ifIdIsNotValid_throw() {
 		// Given
 		when(storage.isValid(ID)).thenReturn(false);
 		
 		// When
-		ThrowingCallable throwable = () -> service.searchById(ID)
+		ThrowingCallable throwable = () -> service.searchObjectById(ID)
 		                                          .get();
 		
 		// Then
@@ -229,7 +231,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSale actualBillOfSale = service.searchById(ID)
+		BillOfSale actualBillOfSale = service.searchObjectById(ID)
 		                                     .get();
 		
 		// Then
@@ -247,7 +249,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		when(storage.findAll()).thenReturn(expectedBillOfSaleList);
 		
 		// When
-		List<BillOfSale> actualBillOfSaleList = service.searchAll();
+		List<BillOfSale> actualBillOfSaleList = service.searchAllObjects();
 		
 		// Then
 		billOfSaleListAssertions(

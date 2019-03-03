@@ -9,26 +9,26 @@ import java.util.List;
 @Api(tags = { "Order" })
 public interface ProductOrderDocumentation {
 	
-	@ApiOperation(value = "POST-endpoint to create Order.", nickname = "save", notes = "Method allow to create a new order.", tags = {
+	@ApiOperation(value = "POST-endpoint to createObject Order.", nickname = "save", notes = "Method allow to createObject a new order.", tags = {
 		"Order",
 	})
 	ProductOrder add(
 		@ApiParam(value = "Order object which will be created.", required = true) ProductOrder order
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update Order.", nickname = "update", notes = "Method allow to update a order.", tags = {
+	@ApiOperation(value = "PUT-endpoint to updateObject Order.", nickname = "updateObject", notes = "Method allow to updateObject a order.", tags = {
 		"Order",
 	})
 	ProductOrder update(
 		@ApiParam(value = "Order object which will be updated.", required = true) ProductOrder order
 	);
 	
-	@ApiOperation(value = "PUT-endpoint to update Order of id.", nickname = "update", notes = "Method allow to update a order by id.", tags = {
+	@ApiOperation(value = "PUT-endpoint to updateObject Order of id.", nickname = "updateObject", notes = "Method allow to updateObject a order by id.", tags = {
 		"Order",
 	})
 	ProductOrder update(
-		@ApiParam(value = "ID of Order to update.", required = true) String id,
-		@ApiParam(value = "Order object changes to update.", required = true) ProductOrder order
+		@ApiParam(value = "ID of Order to updateObject.", required = true) String id,
+		@ApiParam(value = "Order object changes to updateObject.", required = true) ProductOrder order
 	);
 	
 	@ApiOperation(value = "DELETE-endpoint to removeById Order.", nickname = "removeById", notes = "Method allow to removeById a order.", tags = {

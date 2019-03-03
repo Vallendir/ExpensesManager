@@ -20,7 +20,7 @@ public interface ProductRepositoryMongo extends MongoRepository<ProductDocument,
 	/**
 	 * Method to find product by name and price.
 	 *
-	 * @param name - the name of product
+	 * @param name  - the name of product
 	 * @param price - the price of product
 	 * @return found product as optional
 	 */

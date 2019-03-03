@@ -3,7 +3,6 @@ package pl.expensesmanager;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import pl.expensesmanager.billofsale.BillOfSale;
 import pl.expensesmanager.budget.Budget;
-import pl.expensesmanager.exception.business.CannotUpdateObjectException;
 import pl.expensesmanager.exception.business.ObjectNotFoundException;
 import pl.expensesmanager.exception.business.PassedValueIsInvalidException;
 import pl.expensesmanager.exception.validation.ValidateDateException;
@@ -35,10 +34,6 @@ public abstract class AbstractCoreTest {
 	protected static final String BUDGET_NAME = "Budget name";
 	
 	protected static final Double BUDGET_VALUE = 350.0;
-	
-	protected static final String TEXT_WITH_HTML4_TO_ESCAPE = "<span> Test text to escape ";
-	
-	protected static final String TEXT_WITH_HTML4_AFTER_ESCAPE = "&lt;span&gt; Test text to escape";
 	
 	protected static final String BLANK_TEXT = "";
 	
@@ -149,12 +144,6 @@ public abstract class AbstractCoreTest {
 		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
 		assertException(ObjectNotFoundException.class, throwable, hasMessage, errorCode);
-	}
-	
-	protected void assertThatThrownByNotUpdatedException(
-		ThrowingCallable throwable, String hasMessage, String errorCode
-	) {
-		assertException(CannotUpdateObjectException.class, throwable, hasMessage, errorCode);
 	}
 	
 	protected void assertThatThrownByPassedValueIsInvalidException(

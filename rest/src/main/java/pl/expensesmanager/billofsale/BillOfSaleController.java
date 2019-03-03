@@ -22,7 +22,7 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	}
 	
 	public BillOfSale update(BillOfSale billOfSale) {
-		return service.update(billOfSale);
+		return service.create(billOfSale);
 	}
 	
 	public BillOfSale update(String id, BillOfSale billOfSale) {
@@ -30,11 +30,11 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	}
 	
 	public void delete(String id) {
-		service.removeById(id);
+		service.removeObjectById(id);
 	}
 	
 	public BillOfSale searchForId(String id) {
-		Optional<BillOfSale> billOfSale = service.searchById(id);
+		Optional<BillOfSale> billOfSale = service.searchObjectById(id);
 		checkIfBillOfSaleNotFound(billOfSale);
 		
 		return billOfSale.get();

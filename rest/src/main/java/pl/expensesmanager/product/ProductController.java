@@ -12,14 +12,14 @@ import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.product
 @RestController
 class ProductController implements ProductApi, ProductDocumentation {
 	
-	private final ProductServicePort service;
+	private final ProductService service;
 	
 	public Product add(Product product) {
 		return service.create(product);
 	}
 	
 	public Product update(Product product) {
-		return service.update(product);
+		return service.create(product);
 	}
 	
 	public Product update(String id, Product product) {
@@ -27,11 +27,11 @@ class ProductController implements ProductApi, ProductDocumentation {
 	}
 	
 	public void delete(String id) {
-		service.removeById(id);
+		service.removeObjectById(id);
 	}
 	
 	public Product searchForId(String id) {
-		Optional<Product> product = service.searchById(id);
+		Optional<Product> product = service.searchObjectById(id);
 		if (!product.isPresent()) {
 			throw productNotFoundException();
 		}

@@ -9,6 +9,10 @@ import pl.expensesmanager.exception.internal.NoAccessException;
 @UtilityClass
 public final class InternalExceptionFactory {
 	
+	public static InternalException illegalAccessException(Throwable cause) {
+		throw new NoAccessException(ExceptionMessage.ILLEGAL_ACCESS, ErrorCode.ILLEGAL_ACCESS, cause);
+	}
+	
 	@UtilityClass
 	public static final class ErrorCode {
 		
@@ -25,10 +29,6 @@ public final class InternalExceptionFactory {
 		
 		public static final String ILLEGAL_ACCESS = "Illegal access recognized.";
 		
-	}
-	
-	public static InternalException illegalAccessException(Throwable cause) {
-		throw new NoAccessException(ExceptionMessage.ILLEGAL_ACCESS, ErrorCode.ILLEGAL_ACCESS, cause);
 	}
 	
 }

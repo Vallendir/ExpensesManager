@@ -1,6 +1,6 @@
 package pl.expensesmanager.product;
 
-import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,13 +8,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
 import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
+import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -82,7 +82,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	@Test
 	void searchAllForQuanityRange_throwMinIsBiggerThanMax() {
 		// Then
-		ThrowableAssert.ThrowingCallable throwable = () -> service.searchAllByQuanityRange(QUANITY_MAX, QUANITY_MIN);
+		ThrowingCallable throwable = () -> service.searchAllByQuanityRange(QUANITY_MAX, QUANITY_MIN);
 		
 		// Then
 		assertThatThrownByPassedValueIsInvalidException(throwable,
@@ -150,24 +150,10 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.save(expectedToChange)).thenReturn(expectedOrder);
 		
 		// When
-		ProductOrder actualOrder = service.update(expectedToChange);
+		ProductOrder actualOrder = service.create(expectedToChange);
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder);
-	}
-	
-	@Test
-	void checkIfNotUpdatedThrowException() {
-		// When
-		when(storage.save(any())).thenReturn(null);
-		
-		ThrowableAssert.ThrowingCallable throwable = () -> service.update(createProductOrder());
-		
-		// Then
-		assertThatThrownByNotUpdatedException(throwable,
-		                                      BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_ORDER_NOT_UPDATED,
-		                                      BusinessLogicExceptionFactory.ErrorCode.PRODUCT_ORDER_NOT_UPDATED
-		);
 	}
 	
 	@Test
@@ -191,18 +177,31 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 	}
 	
 	@Test
-	void updateById_throw() {
+	void updateById_throwObjectNotFound() {
 		// When
 		ProductOrder expectedChanges = new ProductOrder();
 		
 		when(storage.isValid(ID)).thenReturn(true);
-		when(storage.findById(ID)).thenReturn(Optional.empty());
-		ThrowableAssert.ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
 		
 		// Then
 		assertThatThrownByNotFoundException(throwable,
 		                                    BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_ORDER_NOT_FOUND,
 		                                    BusinessLogicExceptionFactory.ErrorCode.PRODUCT_ORDER_NOT_FOUND
+		);
+	}
+	
+	@Test
+	void updateById_throwInvalidIdFormat() {
+		// When
+		ProductOrder expectedChanges = new ProductOrder();
+		
+		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		// Then
+		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
+		                                      ValidationExceptionFactory.ErrorCode.INVALID_ID_FORMAT
 		);
 	}
 	
@@ -232,7 +231,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder_1));
 		
 		// When
-		ProductOrder actualOrder = service.searchById(ID)
+		ProductOrder actualOrder = service.searchObjectById(ID)
 		                                  .get();
 		
 		// Then
@@ -250,7 +249,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findAll()).thenReturn(expectedOrderList);
 		
 		// When
-		List<ProductOrder> actualOrderList = service.searchAll();
+		List<ProductOrder> actualOrderList = service.searchAllObjects();
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
