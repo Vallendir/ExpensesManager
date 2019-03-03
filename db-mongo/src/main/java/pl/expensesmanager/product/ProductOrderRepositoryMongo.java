@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Profile("dev")
+@Profile("mongo")
 @Repository
 public interface ProductOrderRepositoryMongo extends MongoRepository<ProductOrderDocument, String> {
 	

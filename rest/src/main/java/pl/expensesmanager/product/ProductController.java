@@ -1,6 +1,7 @@
 package pl.expensesmanager.product;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -41,6 +42,11 @@ class ProductController implements ProductApi, ProductDocumentation {
 	
 	public List<Product> searchForName(String name) {
 		return service.searchByName(name);
+	}
+	
+	@GetMapping(value = "/products")
+	public List<Product> searchAll() {
+		return service.searchAllObjects();
 	}
 	
 	public List<Product> searchAllForPriceRange(Double priceMin, Double priceMax) {

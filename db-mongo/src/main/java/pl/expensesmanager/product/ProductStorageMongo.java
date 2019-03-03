@@ -1,27 +1,26 @@
 package pl.expensesmanager.product;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import pl.expensesmanager.base.BaseMongoStorage;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
-@Profile("dev")
 @Component
-public class ProductStorageMongo extends BaseMongoStorage implements ProductStorePort {
+@Profile("mongo")
+class ProductStorageMongo extends BaseMongoStorage<ProductDocument, Product> implements ProductStorePort {
 	
 	private final ProductRepositoryMongo repository;
 	
+	ProductStorageMongo(ProductRepositoryMongo repository) {
+		super(repository);
+		this.repository = repository;
+	}
+	
 	@Override
 	public List<Product> findByName(String name) {
-		return repository.findByName(name)
-		                 .stream()
-		                 .map(this::map)
-		                 .collect(Collectors.toList());
+		return readFromStream(repository.findByName(name), this::map);
 	}
 	
 	@Override
@@ -32,58 +31,37 @@ public class ProductStorageMongo extends BaseMongoStorage implements ProductStor
 	
 	@Override
 	public List<Product> findByPrice(Double price) {
-		return repository.findByPrice(price)
-		                 .stream()
-		                 .map(this::map)
-		                 .collect(Collectors.toList());
+		return readFromStream(repository.findByPrice(price), this::map);
 	}
 	
 	@Override
 	public List<Product> findByPriceBetween(Double min, Double max) {
-		return repository.findByPriceBetween(min, max)
-		                 .stream()
-		                 .map(this::map)
-		                 .collect(Collectors.toList());
+		return readFromStream(repository.findByPriceBetween(min, max), this::map);
 	}
 	
 	@Override
 	public List<Product> findByPriceGreaterThan(Double price) {
-		return repository.findByPriceGreaterThan(price)
-		                 .stream()
-		                 .map(this::map)
-		                 .collect(Collectors.toList());
+		return readFromStream(repository.findByPriceGreaterThan(price), this::map);
 	}
 	
 	@Override
 	public List<Product> findByPriceLessThan(Double price) {
-		return repository.findByPriceLessThan(price)
-		                 .stream()
-		                 .map(this::map)
-		                 .collect(Collectors.toList());
+		return readFromStream(repository.findByPriceLessThan(price), this::map);
 	}
 	
 	@Override
 	public Optional<Product> findById(String id) {
-		return repository.findById(id)
-		                 .map(this::map);
+		return findObjectById(id, this::map);
 	}
 	
 	@Override
 	public Product save(Product object) {
-		return map(repository.save(map(object)));
-	}
-	
-	@Override
-	public void deleteById(String id) {
-		repository.deleteById(id);
+		return saveObject(() -> map(object), this::map);
 	}
 	
 	@Override
 	public List<Product> findAll() {
-		return repository.findAll()
-		                 .stream()
-		                 .map(this::map)
-		                 .collect(Collectors.toList());
+		return findAllObjects(this::map);
 	}
 	
 }
