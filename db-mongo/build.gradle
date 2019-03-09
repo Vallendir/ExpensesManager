@@ -1,0 +1,11 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    implementation "org.springframework.data:spring-data-mongodb"
+
+    implementation project(':core')
+}
+
+bootJar {
+    mainClassName = 'pl.expensesmanager.AppRestStartup'
+}
