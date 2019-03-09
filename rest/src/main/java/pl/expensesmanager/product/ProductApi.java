@@ -1,5 +1,6 @@
 package pl.expensesmanager.product;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ interface ProductApi {
 	@GetMapping(value = "/products", params = "priceLower")
 	List<Product> searchAllForPriceLower(@RequestParam(value = "priceLower") Double priceLower);
 	
+	@ResponseStatus(value = HttpStatus.CREATED)
 	@PostMapping(value = "/products")
 	Product add(@RequestBody Product product);
 	
@@ -35,6 +37,7 @@ interface ProductApi {
 	@PutMapping(value = "/products/{id}")
 	Product update(@PathVariable("id") String id, @RequestBody Product product);
 	
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@DeleteMapping(value = "/products/{id}")
 	void delete(@PathVariable("id") String id);
 	

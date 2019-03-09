@@ -11,6 +11,7 @@ import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.util.MergeUtil;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -252,6 +253,18 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		
 		// Then
 		productOrderListAssertions(actualOrderList, expectedOrderList, expectedOrder_1, expectedOrder_2);
+	}
+	
+	@Test
+	void searchAll_throwListNotFound() {
+		// Given
+		when(storage.findAll()).thenReturn(Collections.emptyList());
+		
+		// When
+		ThrowingCallable throwable = () -> service.searchAllObjects();
+		
+		// Then
+		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.LIST_NOT_FOUND, BusinessLogicExceptionFactory.ErrorCode.LIST_NOT_FOUND);
 	}
 	
 	private void productOrderListAssertions(

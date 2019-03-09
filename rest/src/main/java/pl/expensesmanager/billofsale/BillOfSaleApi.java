@@ -1,5 +1,6 @@
 package pl.expensesmanager.billofsale;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -25,6 +26,7 @@ interface BillOfSaleApi {
 		@RequestParam(value = "boughtDateMax") Instant boughtDateMax
 	);
 	
+	@ResponseStatus(value = HttpStatus.CREATED)
 	@PostMapping(value = "/billofsales")
 	BillOfSale add(@RequestBody BillOfSale billOfSale);
 	
@@ -34,6 +36,7 @@ interface BillOfSaleApi {
 	@PutMapping(value = "/billofsales/{id}")
 	BillOfSale update(@PathVariable("id") String id, @RequestBody BillOfSale billOfSale);
 	
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@DeleteMapping(value = "/billofsales/{id}")
 	void delete(@PathVariable("id") String id);
 	

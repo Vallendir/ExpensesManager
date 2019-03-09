@@ -10,6 +10,10 @@ import pl.expensesmanager.exception.business.PassedValueIsInvalidException;
 @UtilityClass
 public final class BusinessLogicExceptionFactory {
 	
+	public static BusinessLogicException listNotFoundException() {
+		throw new ObjectNotFoundException(ExceptionMessage.LIST_NOT_FOUND, ErrorCode.LIST_NOT_FOUND);
+	}
+	
 	public static BusinessLogicException productNotFoundException() {
 		throw new ObjectNotFoundException(ExceptionMessage.PRODUCT_NOT_FOUND, ErrorCode.PRODUCT_NOT_FOUND);
 	}
@@ -33,6 +37,8 @@ public final class BusinessLogicExceptionFactory {
 	@UtilityClass
 	public static final class ErrorCode {
 		
+		public static final String LIST_NOT_FOUND = code("list.not.found");
+		
 		public static final String PRODUCT_NOT_FOUND = code("product.not.found");
 		
 		public static final String PRODUCT_ORDER_NOT_FOUND = code("product.order.not.found");
@@ -51,6 +57,8 @@ public final class BusinessLogicExceptionFactory {
 	
 	@UtilityClass
 	public static final class ExceptionMessage {
+		
+		public static final String LIST_NOT_FOUND = "There is no result for objects list.";
 		
 		public static final String PRODUCT_NOT_FOUND = "Product not found.";
 		

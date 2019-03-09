@@ -1,5 +1,6 @@
 package pl.expensesmanager.budget;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ interface BudgetApi {
 	@GetMapping(value = "/budgets", params = "budgetLower")
 	List<Budget> searchAllForBudgetValueLower(@RequestParam(value = "budgetLower") Double budgetLower);
 	
+	@ResponseStatus(value = HttpStatus.CREATED)
 	@PostMapping(value = "/budgets")
 	Budget add(@RequestBody Budget budget);
 	
@@ -38,6 +40,7 @@ interface BudgetApi {
 	@PutMapping(value = "/budgets/{id}")
 	Budget update(String id, @RequestBody Budget budget);
 	
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@DeleteMapping(value = "/budgets/{id}")
 	void delete(String id);
 	

@@ -1,5 +1,6 @@
 package pl.expensesmanager.product;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ interface ProductOrderApi {
 	@GetMapping(value = "/orders", params = { "productName" })
 	List<ProductOrder> searchAllForProductName(@RequestParam("productName") String productName);
 	
+	@ResponseStatus(value = HttpStatus.CREATED)
 	@PostMapping(value = "/orders")
 	ProductOrder add(@RequestBody ProductOrder product);
 	
@@ -41,6 +43,7 @@ interface ProductOrderApi {
 	@PutMapping(value = "/orders/{id}")
 	ProductOrder update(@PathVariable("id") String id, @RequestBody ProductOrder product);
 	
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@DeleteMapping(value = "/orders/{id}")
 	void delete(@PathVariable("id") String id);
 	

@@ -12,6 +12,7 @@ import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.util.MergeUtil;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -252,6 +253,18 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		// Then
 		billOfSaleListAssertions(
 			actualBillOfSaleList, expectedBillOfSaleList, expectedBillOfSale_1, expectedBillOfSale_2);
+	}
+	
+	@Test
+	void searchAll_throwListNotFound() {
+		// Given
+		when(storage.findAll()).thenReturn(Collections.emptyList());
+		
+		// When
+		ThrowingCallable throwable = () -> service.searchAllObjects();
+		
+		// Then
+		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.LIST_NOT_FOUND, BusinessLogicExceptionFactory.ErrorCode.LIST_NOT_FOUND);
 	}
 	
 	private void billOfSaleListAssertions(

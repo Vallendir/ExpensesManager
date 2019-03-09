@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.listNotFoundException;
 import static pl.expensesmanager.util.BasicValidator.checkIfGivenIdIsValid;
 
 /**
@@ -134,7 +135,12 @@ public abstract class BaseService<T> {
 	 * @return found objects
 	 */
 	public List<T> searchAllObjects() {
-		return storage.findAll();
+		List<T> result = storage.findAll();
+		if (result.isEmpty()) {
+			throw listNotFoundException();
+		}
+		
+		return result;
 	}
 	
 }

@@ -12,6 +12,7 @@ import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.exception.ValidationExceptionFactory.ExceptionMessage;
 import pl.expensesmanager.util.MergeUtil;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -270,6 +271,18 @@ class ProductServiceTest extends AbstractCoreTest {
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
+	}
+	
+	@Test
+	void searchAll_throwListNotFound() {
+		// Given
+		when(storage.findAll()).thenReturn(Collections.emptyList());
+		
+		// When
+		ThrowingCallable throwable = () -> service.searchAllObjects();
+		
+		// Then
+		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.LIST_NOT_FOUND, BusinessLogicExceptionFactory.ErrorCode.LIST_NOT_FOUND);
 	}
 	
 	private void productListAssertions(
