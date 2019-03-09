@@ -56,11 +56,10 @@ public class ProductOrderStorageMongo extends BaseMongoStorage<ProductOrderDocum
 	@Override
 	public ProductOrder save(ProductOrder object) {
 		return saveObject(() -> {
-			Optional<ProductDocument> product = productRepository.findByNameAndPrice(object.getProduct()
-			                                                                               .getName(),
-			                                                                         object.getProduct()
-			                                                                               .getPrice()
-			);
+			Optional<ProductDocument> product = productRepository.findByNameAndPrice(
+				object.getProduct()
+				      .getName(), object.getProduct()
+				                        .getPrice());
 			if (product.isPresent()) {
 				object.setProduct(map(product.get()));
 			} else {

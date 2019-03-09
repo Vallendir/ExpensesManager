@@ -264,7 +264,10 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		ThrowingCallable throwable = () -> service.searchAllObjects();
 		
 		// Then
-		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.LIST_NOT_FOUND, BusinessLogicExceptionFactory.ErrorCode.LIST_NOT_FOUND);
+		assertThatThrownByNotFoundException(
+			throwable, BusinessLogicExceptionFactory.ExceptionMessage.LIST_NOT_FOUND,
+			BusinessLogicExceptionFactory.ErrorCode.LIST_NOT_FOUND
+		);
 	}
 	
 	private void productOrderListAssertions(

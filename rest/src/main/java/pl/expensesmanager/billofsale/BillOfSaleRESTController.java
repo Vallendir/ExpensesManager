@@ -10,7 +10,8 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-class BillOfSaleRESTController extends BaseRESTController<BillOfSale> implements BillOfSaleApi, BillOfSaleDocumentation {
+class BillOfSaleRESTController extends BaseRESTController<BillOfSale>
+	implements BillOfSaleApi, BillOfSaleDocumentation {
 	
 	private final BillOfSaleService service;
 	

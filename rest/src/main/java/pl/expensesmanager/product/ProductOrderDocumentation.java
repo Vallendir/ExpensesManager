@@ -8,8 +8,7 @@ import java.util.List;
 public interface ProductOrderDocumentation {
 	
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Order was found."),
-		@ApiResponse(code = 404, message = "Order not found."),
+		@ApiResponse(code = 200, message = "Order was found."), @ApiResponse(code = 404, message = "Order not found."),
 		@ApiResponse(code = 409, message = "ID has invalid format.")
 	})
 	@ApiOperation(value = "Find Order by id.", nickname = "searchForId", notes = "Method allow to find a order by id.", httpMethod = "GET", tags = {
@@ -18,8 +17,7 @@ public interface ProductOrderDocumentation {
 	ProductOrder searchForId(@ApiParam(value = "ID of Order to find.", required = true) String id);
 	
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Order was found."),
-		@ApiResponse(code = 404, message = "Order not found."),
+		@ApiResponse(code = 200, message = "Order was found."), @ApiResponse(code = 404, message = "Order not found."),
 		@ApiResponse(code = 409, message = "Product name cannot be null."),
 		@ApiResponse(code = 409, message = "Product price cannot be null or is infinite.")
 	})
@@ -41,8 +39,7 @@ public interface ProductOrderDocumentation {
 	List<ProductOrder> searchAll();
 	
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Order was found."),
-		@ApiResponse(code = 404, message = "Order not found."),
+		@ApiResponse(code = 200, message = "Order was found."), @ApiResponse(code = 404, message = "Order not found."),
 		@ApiResponse(code = 409, message = "Order quanity cannot be null."),
 		@ApiResponse(code = 409, message = "Minimum quanity cannot be bigger than maximum quanity.")
 	})
@@ -55,8 +52,7 @@ public interface ProductOrderDocumentation {
 	);
 	
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Order was found."),
-		@ApiResponse(code = 404, message = "Order not found."),
+		@ApiResponse(code = 200, message = "Order was found."), @ApiResponse(code = 404, message = "Order not found."),
 		@ApiResponse(code = 409, message = "Order quanity cannot be null.")
 	})
 	@ApiOperation(value = "Find product orders by quanity greater than value.", nickname = "searchAllForQuanityGreater", notes = "Method allow to find an order by quanity greater than value.", httpMethod = "GET", tags = {
@@ -67,8 +63,7 @@ public interface ProductOrderDocumentation {
 	);
 	
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Order was found."),
-		@ApiResponse(code = 404, message = "Order not found."),
+		@ApiResponse(code = 200, message = "Order was found."), @ApiResponse(code = 404, message = "Order not found."),
 		@ApiResponse(code = 409, message = "Order quanity cannot be null.")
 	})
 	@ApiOperation(value = "Find all product orders of quanity lower than value.", nickname = "searchAllForQuanityLower", notes = "Method allow to find an order by quanity lower than.", httpMethod = "GET", tags = {
@@ -79,8 +74,7 @@ public interface ProductOrderDocumentation {
 	);
 	
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Order was found."),
-		@ApiResponse(code = 404, message = "Order not found."),
+		@ApiResponse(code = 200, message = "Order was found."), @ApiResponse(code = 404, message = "Order not found."),
 		@ApiResponse(code = 409, message = "Product name cannot be null.")
 	})
 	@ApiOperation(value = "Find order by name.", nickname = "searchAllForProductName", notes = "Method allow to find an order by name.", httpMethod = "GET", tags = {
