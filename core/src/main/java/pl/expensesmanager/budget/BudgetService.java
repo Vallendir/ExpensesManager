@@ -2,12 +2,12 @@ package pl.expensesmanager.budget;
 
 import org.springframework.stereotype.Service;
 import pl.expensesmanager.base.BaseService;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.budgetNotFoundException;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
 import static pl.expensesmanager.util.CoreValidator.*;
 
@@ -19,6 +19,16 @@ final class BudgetService extends BaseService<Budget> {
 	BudgetService(BudgetStorePort storage) {
 		super(storage);
 		this.storage = storage;
+	}
+	
+	/**
+	 * Method to search budget by id.
+	 *
+	 * @param id - the id of budget
+	 * @return found budgets list
+	 */
+	Budget searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::budgetNotFoundException);
 	}
 	
 	/**
@@ -92,7 +102,7 @@ final class BudgetService extends BaseService<Budget> {
 	}
 	
 	Budget update(Budget changes, String id) {
-		return updateObject(changes, id, () -> budgetNotFoundException());
+		return updateObject(changes, id, BusinessLogicExceptionFactory::budgetNotFoundException);
 	}
 	
 	@Override

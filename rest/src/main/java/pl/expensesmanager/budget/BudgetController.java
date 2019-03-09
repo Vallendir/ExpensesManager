@@ -33,15 +33,13 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 	}
 	
 	public Budget searchForId(String id) {
-		Optional<Budget> budget = service.searchObjectById(id);
-		checkIfBudgetNotFound(budget);
+		Budget budget = service.searchById(id);
 		
-		return budget.get();
+		return budget;
 	}
 	
 	public Budget searchForName(String name) {
 		Optional<Budget> budget = service.searchByName(name);
-		checkIfBudgetNotFound(budget);
 		
 		return budget.get();
 	}
@@ -60,12 +58,6 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 	
 	public List<Budget> searchAllForBudgetValueLower(Double budgetValue) {
 		return service.searchAllByLessValueThan(budgetValue);
-	}
-	
-	private void checkIfBudgetNotFound(Optional<Budget> budget) {
-		if (!budget.isPresent()) {
-			throw budgetNotFoundException();
-		}
 	}
 	
 }

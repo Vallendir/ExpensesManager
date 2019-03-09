@@ -2,12 +2,12 @@ package pl.expensesmanager.product;
 
 import org.springframework.stereotype.Service;
 import pl.expensesmanager.base.BaseService;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.productNotFoundException;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.productNameException;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.productPriceException;
 import static pl.expensesmanager.util.CoreValidator.*;
@@ -20,6 +20,16 @@ final class ProductService extends BaseService<Product> {
 	ProductService(ProductStorePort storage) {
 		super(storage);
 		this.storage = storage;
+	}
+	
+	/**
+	 * Method to search product by id.
+	 *
+	 * @param id - the id of product
+	 * @return found products list
+	 */
+	Product searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::productNotFoundException);
 	}
 	
 	/**
@@ -85,7 +95,7 @@ final class ProductService extends BaseService<Product> {
 	}
 	
 	Product update(Product changes, String id) {
-		return updateObject(changes, id, () -> productNotFoundException());
+		return updateObject(changes, id, BusinessLogicExceptionFactory::productNotFoundException);
 	}
 	
 	@Override

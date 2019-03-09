@@ -2,12 +2,12 @@ package pl.expensesmanager.product;
 
 import org.springframework.stereotype.Service;
 import pl.expensesmanager.base.BaseService;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.productOrderNotFoundException;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
 import static pl.expensesmanager.util.CoreValidator.*;
 
@@ -19,6 +19,16 @@ final class ProductOrderService extends BaseService<ProductOrder> {
 	ProductOrderService(ProductOrderStorePort storage) {
 		super(storage);
 		this.storage = storage;
+	}
+	
+	/**
+	 * Method to search order by id.
+	 *
+	 * @param id - the id of order
+	 * @return found orders list
+	 */
+	ProductOrder searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::productOrderNotFoundException);
 	}
 	
 	/**
@@ -93,7 +103,7 @@ final class ProductOrderService extends BaseService<ProductOrder> {
 	}
 	
 	ProductOrder update(ProductOrder changes, String id) {
-		return updateObject(changes, id, () -> productOrderNotFoundException());
+		return updateObject(changes, id, BusinessLogicExceptionFactory::productOrderNotFoundException);
 	}
 	
 	@Override

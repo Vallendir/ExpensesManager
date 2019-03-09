@@ -60,13 +60,10 @@ public abstract class BaseService<T> {
 	 * @return object which was updated
 	 */
 	public T updateObject(T changes, String id, Supplier<BusinessLogicException> exception) {
-		Optional<T> originalObject = searchObjectById(id);
-		if (!originalObject.isPresent()) {
-			throw exception.get();
-		}
-		checkChangesIn(changes, originalObject.get());
+		T originalObject = searchObjectById(id, exception);
+		checkChangesIn(changes, originalObject);
 		
-		return createObject(() -> MergeUtil.merge(originalObject.get(), changes));
+		return createObject(() -> MergeUtil.merge(originalObject, changes));
 	}
 	
 	/**
@@ -86,10 +83,15 @@ public abstract class BaseService<T> {
 	 * @param id identificator of object to find
 	 * @return found object
 	 */
-	public Optional<T> searchObjectById(String id) {
+	protected T searchObjectById(String id, Supplier<BusinessLogicException> exception) {
 		checkIfGivenIdIsValid(storage, id);
 		
-		return storage.findById(id);
+		Optional<T> originalObject = storage.findById(id);
+		if (!originalObject.isPresent()) {
+			throw exception.get();
+		}
+		
+		return originalObject.get();
 	}
 	
 	/**

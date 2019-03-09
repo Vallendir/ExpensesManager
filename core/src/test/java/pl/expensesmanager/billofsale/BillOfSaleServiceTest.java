@@ -193,8 +193,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		when(storage.isValid(ID)).thenReturn(false);
 		
 		// When
-		ThrowingCallable throwable = () -> service.searchObjectById(ID)
-		                                          .get();
+		ThrowingCallable throwable = () -> service.searchById(ID);
 		
 		// Then
 		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
@@ -231,8 +230,7 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBillOfSale_1));
 		
 		// When
-		BillOfSale actualBillOfSale = service.searchObjectById(ID)
-		                                     .get();
+		BillOfSale actualBillOfSale = service.searchById(ID);
 		
 		// Then
 		assertThat(actualBillOfSale).isEqualTo(expectedBillOfSale_1);

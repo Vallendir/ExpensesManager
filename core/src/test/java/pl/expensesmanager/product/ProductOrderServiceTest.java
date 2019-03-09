@@ -231,8 +231,7 @@ class ProductOrderServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedOrder_1));
 		
 		// When
-		ProductOrder actualOrder = service.searchObjectById(ID)
-		                                  .get();
+		ProductOrder actualOrder = service.searchById(ID);
 		
 		// Then
 		assertThat(actualOrder).isEqualTo(expectedOrder_1);

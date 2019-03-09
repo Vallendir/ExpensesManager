@@ -31,10 +31,9 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 	}
 	
 	public ProductOrder searchForId(String id) {
-		Optional<ProductOrder> order = service.searchObjectById(id);
-		checkIfProductOrderWasFound(order);
+		ProductOrder order = service.searchById(id);
 		
-		return order.get();
+		return order;
 	}
 	
 	public List<ProductOrder> searchAllForQuanityRange(Integer quanityMin, Integer quanityMax) {
@@ -57,15 +56,8 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 	@Override
 	public ProductOrder searchAllForProductNameAndProductPrice(String productName, Double productPrice) {
 		Optional<ProductOrder> order = service.searchAllByProductNameAndProductPrice(productName, productPrice);
-		checkIfProductOrderWasFound(order);
 		
 		return order.get();
-	}
-	
-	private void checkIfProductOrderWasFound(Optional<ProductOrder> order) {
-		if (!order.isPresent()) {
-			throw productOrderNotFoundException();
-		}
 	}
 	
 }

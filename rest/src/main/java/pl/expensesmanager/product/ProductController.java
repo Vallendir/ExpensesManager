@@ -32,12 +32,9 @@ class ProductController implements ProductApi, ProductDocumentation {
 	}
 	
 	public Product searchForId(String id) {
-		Optional<Product> product = service.searchObjectById(id);
-		if (!product.isPresent()) {
-			throw productNotFoundException();
-		}
+		Product product = service.searchById(id);
 		
-		return product.get();
+		return product;
 	}
 	
 	public List<Product> searchForName(String name) {

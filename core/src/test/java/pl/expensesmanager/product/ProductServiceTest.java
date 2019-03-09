@@ -236,8 +236,7 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.isValid(ID)).thenReturn(true);
 		
 		// When
-		Product actualProduct = service.searchObjectById(ID)
-		                               .get();
+		Product actualProduct = service.searchById(ID);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
@@ -249,8 +248,7 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.isValid(ID)).thenReturn(false);
 		
 		// When
-		ThrowingCallable throwable = () -> service.searchObjectById(ID)
-		                                          .get();
+		ThrowingCallable throwable = () -> service.searchById(ID);
 		
 		// Then
 		assertThatThrownByValidateIdException(

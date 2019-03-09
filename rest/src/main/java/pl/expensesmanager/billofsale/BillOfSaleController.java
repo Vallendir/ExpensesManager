@@ -34,15 +34,13 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	}
 	
 	public BillOfSale searchForId(String id) {
-		Optional<BillOfSale> billOfSale = service.searchObjectById(id);
-		checkIfBillOfSaleNotFound(billOfSale);
+		BillOfSale billOfSale = service.searchById(id);
 		
-		return billOfSale.get();
+		return billOfSale;
 	}
 	
 	public BillOfSale searchForDescription(String description) {
 		Optional<BillOfSale> billOfSale = service.searchByDescription(description);
-		checkIfBillOfSaleNotFound(billOfSale);
 		
 		return billOfSale.get();
 	}
@@ -53,12 +51,6 @@ class BillOfSaleController implements BillOfSaleApi, BillOfSaleDocumentation {
 	
 	public List<BillOfSale> searchAllForBoughtDateRange(Instant min, Instant max) {
 		return service.searchAllByBoughtDateRange(min, max);
-	}
-	
-	private void checkIfBillOfSaleNotFound(Optional<BillOfSale> billOfSale) {
-		if (!billOfSale.isPresent()) {
-			throw billOfSaleNotFoundException();
-		}
 	}
 	
 }

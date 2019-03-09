@@ -2,13 +2,13 @@ package pl.expensesmanager.billofsale;
 
 import org.springframework.stereotype.Service;
 import pl.expensesmanager.base.BaseService;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.billOfSaleNotFoundException;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
 import static pl.expensesmanager.util.CoreValidator.*;
 
@@ -20,6 +20,16 @@ final class BillOfSaleService extends BaseService<BillOfSale> {
 	BillOfSaleService(BillOfSaleStorePort storage) {
 		super(storage);
 		this.storage = storage;
+	}
+	
+	/**
+	 * Method to search bill of sale by id.
+	 *
+	 * @param id - the id of bill of sale
+	 * @return found bills of sale list
+	 */
+	BillOfSale searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::billOfSaleNotFoundException);
 	}
 	
 	/**
@@ -73,7 +83,7 @@ final class BillOfSaleService extends BaseService<BillOfSale> {
 	}
 	
 	BillOfSale update(BillOfSale changes, String id) {
-		return updateObject(changes, id, () -> billOfSaleNotFoundException());
+		return updateObject(changes, id, BusinessLogicExceptionFactory::billOfSaleNotFoundException);
 	}
 	
 	@Override

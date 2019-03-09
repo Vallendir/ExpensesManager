@@ -218,8 +218,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.isValid(ID)).thenReturn(false);
 		
 		// When
-		ThrowingCallable throwable = () -> service.searchObjectById(ID)
-		                                          .get();
+		ThrowingCallable throwable = () -> service.searchById(ID);
 		
 		// Then
 		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
@@ -252,8 +251,7 @@ class BudgetServiceTest extends AbstractCoreTest {
 		when(storage.findById(ID)).thenReturn(Optional.of(expectedBudget_1));
 		
 		// When
-		Budget actualBudget = service.searchObjectById(ID)
-		                             .get();
+		Budget actualBudget = service.searchById(ID);
 		
 		// Then
 		assertThat(actualBudget).isEqualTo(expectedBudget_1);
