@@ -1,58 +1,56 @@
 package pl.expensesmanager.base;
 
-import java.io.Serializable;
+import lombok.RequiredArgsConstructor;
+import pl.expensesmanager.exception.BusinessLogicException;
+import pl.expensesmanager.util.MergeUtil;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
+
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.listNotFoundException;
+import static pl.expensesmanager.util.BasicValidator.checkIfGivenIdIsValid;
 
 /**
- * Basic services port.
+ * Basic services class.
  *
  * @param <T> representation of object on which serivce works
- * @param <I> type of identificator of object
  */
-public interface BaseService<T, I extends Serializable> {
+@RequiredArgsConstructor
+public abstract class BaseService<T> {
+	
+	private final BaseStorage<T, String> storage;
 	
 	/**
-	 * Method to create object and store.
+	 * Method to check passed changes to original object
+	 *
+	 * @param changes        object contains changes
+	 * @param originalObject original object
+	 */
+	protected abstract void checkChangesIn(T changes, T originalObject);
+	
+	/**
+	 * Method to create/update object and store.
 	 *
 	 * @param object object to store
-	 * @return object which was created
+	 * @return object which was created/updated
 	 */
-	T create(T object);
+	protected T createObject(Supplier<T> object) {
+		return storage.save(object.get());
+	}
 	
 	/**
-	 * Method to create object and update.
+	 * Method to update object and store. Object will be updated by rewrite fields between two objects.
 	 *
-	 * @param object object to update
-	 * @return object which was update
+	 * @param originalObject original object to update
+	 * @param changes        object contains changes to original object update
+	 * @return object which was updated
 	 */
-	T update(T object);
-	
-	/**
-	 * Method to create object and update.
-	 *
-	 * @param originalObject object to update
-	 * @param changes        changes to updated object
-	 * @return object which was update
-	 */
-	T update(T originalObject, T changes);
-	
-	/**
-	 * Method to create object and update.
-	 *
-	 * @param changes changes to updated object
-	 * @param id      identificator of object to update
-	 * @return object which was update
-	 */
-	T update(T changes, I id);
-	
-	/**
-	 * Method to removeById object by id.
-	 *
-	 * @param id identificator of object to remove
-	 * @return true if deleted and false if not
-	 */
-	void removeById(I id);
+	protected T updateObject(T originalObject, T changes) {
+		checkChangesIn(changes, originalObject);
+		
+		return createObject(() -> MergeUtil.merge(originalObject, changes));
+	}
 	
 	/**
 	 * Method to search object by id.
@@ -60,13 +58,89 @@ public interface BaseService<T, I extends Serializable> {
 	 * @param id identificator of object to find
 	 * @return found object
 	 */
-	Optional<T> searchById(I id);
+	protected T searchObjectById(String id, Supplier<BusinessLogicException> exception) {
+		checkIfGivenIdIsValid(storage, id);
+		
+		Optional<T> originalObject = storage.findById(id);
+		if (!originalObject.isPresent()) {
+			throw exception.get();
+		}
+		
+		return originalObject.get();
+	}
+	
+	/**
+	 * Method to create object.
+	 *
+	 * @param object object to create
+	 * @return object which was created
+	 */
+	public abstract T create(T object);
+	
+	/**
+	 * Method to update an object.
+	 *
+	 * @param originalObject original object to update
+	 * @param changes        changes to updated object
+	 * @return updated object
+	 */
+	public abstract T update(T originalObject, T changes);
+	
+	/**
+	 * Method to update object by id.
+	 *
+	 * @param changes changes to original object
+	 * @param id      id of object to update
+	 * @return updated object
+	 */
+	public abstract T update(T changes, String id);
+	
+	/**
+	 * Find object by id.
+	 *
+	 * @param id id of object
+	 * @return found object
+	 */
+	public abstract T searchById(String id);
+	
+	/**
+	 * Method to update object and store. Object will be updated by find original object by id and rewrite changed fields from another object.
+	 *
+	 * @param changes   object contains changes to original object update
+	 * @param id        identificator of object which will be updated
+	 * @param exception exception which will be thrown when something went wrong with trying to find original object by id
+	 * @return object which was updated
+	 */
+	public T updateObject(T changes, String id, Supplier<BusinessLogicException> exception) {
+		T originalObject = searchObjectById(id, exception);
+		checkChangesIn(changes, originalObject);
+		
+		return createObject(() -> MergeUtil.merge(originalObject, changes));
+	}
+	
+	/**
+	 * Method to remove object by id.
+	 *
+	 * @param id identificator of object to remove
+	 */
+	public void removeObjectById(String id) {
+		checkIfGivenIdIsValid(storage, id);
+		
+		storage.deleteById(id);
+	}
 	
 	/**
 	 * Method to search all objects.
 	 *
 	 * @return found objects
 	 */
-	List<T> searchAll();
+	public List<T> searchAllObjects() {
+		List<T> result = storage.findAll();
+		if (result.isEmpty()) {
+			throw listNotFoundException();
+		}
+		
+		return result;
+	}
 	
 }

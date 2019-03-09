@@ -12,6 +12,66 @@ import pl.expensesmanager.exception.validation.ValidateTextException;
 @UtilityClass
 public final class ValidationExceptionFactory {
 	
+	public static ValidationException invalidIdFormatException() {
+		throw new ValidateTextException(ExceptionMessage.INVALID_ID_FORMAT, ErrorCode.INVALID_ID_FORMAT);
+	}
+	
+	public static ValidationException blankTextException() {
+		throw new ValidateTextException(ExceptionMessage.TEXT_BLANK, ErrorCode.TEXT_BLANK);
+	}
+	
+	public static ValidationException numberNullException() {
+		throw new ValidateNumberException(ExceptionMessage.NULL_NUMBER, ErrorCode.NULL_NUMBER);
+	}
+	
+	public static ValidationException numberNANException() {
+		throw new ValidateNumberException(ExceptionMessage.NUMBER_NAN, ErrorCode.NUMBER_NAN);
+	}
+	
+	public static ValidationException dateNullException() {
+		throw new ValidateDateException(ExceptionMessage.NULL_DATE, ErrorCode.NULL_DATE);
+	}
+	
+	public static ValidationException productNameException() {
+		throw new ValidateTextException(ExceptionMessage.PRODUCT_NAME, ErrorCode.PRODUCT_NAME);
+	}
+	
+	public static ValidationException productPriceException() {
+		throw new ValidateNumberException(ExceptionMessage.PRODUCT_PRICE, ErrorCode.PRODUCT_PRICE);
+	}
+	
+	public static ValidationException productQuanityException() {
+		throw new ValidateNumberException(ExceptionMessage.PRODUCT_QUANITY, ErrorCode.PRODUCT_QUANITY);
+	}
+	
+	public static ValidationException productException() {
+		throw new ValidateObjectException(ExceptionMessage.NULL_PRODUCT, ErrorCode.NULL_PRODUCT);
+	}
+	
+	public static ValidationException orderException() {
+		throw new ValidateObjectException(ExceptionMessage.NULL_PRODUCT_ORDER, ErrorCode.NULL_PRODUCT_ORDER);
+	}
+	
+	public static ValidationException billOfSaleDescriptionException() {
+		throw new ValidateTextException(ExceptionMessage.BILL_OF_SALE_DESCRIPTION, ErrorCode.BILL_OF_SALE_DESCRIPTION);
+	}
+	
+	public static ValidationException billOfSaleException() {
+		throw new ValidateObjectException(ExceptionMessage.NULL_BILL_OF_SALE, ErrorCode.NULL_BILL_OF_SALE);
+	}
+	
+	public static ValidationException budgetNameException() {
+		throw new ValidateTextException(ExceptionMessage.BUDGET_NAME, ErrorCode.BUDGET_NAME);
+	}
+	
+	public static ValidationException budgetValueException() {
+		throw new ValidateNumberException(ExceptionMessage.BUDGET_VALUE, ErrorCode.BUDGET_VALUE);
+	}
+	
+	public static ValidationException budgetException() {
+		throw new ValidateObjectException(ExceptionMessage.NULL_BUDGET, ErrorCode.NULL_BUDGET);
+	}
+	
 	@UtilityClass
 	public static final class ErrorCode {
 		
@@ -88,66 +148,6 @@ public final class ValidationExceptionFactory {
 			return type + " cannot be null.";
 		}
 		
-	}
-	
-	public static ValidationException invalidIdFormatException() {
-		throw new ValidateTextException(ExceptionMessage.INVALID_ID_FORMAT, ErrorCode.INVALID_ID_FORMAT);
-	}
-	
-	public static ValidationException blankTextException() {
-		throw new ValidateTextException(ExceptionMessage.TEXT_BLANK, ErrorCode.TEXT_BLANK);
-	}
-	
-	public static ValidationException numberNullException() {
-		throw new ValidateNumberException(ExceptionMessage.NULL_NUMBER, ErrorCode.NULL_NUMBER);
-	}
-	
-	public static ValidationException numberNANException() {
-		throw new ValidateNumberException(ExceptionMessage.NUMBER_NAN, ErrorCode.NUMBER_NAN);
-	}
-	
-	public static ValidationException dateNullException() {
-		throw new ValidateDateException(ExceptionMessage.NULL_DATE, ErrorCode.NULL_DATE);
-	}
-	
-	public static ValidationException productNameException() {
-		throw new ValidateTextException(ExceptionMessage.PRODUCT_NAME, ErrorCode.PRODUCT_NAME);
-	}
-	
-	public static ValidationException productPriceException() {
-		throw new ValidateNumberException(ExceptionMessage.PRODUCT_PRICE, ErrorCode.PRODUCT_PRICE);
-	}
-	
-	public static ValidationException productQuanityException() {
-		throw new ValidateNumberException(ExceptionMessage.PRODUCT_QUANITY, ErrorCode.PRODUCT_QUANITY);
-	}
-	
-	public static ValidationException productException() {
-		throw new ValidateObjectException(ExceptionMessage.NULL_PRODUCT, ErrorCode.NULL_PRODUCT);
-	}
-	
-	public static ValidationException orderException() {
-		throw new ValidateObjectException(ExceptionMessage.NULL_PRODUCT_ORDER, ErrorCode.NULL_PRODUCT_ORDER);
-	}
-	
-	public static ValidationException billOfSaleDescriptionException() {
-		throw new ValidateTextException(ExceptionMessage.BILL_OF_SALE_DESCRIPTION, ErrorCode.BILL_OF_SALE_DESCRIPTION);
-	}
-	
-	public static ValidationException billOfSaleException() {
-		throw new ValidateObjectException(ExceptionMessage.NULL_BILL_OF_SALE, ErrorCode.NULL_BILL_OF_SALE);
-	}
-	
-	public static ValidationException budgetNameException() {
-		throw new ValidateTextException(ExceptionMessage.BUDGET_NAME, ErrorCode.BUDGET_NAME);
-	}
-	
-	public static ValidationException budgetValueException() {
-		throw new ValidateNumberException(ExceptionMessage.BUDGET_VALUE, ErrorCode.BUDGET_VALUE);
-	}
-	
-	public static ValidationException budgetException() {
-		throw new ValidateObjectException(ExceptionMessage.NULL_BUDGET, ErrorCode.NULL_BUDGET);
 	}
 	
 }

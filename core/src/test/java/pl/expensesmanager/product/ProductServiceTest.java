@@ -8,14 +8,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
 import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
+import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.exception.ValidationExceptionFactory.ExceptionMessage;
 import pl.expensesmanager.util.MergeUtil;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.ErrorCode;
 
@@ -147,57 +148,67 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.save(expectedToChange)).thenReturn(expectedProduct_1);
 		
 		// When
-		Product actualProduct = service.update(expectedToChange);
+		Product actualProduct = service.create(expectedToChange);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct_1);
 	}
 	
 	@Test
-	void checkIfNotUpdatedThrowException() {
-		// When
-		when(storage.save(any())).thenReturn(null);
-		
-		ThrowingCallable throwable = () -> service.update(createProduct());
-		
-		// Then
-		assertThatThrownByNotUpdatedException(throwable,
-		                                      BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_NOT_UPDATED,
-		                                      BusinessLogicExceptionFactory.ErrorCode.PRODUCT_NOT_UPDATED
-		);
-	}
-	
-	@Test
 	void updateById() {
 		// Given
-		Product expectedToChange = createProduct(null);
-		Product expectedChanges = createProduct(expectedToChange, PRICE_MIN);
-		Product expectedProduct = createProduct(PRICE_MIN);
+		Product toChange = Product.builder()
+		                          .name("TEST")
+		                          .build();
+		toChange.setId(ID);
+		
+		Product changes = Product.builder()
+		                         .price(5.75)
+		                         .build();
+		
+		Product expected = Product.builder()
+		                          .name("TEST")
+		                          .price(5.75)
+		                          .build();
+		expected.setId(ID);
 		
 		when(storage.isValid(ID)).thenReturn(true);
-		when(storage.findById(ID)).thenReturn(Optional.of(expectedProduct));
-		when(storage.save(MergeUtil.merge(expectedToChange, expectedChanges))).thenReturn(expectedProduct);
+		when(storage.findById(ID)).thenReturn(Optional.of(expected));
+		when(storage.save(MergeUtil.merge(toChange, changes))).thenReturn(expected);
 		
 		// When
-		Product actualProduct = service.update(expectedChanges, expectedToChange.getId());
+		Product actualProduct = service.update(changes, toChange.getId());
 		
 		// Then
-		assertThat(actualProduct).isEqualTo(expectedProduct);
+		assertThat(actualProduct).isEqualTo(expected);
 	}
 	
 	@Test
-	void updateById_throw() {
+	void updateById_throwObjectNotFound() {
 		// When
 		Product expectedToChange = createProduct(null);
 		Product expectedChanges = createProduct(expectedToChange, PRICE_MIN);
 		
 		when(storage.isValid(ID)).thenReturn(true);
-		when(storage.findById(ID)).thenReturn(Optional.empty());
+		
 		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
 		
 		// Then
 		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.PRODUCT_NOT_FOUND,
 		                                    BusinessLogicExceptionFactory.ErrorCode.PRODUCT_NOT_FOUND
+		);
+	}
+	
+	@Test
+	void updateById_throwInvalidIdFormat() {
+		// When
+		Product expectedChanges = new Product();
+		
+		ThrowingCallable throwable = () -> service.update(expectedChanges, ID);
+		
+		// Then
+		assertThatThrownByValidateIdException(throwable, ValidationExceptionFactory.ExceptionMessage.INVALID_ID_FORMAT,
+		                                      ValidationExceptionFactory.ErrorCode.INVALID_ID_FORMAT
 		);
 	}
 	
@@ -226,8 +237,7 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.isValid(ID)).thenReturn(true);
 		
 		// When
-		Product actualProduct = service.searchById(ID)
-		                               .get();
+		Product actualProduct = service.searchById(ID);
 		
 		// Then
 		assertThat(actualProduct).isEqualTo(expectedProduct);
@@ -239,8 +249,7 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.isValid(ID)).thenReturn(false);
 		
 		// When
-		ThrowingCallable throwable = () -> service.searchById(ID)
-		                                          .get();
+		ThrowingCallable throwable = () -> service.searchById(ID);
 		
 		// Then
 		assertThatThrownByValidateIdException(
@@ -258,10 +267,25 @@ class ProductServiceTest extends AbstractCoreTest {
 		when(storage.findAll()).thenReturn(expectedProductList);
 		
 		// When
-		List<Product> actualProductList = service.searchAll();
+		List<Product> actualProductList = service.searchAllObjects();
 		
 		// Then
 		productListAssertions(actualProductList, expectedProductList, expectedProduct_1, expectedProduct_2);
+	}
+	
+	@Test
+	void searchAll_throwListNotFound() {
+		// Given
+		when(storage.findAll()).thenReturn(Collections.emptyList());
+		
+		// When
+		ThrowingCallable throwable = () -> service.searchAllObjects();
+		
+		// Then
+		assertThatThrownByNotFoundException(
+			throwable, BusinessLogicExceptionFactory.ExceptionMessage.LIST_NOT_FOUND,
+			BusinessLogicExceptionFactory.ErrorCode.LIST_NOT_FOUND
+		);
 	}
 	
 	private void productListAssertions(

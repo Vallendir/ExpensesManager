@@ -1,123 +1,121 @@
 package pl.expensesmanager.product;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.expensesmanager.util.IdValidateUtil;
-import pl.expensesmanager.util.MergeUtil;
+import pl.expensesmanager.base.BaseService;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.productNameException;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.productPriceException;
+import static pl.expensesmanager.util.CoreValidator.*;
 
 @Service
-@RequiredArgsConstructor
-class ProductService implements ProductServicePort {
+final class ProductService extends BaseService<Product> {
 	
-	private final ProductStorePort storage;
+	private ProductStorePort storage;
 	
-	@Override
-	public List<Product> searchByName(String name) {
-		return storage.findByName(ProductValidator.validateName(name));
+	ProductService(ProductStorePort storage) {
+		super(storage);
+		this.storage = storage;
 	}
 	
-	@Override
-	public Optional<Product> searchByNameAndPrice(String name, Double price) {
-		return storage.findByNameAndPrice(ProductValidator.validateName(name), ProductValidator.validatePrice(price));
+	/**
+	 * Method to search products by name.
+	 *
+	 * @param name - the name of product
+	 * @return found products list
+	 */
+	List<Product> searchByName(String name) {
+		return storage.findByName(validateProductName(name));
 	}
 	
-	@Override
-	public List<Product> searchAllByPriceRange(Double min, Double max) {
-		if (min > max) {
-			throw minBiggerThanMaxException();
-		}
+	/**
+	 * Method to find product by name and price.
+	 *
+	 * @param name  - the name of product
+	 * @param price - the price of product
+	 * @return found product as optional
+	 */
+	Optional<Product> searchByNameAndPrice(String name, Double price) {
+		return storage.findByNameAndPrice(validateProductName(name), validateProductPrice(price));
+	}
+	
+	/**
+	 * Method to search products between price range.
+	 *
+	 * @param min - minimal price
+	 * @param max - maximal price
+	 * @return found product objects
+	 */
+	List<Product> searchAllByPriceRange(Double min, Double max) {
+		validateMinMaxValue(validateProductPrice(min), validateProductPrice(max));
 		
-		return storage.findByPriceBetween(ProductValidator.validatePrice(min), ProductValidator.validatePrice(max));
+		return storage.findByPriceBetween(min, max);
 	}
 	
-	@Override
-	public List<Product> searchAllExpensiveThan(Double price) {
-		return storage.findByPriceGreaterThan(ProductValidator.validatePrice(price));
+	/**
+	 * Method to search products more expensive than price.
+	 *
+	 * @param price - price
+	 * @return found product objects
+	 */
+	List<Product> searchAllExpensiveThan(Double price) {
+		return storage.findByPriceGreaterThan(validateProductPrice(price));
 	}
 	
-	@Override
-	public List<Product> searchAllCheaperThan(Double price) {
-		return storage.findByPriceLessThan(ProductValidator.validatePrice(price));
+	/**
+	 * Method to search product cheaper than price.
+	 *
+	 * @param price - price
+	 * @return found product objects
+	 */
+	List<Product> searchAllCheaperThan(Double price) {
+		return storage.findByPriceLessThan(validateProductPrice(price));
 	}
 	
-	@Override
+	/**
+	 * Method to search product by id.
+	 *
+	 * @param id - the id of product
+	 * @return found products list
+	 */
+	public Product searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::productNotFoundException);
+	}
+	
 	public Product create(Product object) {
-		ProductValidator.validateProduct(object);
-		
-		return storage.save(object);
+		return createObject(() -> validateProduct(object));
 	}
 	
-	@Override
-	public Product update(Product object) {
-		ProductValidator.validateProduct(object);
-		
-		Product product = storage.save(object);
-		checkIfProductWasUpdated(product);
-		
-		return product;
-	}
-	
-	@Override
 	public Product update(Product originalObject, Product changes) {
-		checkChangesInProduct(changes);
-		
-		Product product = storage.save(MergeUtil.merge(originalObject, changes));
-		checkIfProductWasUpdated(product);
-		
-		return product;
+		return updateObject(originalObject, changes);
 	}
 	
-	@Override
 	public Product update(Product changes, String id) {
-		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
-		checkChangesInProduct(changes);
-		
-		Optional<Product> originalObject = searchById(id);
-		if (!originalObject.isPresent()) {
-			throw productNotFoundException();
-		}
-		
-		Product product = storage.save(MergeUtil.merge(originalObject.get(), changes));
-		checkIfProductWasUpdated(product);
-		
-		return product;
+		return updateObject(changes, id, BusinessLogicExceptionFactory::productNotFoundException);
 	}
 	
 	@Override
-	public void removeById(String id) {
-		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
-		storage.deleteById(id);
-	}
-	
-	@Override
-	public Optional<Product> searchById(String id) {
-		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
-		return storage.findById(id);
-	}
-	
-	@Override
-	public List<Product> searchAll() {
-		return storage.findAll();
-	}
-	
-	private void checkChangesInProduct(Product changes) {
-		if (changes.getName() != null) {
-			ProductValidator.validateName(changes.getName());
+	protected void checkChangesIn(Product changes, Product originalObject) {
+		if (Objects.isNull(originalObject.getName()) && Objects.nonNull(changes.getName()) || Objects.nonNull(
+			originalObject.getName()) && Objects.nonNull(changes.getName())) {
+			validateProductName(changes.getName());
+		} else if (Objects.nonNull(originalObject.getName()) && Objects.isNull(changes.getName())) {
+			validateProductName(originalObject.getName());
+		} else {
+			throw productNameException();
 		}
 		
-		if (changes.getPrice() != null) {
-			ProductValidator.validatePrice(changes.getPrice());
-		}
-	}
-	
-	private void checkIfProductWasUpdated(Product product) {
-		if (product == null) {
-			throw productNotUpdatedException();
+		if (Objects.isNull(originalObject.getPrice()) && Objects.nonNull(changes.getPrice()) || Objects.nonNull(
+			originalObject.getPrice()) && Objects.nonNull(changes.getPrice())) {
+			validateProductPrice(changes.getPrice());
+		} else if (Objects.nonNull(originalObject.getPrice()) && Objects.isNull(changes.getPrice())) {
+			validateProductPrice(originalObject.getPrice());
+		} else {
+			throw productPriceException();
 		}
 	}
 	

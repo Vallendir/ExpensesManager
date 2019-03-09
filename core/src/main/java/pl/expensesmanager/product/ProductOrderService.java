@@ -1,125 +1,129 @@
 package pl.expensesmanager.product;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.expensesmanager.util.IdValidateUtil;
-import pl.expensesmanager.util.MergeUtil;
+import pl.expensesmanager.base.BaseService;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
+import static pl.expensesmanager.util.CoreValidator.*;
 
 @Service
-@RequiredArgsConstructor
-class ProductOrderService implements ProductOrderServicePort {
+final class ProductOrderService extends BaseService<ProductOrder> {
 	
-	private final ProductOrderStorePort storage;
+	private ProductOrderStorePort storage;
 	
-	@Override
-	public List<ProductOrder> searchAllByProductName(String name) {
-		return storage.findByProductName(ProductValidator.validateName(name));
+	ProductOrderService(ProductOrderStorePort storage) {
+		super(storage);
+		this.storage = storage;
 	}
 	
-	@Override
-	public Optional<ProductOrder> searchAllByProductNameAndProductPrice(String name, Double price) {
-		return storage.findByProductNameAndProductPrice(
-			ProductValidator.validateName(name), ProductValidator.validatePrice(price));
+	/**
+	 * Method to find order by product name.
+	 *
+	 * @param name - the product name
+	 * @return found products
+	 */
+	List<ProductOrder> searchAllByProductName(String name) {
+		return storage.findByProductName(validateProductName(name));
 	}
 	
-	@Override
-	public List<ProductOrder> searchAllByQuanityRange(Integer min, Integer max) {
-		if (min > max) {
-			throw minBiggerThanMaxException();
-		}
+	/**
+	 * Method to find order by product name and price.
+	 *
+	 * @param name  - the product name
+	 * @param price - the product price
+	 * @return found product
+	 */
+	Optional<ProductOrder> searchAllByProductNameAndProductPrice(String name, Double price) {
+		return storage.findByProductNameAndProductPrice(validateProductName(name), validateProductPrice(price));
+	}
+	
+	/**
+	 * Method to search product between quanity range.
+	 *
+	 * @param min - minimal quanity
+	 * @param max - maximal quanity
+	 * @return found product objects
+	 */
+	List<ProductOrder> searchAllByQuanityRange(Integer min, Integer max) {
+		validateMinMaxValue(validateOrderQuanity(min), validateOrderQuanity(max));
 		
-		return storage.findByQuanityBetween(
-			ProductValidator.validateQuanity(min), ProductValidator.validateQuanity(max));
+		return storage.findByQuanityBetween(min, max);
 	}
 	
-	@Override
-	public List<ProductOrder> searchAllByBiggerQuanityThan(Integer quanity) {
-		return storage.findByQuanityGreaterThan(ProductValidator.validateQuanity(quanity));
+	/**
+	 * Method to search product which have more quanity than value.
+	 *
+	 * @param quanity - quanity
+	 * @return found product objects
+	 */
+	List<ProductOrder> searchAllByBiggerQuanityThan(Integer quanity) {
+		return storage.findByQuanityGreaterThan(validateOrderQuanity(quanity));
 	}
 	
-	@Override
-	public List<ProductOrder> searchAllByLessQuanityThan(Integer quanity) {
-		return storage.findByQuanityLessThan(ProductValidator.validateQuanity(quanity));
+	/**
+	 * Method to search product which have more quanity than value.
+	 *
+	 * @param quanity - quanity
+	 * @return found product objects
+	 */
+	List<ProductOrder> searchAllByLessQuanityThan(Integer quanity) {
+		return storage.findByQuanityLessThan(validateOrderQuanity(quanity));
 	}
 	
-	@Override
+	/**
+	 * Method to search order by id.
+	 *
+	 * @param id - the id of order
+	 * @return found orders list
+	 */
+	public ProductOrder searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::productOrderNotFoundException);
+	}
+	
 	public ProductOrder create(ProductOrder object) {
-		ProductValidator.validateOrder(object);
-		
-		return storage.save(object);
+		return createObject(() -> {
+			if (Objects.isNull(object)) {
+				throw orderException();
+			}
+			
+			validateProduct(object.getProduct());
+			validateOrderQuanity(object.getQuanity());
+			
+			return object;
+		});
 	}
 	
-	@Override
-	public ProductOrder update(ProductOrder object) {
-		ProductValidator.validateOrder(object);
-		
-		ProductOrder order = storage.save(object);
-		checkIfProductOrderWasUpdated(order);
-		
-		return order;
-	}
-	
-	@Override
 	public ProductOrder update(ProductOrder originalObject, ProductOrder changes) {
-		checkChangesInOrder(changes);
-		
-		ProductOrder order = storage.save(MergeUtil.merge(originalObject, changes));
-		checkIfProductOrderWasUpdated(order);
-		
-		return order;
+		return updateObject(originalObject, changes);
 	}
 	
-	@Override
 	public ProductOrder update(ProductOrder changes, String id) {
-		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
-		checkChangesInOrder(changes);
-		
-		Optional<ProductOrder> originalObject = searchById(id);
-		if (!originalObject.isPresent()) {
-			throw productOrderNotFoundException();
-		}
-		
-		ProductOrder order = storage.save(MergeUtil.merge(originalObject.get(), changes));
-		checkIfProductOrderWasUpdated(order);
-		
-		return order;
+		return updateObject(changes, id, BusinessLogicExceptionFactory::productOrderNotFoundException);
 	}
 	
 	@Override
-	public void removeById(String id) {
-		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
-		storage.deleteById(id);
-	}
-	
-	@Override
-	public Optional<ProductOrder> searchById(String id) {
-		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
-		return storage.findById(id);
-	}
-	
-	@Override
-	public List<ProductOrder> searchAll() {
-		return storage.findAll();
-	}
-	
-	private void checkChangesInOrder(ProductOrder changes) {
-		if (changes.getQuanity() != null) {
-			ProductValidator.validateQuanity(changes.getQuanity());
+	protected void checkChangesIn(ProductOrder changes, ProductOrder originalObject) {
+		if (Objects.isNull(originalObject.getQuanity()) && Objects.nonNull(changes.getQuanity()) || Objects.nonNull(
+			originalObject.getQuanity()) && Objects.nonNull(changes.getQuanity())) {
+			validateOrderQuanity(changes.getQuanity());
+		} else if (Objects.nonNull(originalObject.getQuanity()) && Objects.isNull(changes.getQuanity())) {
+			validateOrderQuanity(originalObject.getQuanity());
+		} else {
+			throw productQuanityException();
 		}
 		
-		if (changes.getProduct() != null) {
-			ProductValidator.validateProduct(changes.getProduct());
-		}
-	}
-	
-	private void checkIfProductOrderWasUpdated(ProductOrder order) {
-		if (order == null) {
-			throw productOrderNotUpdatedException();
+		if (Objects.isNull(originalObject.getProduct()) && Objects.nonNull(changes.getProduct()) || Objects.nonNull(
+			originalObject.getProduct()) && Objects.nonNull(changes.getProduct())) {
+			validateProduct(changes.getProduct());
+		} else if (Objects.nonNull(originalObject.getProduct()) && Objects.isNull(changes.getProduct())) {
+			validateProduct(originalObject.getProduct());
+		} else {
+			throw productException();
 		}
 	}
 	

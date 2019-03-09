@@ -21,23 +21,23 @@ public class ValidationExceptionHandler {
 	}
 	
 	@ResponseBody
-	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+	@ResponseStatus(HttpStatus.CONFLICT)
 	@ExceptionHandler(ValidateObjectException.class)
-	public ExceptionMessage handleTextException(ValidateObjectException exception) {
+	public ExceptionMessage handleObjectException(ValidateObjectException exception) {
 		return exceptionMessage(exception);
 	}
 	
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CONFLICT)
 	@ExceptionHandler(ValidateNumberException.class)
-	public ExceptionMessage handleTextException(ValidateNumberException exception) {
+	public ExceptionMessage handleNumberException(ValidateNumberException exception) {
 		return exceptionMessage(exception);
 	}
 	
 	@ResponseBody
-	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+	@ResponseStatus(HttpStatus.CONFLICT)
 	@ExceptionHandler(ValidateDateException.class)
-	public ExceptionMessage handleTextException(ValidateDateException exception) {
+	public ExceptionMessage handleDateException(ValidateDateException exception) {
 		return exceptionMessage(exception);
 	}
 	

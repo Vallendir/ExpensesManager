@@ -8,6 +8,7 @@ import pl.expensesmanager.base.BaseModel;
  */
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)

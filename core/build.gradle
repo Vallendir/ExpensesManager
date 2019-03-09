@@ -24,7 +24,7 @@ dependencies {
 
     /** Jackson **/
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
-    
+
     /** Spring context **/
     compileOnly "org.springframework:spring-context:$springContextVersion"
 

@@ -5,19 +5,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pl.expensesmanager.exception.business.CannotUpdateObjectException;
 import pl.expensesmanager.exception.business.ObjectNotFoundException;
 import pl.expensesmanager.exception.business.PassedValueIsInvalidException;
 
 @ControllerAdvice
 public class BusinessLogicExceptionHandler {
-	
-	@ResponseBody
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(CannotUpdateObjectException.class)
-	public ExceptionMessage handleNotUpdatedException(CannotUpdateObjectException exception) {
-		return exceptionMessage(exception);
-	}
 	
 	@ResponseBody
 	@ResponseStatus(HttpStatus.NOT_FOUND)

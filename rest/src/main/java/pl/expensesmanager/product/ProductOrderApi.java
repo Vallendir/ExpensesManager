@@ -1,25 +1,23 @@
 package pl.expensesmanager.product;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 interface ProductOrderApi {
 	
-	@PostMapping(value = "/orders")
-	ProductOrder add(@RequestBody ProductOrder product);
-	
-	@PutMapping(value = "/orders")
-	ProductOrder update(@RequestBody ProductOrder product);
-	
-	@PutMapping(value = "/orders/{id}")
-	ProductOrder update(@PathVariable("id") String id, @RequestBody ProductOrder product);
-	
-	@DeleteMapping(value = "/orders/{id}")
-	void delete(@PathVariable("id") String id);
-	
 	@GetMapping(value = "/orders/{id}")
 	ProductOrder searchForId(@PathVariable("id") String id);
+	
+	@GetMapping(value = "/orders", params = { "productName", "productPrice" })
+	ProductOrder searchForProductNameAndProductPrice(
+		@RequestParam(value = "productName") String productName,
+		@RequestParam(value = "productPrice") Double productPrice
+	);
+	
+	@GetMapping(value = "/orders")
+	List<ProductOrder> searchAll();
 	
 	@GetMapping(value = "/orders", params = { "quanityMin", "quanityMax" })
 	List<ProductOrder> searchAllForQuanityRange(
@@ -35,10 +33,18 @@ interface ProductOrderApi {
 	@GetMapping(value = "/orders", params = { "productName" })
 	List<ProductOrder> searchAllForProductName(@RequestParam("productName") String productName);
 	
-	@GetMapping(value = "/orders", params = { "productName", "productPrice" })
-	ProductOrder searchAllForProductNameAndProductPrice(
-		@RequestParam(value = "productName") String productName,
-		@RequestParam(value = "productPrice") Double productPrice
-	);
+	@ResponseStatus(value = HttpStatus.CREATED)
+	@PostMapping(value = "/orders")
+	ProductOrder add(@RequestBody ProductOrder product);
+	
+	@PutMapping(value = "/orders")
+	ProductOrder update(@RequestBody ProductOrder product);
+	
+	@PutMapping(value = "/orders/{id}")
+	ProductOrder update(@PathVariable("id") String id, @RequestBody ProductOrder product);
+	
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	@DeleteMapping(value = "/orders/{id}")
+	void delete(@PathVariable("id") String id);
 	
 }

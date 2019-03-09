@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-@Profile("dev")
+@Profile("mongo")
 @Repository
 public interface BillOfSaleRepositoryMongo extends MongoRepository<BillOfSaleDocument, String> {
 	

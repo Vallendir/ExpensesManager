@@ -23,7 +23,7 @@ class SwaggerConfig {
 	
 	private static final String APPLICATION_NAME = "ExpensesManager";
 	
-	private static final String APPLICATION_VERSION = "0.3.5";
+	private static final String APPLICATION_VERSION = "1.0.0";
 	
 	private static final Set<String> FORMAT_OF_DATA = Set.of("application/json");
 	
@@ -108,16 +108,15 @@ class SwaggerConfig {
 		BILL_OF_SALE(regex("/billofsale.+"), "4) Bill of Sale"),
 		BUDGET(regex("/budget.+"), "5) Budget");
 		
+		static String DEFAULT_ORDER = "1) Default";
+		
 		final Predicate<String> path;
 		
 		final String title;
 		
-		static String DEFAULT_ORDER = "1) Default";
-		
 		static Predicate<String> defaultPaths() {
-			return or(
-				AppPath.PRODUCT.getPath(), AppPath.PRODUCT_ORDER.getPath(), AppPath.BILL_OF_SALE.getPath(),
-				AppPath.BUDGET.getPath()
+			return or(AppPath.PRODUCT.getPath(), AppPath.PRODUCT_ORDER.getPath(), AppPath.BILL_OF_SALE.getPath(),
+			          AppPath.BUDGET.getPath()
 			);
 		}
 		

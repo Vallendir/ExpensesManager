@@ -31,7 +31,6 @@ class BasicValidatorTest {
 		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.TEXT_BLANK);
 		assertThatThrownBy(throwable_2).isInstanceOf(ValidateTextException.class)
 		                               .hasMessage(ValidationExceptionFactory.ExceptionMessage.TEXT_BLANK);
-		assertThat(BasicValidator.validateText(textToEscapeHTML)).isEqualTo(expectedTextToEscapeHTML);
 	}
 	
 	@Test

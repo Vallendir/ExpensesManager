@@ -1,24 +1,28 @@
 package pl.expensesmanager.util;
 
-import lombok.experimental.UtilityClass;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
+import pl.expensesmanager.base.IdValidatorPort;
+import pl.expensesmanager.exception.business.PassedValueIsInvalidException;
 import pl.expensesmanager.exception.validation.ValidateDateException;
 import pl.expensesmanager.exception.validation.ValidateNumberException;
 import pl.expensesmanager.exception.validation.ValidateTextException;
 
 import java.time.Instant;
+import java.util.Objects;
 
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.minBiggerThanMaxException;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
 
 /**
  * Basic validator of basic values.
  */
-@UtilityClass
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BasicValidator {
 	
 	/**
-	 * Validate the passed text if is not blank and escape HTML4 characters
+	 * Validate the passed text if is not blank
 	 *
 	 * @param text text to validate
 	 * @return validated text
@@ -29,8 +33,7 @@ public class BasicValidator {
 			blankTextException();
 		}
 		
-		return StringEscapeUtils.escapeHtml4(text)
-		                        .trim();
+		return text.trim();
 	}
 	
 	/**
@@ -41,7 +44,7 @@ public class BasicValidator {
 	 * @throws ValidateNumberException if double value is null
 	 */
 	public static Double validateDouble(Double value) {
-		if (value == null) {
+		if (Objects.isNull(value)) {
 			numberNullException();
 		}
 		
@@ -60,7 +63,7 @@ public class BasicValidator {
 	 * @throws ValidateNumberException if integer value is null
 	 */
 	public static Integer validateInteger(Integer value) {
-		if (value == null) {
+		if (Objects.isNull(value)) {
 			numberNullException();
 		}
 		
@@ -75,11 +78,62 @@ public class BasicValidator {
 	 * @throws ValidateDateException if date is null
 	 */
 	public static Instant validateInstantDate(Instant value) {
-		if (value == null) {
+		if (Objects.isNull(value)) {
 			dateNullException();
 		}
 		
 		return value;
+	}
+	
+	/**
+	 * Validate passed values if the minimum value is bigger than maximum
+	 *
+	 * @param min min value
+	 * @param max value
+	 * @throws PassedValueIsInvalidException if min value is bigger than max
+	 */
+	public static void validateMinMaxValue(Double min, Double max) {
+		if (min > max) {
+			throw minBiggerThanMaxException();
+		}
+	}
+	
+	/**
+	 * Validate passed values if the minimum value is bigger than maximum
+	 *
+	 * @param min min value
+	 * @param max value
+	 * @throws PassedValueIsInvalidException if min value is bigger than max
+	 */
+	public static void validateMinMaxValue(Integer min, Integer max) {
+		if (min > max) {
+			throw minBiggerThanMaxException();
+		}
+	}
+	
+	/**
+	 * Validate if the minimal date is after the maximum date
+	 *
+	 * @param min min date
+	 * @param max date
+	 * @throws PassedValueIsInvalidException if min date is bigger than max
+	 */
+	public static void validateMinMaxValue(Instant min, Instant max) {
+		if (min.isAfter(max)) {
+			throw minBiggerThanMaxException();
+		}
+	}
+	
+	/**
+	 * Validate if given id has valid format
+	 *
+	 * @param validator port with specific implementation of id validation
+	 * @param id        identificator to validate
+	 */
+	public static void checkIfGivenIdIsValid(IdValidatorPort validator, String id) {
+		if (!validator.isValid(id)) {
+			throw invalidIdFormatException();
+		}
 	}
 	
 }

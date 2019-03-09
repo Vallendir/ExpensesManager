@@ -1,25 +1,17 @@
 package pl.expensesmanager.product;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 interface ProductApi {
 	
-	@PostMapping(value = "/products")
-	Product add(@RequestBody Product product);
-	
-	@PutMapping(value = "/products")
-	Product update(@RequestBody Product product);
-	
-	@PutMapping(value = "/products/{id}")
-	Product update(@PathVariable("id") String id, @RequestBody Product product);
-	
-	@DeleteMapping(value = "/products/{id}")
-	void delete(@PathVariable("id") String id);
-	
 	@GetMapping(value = "/products/{id}")
 	Product searchForId(@PathVariable("id") String id);
+	
+	@GetMapping(value = "/products")
+	List<Product> searchAll();
 	
 	@GetMapping(value = "/products", params = "name")
 	List<Product> searchForName(@RequestParam(value = "name") String name);
@@ -34,5 +26,19 @@ interface ProductApi {
 	
 	@GetMapping(value = "/products", params = "priceLower")
 	List<Product> searchAllForPriceLower(@RequestParam(value = "priceLower") Double priceLower);
+	
+	@ResponseStatus(value = HttpStatus.CREATED)
+	@PostMapping(value = "/products")
+	Product add(@RequestBody Product product);
+	
+	@PutMapping(value = "/products")
+	Product update(@RequestBody Product product);
+	
+	@PutMapping(value = "/products/{id}")
+	Product update(@PathVariable("id") String id, @RequestBody Product product);
+	
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	@DeleteMapping(value = "/products/{id}")
+	void delete(@PathVariable("id") String id);
 	
 }

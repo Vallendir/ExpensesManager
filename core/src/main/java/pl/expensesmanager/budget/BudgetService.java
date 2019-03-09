@@ -1,124 +1,128 @@
 package pl.expensesmanager.budget;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.expensesmanager.util.IdValidateUtil;
-import pl.expensesmanager.util.MergeUtil;
+import pl.expensesmanager.base.BaseService;
+import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.*;
+import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
+import static pl.expensesmanager.util.CoreValidator.*;
 
-@RequiredArgsConstructor
 @Service
-class BudgetService implements BudgetServicePort {
+final class BudgetService extends BaseService<Budget> {
 	
-	private final BudgetStorePort storage;
+	private BudgetStorePort storage;
 	
-	@Override
-	public Optional<Budget> searchByName(String name) {
-		return storage.findByName(BudgetValidator.validateName(name));
+	BudgetService(BudgetStorePort storage) {
+		super(storage);
+		this.storage = storage;
 	}
 	
-	@Override
-	public List<Budget> searchAllByValue(Double budgetValue) {
-		return storage.findByBudgetValue(BudgetValidator.validateBudgetValue(budgetValue));
+	/**
+	 * Method to search budget by name.
+	 *
+	 * @param name - the name of budget
+	 * @return found budget as optional
+	 */
+	Optional<Budget> searchByName(String name) {
+		return storage.findByName(validateBudgetName(name));
 	}
 	
-	@Override
-	public List<Budget> searchAllByValueRange(Double min, Double max) {
-		if (min > max) {
-			throw minBiggerThanMaxException();
-		}
+	/**
+	 * Method to search budgets by budget value.
+	 *
+	 * @param budgetValue - budget value
+	 * @return found budgets objects
+	 */
+	List<Budget> searchAllByValue(Double budgetValue) {
+		return storage.findByBudgetValue(validateBudgetValue(budgetValue));
+	}
+	
+	/**
+	 * Method to search budgets between budget value range.
+	 *
+	 * @param min - minimal budget value
+	 * @param max - maximal budget value
+	 * @return found budget objects
+	 */
+	List<Budget> searchAllByValueRange(Double min, Double max) {
+		validateMinMaxValue(validateBudgetValue(min), validateBudgetValue(max));
 		
-		return storage.findByBudgetValueBetween(
-			BudgetValidator.validateBudgetValue(min), BudgetValidator.validateBudgetValue(max));
+		return storage.findByBudgetValueBetween(min, max);
 	}
 	
-	@Override
-	public List<Budget> searchAllByBiggerValueThan(Double budgetValue) {
-		return storage.findByBudgetValueGreaterThan(BudgetValidator.validateBudgetValue(budgetValue));
+	/**
+	 * Method to search budgets bigger than value.
+	 *
+	 * @param budgetValue - budget value
+	 * @return found budget objects
+	 */
+	List<Budget> searchAllByBiggerValueThan(Double budgetValue) {
+		return storage.findByBudgetValueGreaterThan(validateBudgetValue(budgetValue));
 	}
 	
-	@Override
-	public List<Budget> searchAllByLessValueThan(Double budgetValue) {
-		return storage.findByBudgetValueLessThan(BudgetValidator.validateBudgetValue(budgetValue));
+	/**
+	 * Method to search budgets less than value.
+	 *
+	 * @param budgetValue - budget value
+	 * @return found budget objects
+	 */
+	List<Budget> searchAllByLessValueThan(Double budgetValue) {
+		return storage.findByBudgetValueLessThan(validateBudgetValue(budgetValue));
 	}
 	
-	@Override
+	/**
+	 * Method to search budget by id.
+	 *
+	 * @param id - the id of budget
+	 * @return found budgets list
+	 */
+	public Budget searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::budgetNotFoundException);
+	}
+	
 	public Budget create(Budget object) {
-		BudgetValidator.validateBudget(object);
-		
-		return storage.save(object);
+		return createObject(() -> {
+			if (Objects.isNull(object)) {
+				throw budgetException();
+			}
+			
+			object.setName(validateBudgetName(object.getName()));
+			validateBudgetValue(object.getBudgetValue());
+			
+			return object;
+		});
 	}
 	
-	@Override
-	public Budget update(Budget object) {
-		BudgetValidator.validateBudget(object);
-		
-		Budget budget = storage.save(object);
-		checkIfBudgetWasUpdated(budget);
-		
-		return budget;
-	}
-	
-	@Override
 	public Budget update(Budget originalObject, Budget changes) {
-		checkChangesInBudget(changes);
-		
-		Budget budget = storage.save(MergeUtil.merge(originalObject, changes));
-		checkIfBudgetWasUpdated(budget);
-		
-		return budget;
+		return updateObject(originalObject, changes);
 	}
 	
-	@Override
 	public Budget update(Budget changes, String id) {
-		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
-		checkChangesInBudget(changes);
-		
-		Optional<Budget> originalObject = searchById(id);
-		if (!originalObject.isPresent()) {
-			throw budgetNotFoundException();
-		}
-		
-		Budget budget = storage.save(MergeUtil.merge(originalObject.get(), changes));
-		checkIfBudgetWasUpdated(budget);
-		
-		return budget;
+		return updateObject(changes, id, BusinessLogicExceptionFactory::budgetNotFoundException);
 	}
 	
 	@Override
-	public void removeById(String id) {
-		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
-		storage.deleteById(id);
-	}
-	
-	@Override
-	public Optional<Budget> searchById(String id) {
-		IdValidateUtil.checkIfGivenIdIsValid(storage, id);
-		return storage.findById(id);
-	}
-	
-	@Override
-	public List<Budget> searchAll() {
-		return storage.findAll();
-	}
-	
-	private void checkChangesInBudget(Budget changes) {
-		if (changes.getName() != null) {
-			BudgetValidator.validateName(changes.getName());
+	protected void checkChangesIn(Budget changes, Budget originalObject) {
+		if (Objects.isNull(originalObject.getName()) && Objects.nonNull(changes.getName()) || Objects.nonNull(
+			originalObject.getName()) && Objects.nonNull(changes.getName())) {
+			validateBudgetName(changes.getName());
+		} else if (Objects.nonNull(originalObject.getName()) && Objects.isNull(changes.getName())) {
+			validateBudgetName(originalObject.getName());
+		} else {
+			throw budgetNameException();
 		}
 		
-		if (changes.getBudgetValue() != null) {
-			BudgetValidator.validateBudgetValue(changes.getBudgetValue());
-		}
-	}
-	
-	private void checkIfBudgetWasUpdated(Budget budget) {
-		if (budget == null) {
-			throw budgetNotUpdatedException();
+		if (Objects.isNull(originalObject.getBudgetValue()) && Objects.nonNull(changes.getBudgetValue()) ||
+		    Objects.nonNull(originalObject.getBudgetValue()) && Objects.nonNull(changes.getBudgetValue())) {
+			validateBudgetValue(changes.getBudgetValue());
+		} else if (Objects.nonNull(originalObject.getBudgetValue()) && Objects.isNull(changes.getBudgetValue())) {
+			validateBudgetValue(originalObject.getBudgetValue());
+		} else {
+			throw budgetValueException();
 		}
 	}
 	
