@@ -23,7 +23,7 @@ class SwaggerConfig {
 	
 	private static final String APPLICATION_NAME = "ExpensesManager";
 	
-	private static final String APPLICATION_VERSION = "0.5.0";
+	private static final String APPLICATION_VERSION = "1.0.0";
 	
 	private static final Set<String> FORMAT_OF_DATA = Set.of("application/json");
 	
