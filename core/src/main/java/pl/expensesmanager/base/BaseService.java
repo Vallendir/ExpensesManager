@@ -52,6 +52,57 @@ public abstract class BaseService<T> {
 	}
 	
 	/**
+	 * Method to search object by id.
+	 *
+	 * @param id identificator of object to find
+	 * @return found object
+	 */
+	protected T searchObjectById(String id, Supplier<BusinessLogicException> exception) {
+		checkIfGivenIdIsValid(storage, id);
+		
+		Optional<T> originalObject = storage.findById(id);
+		if (!originalObject.isPresent()) {
+			throw exception.get();
+		}
+		
+		return originalObject.get();
+	}
+	
+	/**
+	 * Method to create object.
+	 *
+	 * @param object object to create
+	 * @return object which was created
+	 */
+	public abstract T create(T object);
+	
+	/**
+	 * Method to update an object.
+	 *
+	 * @param originalObject original object to update
+	 * @param changes        changes to updated object
+	 * @return updated object
+	 */
+	public abstract T update(T originalObject, T changes);
+	
+	/**
+	 * Method to update object by id.
+	 *
+	 * @param changes changes to original object
+	 * @param id      id of object to update
+	 * @return updated object
+	 */
+	public abstract T update(T changes, String id);
+	
+	/**
+	 * Find object by id.
+	 *
+	 * @param id id of object
+	 * @return found object
+	 */
+	public abstract T searchById(String id);
+	
+	/**
 	 * Method to update object and store. Object will be updated by find original object by id and rewrite changed fields from another object.
 	 *
 	 * @param changes   object contains changes to original object update
@@ -75,23 +126,6 @@ public abstract class BaseService<T> {
 		checkIfGivenIdIsValid(storage, id);
 		
 		storage.deleteById(id);
-	}
-	
-	/**
-	 * Method to search object by id.
-	 *
-	 * @param id identificator of object to find
-	 * @return found object
-	 */
-	protected T searchObjectById(String id, Supplier<BusinessLogicException> exception) {
-		checkIfGivenIdIsValid(storage, id);
-		
-		Optional<T> originalObject = storage.findById(id);
-		if (!originalObject.isPresent()) {
-			throw exception.get();
-		}
-		
-		return originalObject.get();
 	}
 	
 	/**

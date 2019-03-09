@@ -23,16 +23,6 @@ final class BillOfSaleService extends BaseService<BillOfSale> {
 	}
 	
 	/**
-	 * Method to search bill of sale by id.
-	 *
-	 * @param id - the id of bill of sale
-	 * @return found bills of sale list
-	 */
-	BillOfSale searchById(String id) {
-		return searchObjectById(id, BusinessLogicExceptionFactory::billOfSaleNotFoundException);
-	}
-	
-	/**
 	 * Method to search bill of sale by description.
 	 *
 	 * @param description - the description of bill of sale
@@ -65,7 +55,17 @@ final class BillOfSaleService extends BaseService<BillOfSale> {
 		return storage.findByBoughtDateBetween(min, max);
 	}
 	
-	BillOfSale create(BillOfSale object) {
+	/**
+	 * Method to search bill of sale by id.
+	 *
+	 * @param id - the id of bill of sale
+	 * @return found bills of sale list
+	 */
+	public BillOfSale searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::billOfSaleNotFoundException);
+	}
+	
+	public BillOfSale create(BillOfSale object) {
 		return createObject(() -> {
 			if (Objects.isNull(object)) {
 				throw billOfSaleException();
@@ -78,11 +78,11 @@ final class BillOfSaleService extends BaseService<BillOfSale> {
 		});
 	}
 	
-	BillOfSale update(BillOfSale originalObject, BillOfSale changes) {
+	public BillOfSale update(BillOfSale originalObject, BillOfSale changes) {
 		return updateObject(originalObject, changes);
 	}
 	
-	BillOfSale update(BillOfSale changes, String id) {
+	public BillOfSale update(BillOfSale changes, String id) {
 		return updateObject(changes, id, BusinessLogicExceptionFactory::billOfSaleNotFoundException);
 	}
 	

@@ -22,16 +22,6 @@ final class BudgetService extends BaseService<Budget> {
 	}
 	
 	/**
-	 * Method to search budget by id.
-	 *
-	 * @param id - the id of budget
-	 * @return found budgets list
-	 */
-	Budget searchById(String id) {
-		return searchObjectById(id, BusinessLogicExceptionFactory::budgetNotFoundException);
-	}
-	
-	/**
 	 * Method to search budget by name.
 	 *
 	 * @param name - the name of budget
@@ -84,7 +74,17 @@ final class BudgetService extends BaseService<Budget> {
 		return storage.findByBudgetValueLessThan(validateBudgetValue(budgetValue));
 	}
 	
-	Budget create(Budget object) {
+	/**
+	 * Method to search budget by id.
+	 *
+	 * @param id - the id of budget
+	 * @return found budgets list
+	 */
+	public Budget searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::budgetNotFoundException);
+	}
+	
+	public Budget create(Budget object) {
 		return createObject(() -> {
 			if (Objects.isNull(object)) {
 				throw budgetException();
@@ -97,11 +97,11 @@ final class BudgetService extends BaseService<Budget> {
 		});
 	}
 	
-	Budget update(Budget originalObject, Budget changes) {
+	public Budget update(Budget originalObject, Budget changes) {
 		return updateObject(originalObject, changes);
 	}
 	
-	Budget update(Budget changes, String id) {
+	public Budget update(Budget changes, String id) {
 		return updateObject(changes, id, BusinessLogicExceptionFactory::budgetNotFoundException);
 	}
 	

@@ -1,41 +1,21 @@
 package pl.expensesmanager.budget;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
+import pl.expensesmanager.base.BaseRESTController;
 
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.budgetNotFoundException;
-
 @Slf4j
-@RequiredArgsConstructor
 @RestController
-class BudgetController implements BudgetApi, BudgetDocumentation {
+class BudgetRESTController extends BaseRESTController<Budget> implements BudgetApi, BudgetDocumentation {
 	
 	private final BudgetService service;
 	
-	public Budget add(Budget budget) {
-		return service.create(budget);
-	}
-	
-	public Budget update(Budget budget) {
-		return service.create(budget);
-	}
-	
-	public Budget update(String id, Budget budget) {
-		return service.update(budget, id);
-	}
-	
-	public void delete(String id) {
-		service.removeObjectById(id);
-	}
-	
-	public Budget searchForId(String id) {
-		Budget budget = service.searchById(id);
-		
-		return budget;
+	BudgetRESTController(BudgetService service) {
+		super(service);
+		this.service = service;
 	}
 	
 	public Budget searchForName(String name) {
@@ -58,6 +38,14 @@ class BudgetController implements BudgetApi, BudgetDocumentation {
 	
 	public List<Budget> searchAllForBudgetValueLower(Double budgetValue) {
 		return service.searchAllByLessValueThan(budgetValue);
+	}
+	
+	public List<Budget> searchAll() {
+		return super.searchAll();
+	}
+	
+	public void delete(String id) {
+		super.delete(id);
 	}
 	
 }

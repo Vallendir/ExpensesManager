@@ -23,16 +23,6 @@ final class ProductService extends BaseService<Product> {
 	}
 	
 	/**
-	 * Method to search product by id.
-	 *
-	 * @param id - the id of product
-	 * @return found products list
-	 */
-	Product searchById(String id) {
-		return searchObjectById(id, BusinessLogicExceptionFactory::productNotFoundException);
-	}
-	
-	/**
 	 * Method to search products by name.
 	 *
 	 * @param name - the name of product
@@ -86,15 +76,25 @@ final class ProductService extends BaseService<Product> {
 		return storage.findByPriceLessThan(validateProductPrice(price));
 	}
 	
-	Product create(Product object) {
+	/**
+	 * Method to search product by id.
+	 *
+	 * @param id - the id of product
+	 * @return found products list
+	 */
+	public Product searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::productNotFoundException);
+	}
+	
+	public Product create(Product object) {
 		return createObject(() -> validateProduct(object));
 	}
 	
-	Product update(Product originalObject, Product changes) {
+	public Product update(Product originalObject, Product changes) {
 		return updateObject(originalObject, changes);
 	}
 	
-	Product update(Product changes, String id) {
+	public Product update(Product changes, String id) {
 		return updateObject(changes, id, BusinessLogicExceptionFactory::productNotFoundException);
 	}
 	

@@ -1,39 +1,20 @@
 package pl.expensesmanager.product;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
+import pl.expensesmanager.base.BaseRESTController;
 
 import java.util.List;
 import java.util.Optional;
 
-import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.productOrderNotFoundException;
-
-@RequiredArgsConstructor
 @RestController
-class ProductOrderController implements ProductOrderApi, ProductOrderDocumentation {
+class ProductOrderRESTController extends BaseRESTController<ProductOrder>
+	implements ProductOrderApi, ProductOrderDocumentation {
 	
 	private final ProductOrderService service;
 	
-	public ProductOrder add(ProductOrder product) {
-		return service.create(product);
-	}
-	
-	public ProductOrder update(ProductOrder product) {
-		return service.create(product);
-	}
-	
-	public ProductOrder update(String id, ProductOrder product) {
-		return service.update(product, id);
-	}
-	
-	public void delete(String id) {
-		service.removeObjectById(id);
-	}
-	
-	public ProductOrder searchForId(String id) {
-		ProductOrder order = service.searchById(id);
-		
-		return order;
+	ProductOrderRESTController(ProductOrderService service) {
+		super(service);
+		this.service = service;
 	}
 	
 	public List<ProductOrder> searchAllForQuanityRange(Integer quanityMin, Integer quanityMax) {
@@ -48,16 +29,22 @@ class ProductOrderController implements ProductOrderApi, ProductOrderDocumentati
 		return service.searchAllByLessQuanityThan(quanityLower);
 	}
 	
-	@Override
 	public List<ProductOrder> searchAllForProductName(String productName) {
 		return service.searchAllByProductName(productName);
 	}
 	
-	@Override
-	public ProductOrder searchAllForProductNameAndProductPrice(String productName, Double productPrice) {
+	public ProductOrder searchForProductNameAndProductPrice(String productName, Double productPrice) {
 		Optional<ProductOrder> order = service.searchAllByProductNameAndProductPrice(productName, productPrice);
 		
 		return order.get();
+	}
+	
+	public List<ProductOrder> searchAll() {
+		return super.searchAll();
+	}
+	
+	public void delete(String id) {
+		super.delete(id);
 	}
 	
 }

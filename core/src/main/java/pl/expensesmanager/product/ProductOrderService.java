@@ -22,16 +22,6 @@ final class ProductOrderService extends BaseService<ProductOrder> {
 	}
 	
 	/**
-	 * Method to search order by id.
-	 *
-	 * @param id - the id of order
-	 * @return found orders list
-	 */
-	ProductOrder searchById(String id) {
-		return searchObjectById(id, BusinessLogicExceptionFactory::productOrderNotFoundException);
-	}
-	
-	/**
 	 * Method to find order by product name.
 	 *
 	 * @param name - the product name
@@ -85,7 +75,17 @@ final class ProductOrderService extends BaseService<ProductOrder> {
 		return storage.findByQuanityLessThan(validateOrderQuanity(quanity));
 	}
 	
-	ProductOrder create(ProductOrder object) {
+	/**
+	 * Method to search order by id.
+	 *
+	 * @param id - the id of order
+	 * @return found orders list
+	 */
+	public ProductOrder searchById(String id) {
+		return searchObjectById(id, BusinessLogicExceptionFactory::productOrderNotFoundException);
+	}
+	
+	public ProductOrder create(ProductOrder object) {
 		return createObject(() -> {
 			if (Objects.isNull(object)) {
 				throw orderException();
@@ -98,11 +98,11 @@ final class ProductOrderService extends BaseService<ProductOrder> {
 		});
 	}
 	
-	ProductOrder update(ProductOrder originalObject, ProductOrder changes) {
+	public ProductOrder update(ProductOrder originalObject, ProductOrder changes) {
 		return updateObject(originalObject, changes);
 	}
 	
-	ProductOrder update(ProductOrder changes, String id) {
+	public ProductOrder update(ProductOrder changes, String id) {
 		return updateObject(changes, id, BusinessLogicExceptionFactory::productOrderNotFoundException);
 	}
 	
