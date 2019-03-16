@@ -3,7 +3,7 @@ package pl.expensesmanager.exception.internal;
 import pl.expensesmanager.exception.InternalException;
 
 /**
- * Basic validation of date
+ * Internal exceptino throws when there is no access
  */
 public final class NoAccessException extends InternalException {
 	

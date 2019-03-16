@@ -11,4 +11,5 @@ dependencies {
     implementation project(':core')
     implementation project(':db-mongo')
     implementation project(':rest')
+    implementation project(':image')
 }

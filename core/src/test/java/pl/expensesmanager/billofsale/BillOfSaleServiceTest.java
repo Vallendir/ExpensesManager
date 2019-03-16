@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.expensesmanager.AbstractCoreTest;
 import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
+import pl.expensesmanager.exception.InternalExceptionFactory;
 import pl.expensesmanager.exception.ValidationExceptionFactory;
 import pl.expensesmanager.util.MergeUtil;
 
@@ -24,8 +25,13 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 	
 	private static final Instant BOUGHT_DATE_MAX = Instant.now();
 	
+	private static final List<String> AVAILABLE_IMAGE_CONTENT_TYPES = List.of("image/jpeg", "image/png");
+	
 	@Mock
 	private BillOfSaleStorePort storage;
+	
+	@Mock
+	private BillOfSaleImagePort billOfSaleImagePort;
 	
 	@InjectMocks
 	private BillOfSaleService service;
@@ -264,9 +270,8 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		ThrowingCallable throwable = () -> service.searchAllObjects();
 		
 		// Then
-		assertThatThrownByNotFoundException(
-			throwable, BusinessLogicExceptionFactory.ExceptionMessage.LIST_NOT_FOUND,
-			BusinessLogicExceptionFactory.ErrorCode.LIST_NOT_FOUND
+		assertThatThrownByNotFoundException(throwable, BusinessLogicExceptionFactory.ExceptionMessage.LIST_NOT_FOUND,
+		                                    BusinessLogicExceptionFactory.ErrorCode.LIST_NOT_FOUND
 		);
 	}
 	
@@ -282,6 +287,71 @@ class BillOfSaleServiceTest extends AbstractCoreTest {
 		                               .sum()).isEqualTo(expectedBillOfSaleList.stream()
 		                                                                       .mapToDouble(BillOfSale::finalPrice)
 		                                                                       .sum());
+	}
+	
+	@Test
+	void readBillOfSaleImageAsString_JPEG_okay() {
+		// Given
+		String expectedText = "TEST";
+		byte[] bytes = new byte[1];
+		
+		BillOfSaleImage billOfSaleImage = new BillOfSaleImage(AVAILABLE_IMAGE_CONTENT_TYPES.get(0), bytes);
+		when(billOfSaleImagePort.readImageAsString(billOfSaleImage)).thenReturn(expectedText);
+		
+		// When
+		String actualText = service.readBillOfSaleImageAsString(billOfSaleImage);
+		
+		// Then
+		assertThat(actualText).isEqualTo(expectedText);
+	}
+	
+	@Test
+	void readBillOfSaleImageAsString_PNG_okay() {
+		// Given
+		String expectedText = "TEST";
+		byte[] bytes = new byte[1];
+		
+		BillOfSaleImage billOfSaleImage = new BillOfSaleImage(AVAILABLE_IMAGE_CONTENT_TYPES.get(1), bytes);
+		when(billOfSaleImagePort.readImageAsString(billOfSaleImage)).thenReturn(expectedText);
+		
+		// When
+		String actualText = service.readBillOfSaleImageAsString(billOfSaleImage);
+		
+		// Then
+		assertThat(actualText).isEqualTo(expectedText);
+	}
+	
+	@Test
+	void readBillOfSaleImageAsString_bytesZero_throwIOException() {
+		// Given
+		byte[] bytes = new byte[0];
+		
+		BillOfSaleImage billOfSaleImage = new BillOfSaleImage(AVAILABLE_IMAGE_CONTENT_TYPES.get(1), bytes);
+		
+		// When
+		ThrowingCallable calalble = () -> service.readBillOfSaleImageAsString(billOfSaleImage);
+		
+		// Then
+		assertThatThrownByIOProblemException(
+			calalble, "File as bytes cannot be empty.", InternalExceptionFactory.ErrorCode.IO_EXCEPTION);
+	}
+	
+	@Test
+	void readBillOfSaleImageAsString_IllegalContentType_throwIOException() {
+		// Given
+		String contentType = "image/gif";
+		byte[] bytes = new byte[1];
+		
+		BillOfSaleImage billOfSaleImage = new BillOfSaleImage(contentType, bytes);
+		
+		// When
+		ThrowingCallable calalble = () -> service.readBillOfSaleImageAsString(billOfSaleImage);
+		
+		// Then
+		assertThatThrownByPassedValueIsInvalidException(
+			calalble, BusinessLogicExceptionFactory.ExceptionMessage.BILL_OF_SALE_IMAGE_CONTENT_TYPE,
+			BusinessLogicExceptionFactory.ErrorCode.BILL_OF_SALE_IMAGE_CONTENT_TYPE
+		);
 	}
 	
 }

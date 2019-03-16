@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG_VALUE;
+import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
+import static pl.expensesmanager.exception.BusinessLogicExceptionFactory.billOfSaleImageContentTypeException;
+import static pl.expensesmanager.exception.InternalExceptionFactory.ioExceptionException;
 import static pl.expensesmanager.exception.ValidationExceptionFactory.*;
 import static pl.expensesmanager.util.CoreValidator.*;
 
@@ -17,9 +21,14 @@ final class BillOfSaleService extends BaseService<BillOfSale> {
 	
 	private BillOfSaleStorePort storage;
 	
-	BillOfSaleService(BillOfSaleStorePort storage) {
+	private BillOfSaleImagePort billOfSaleImagePort;
+	
+	private static final List<String> AVAILABLE_IMAGE_CONTENT_TYPES = List.of(IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE);
+	
+	BillOfSaleService(BillOfSaleStorePort storage, BillOfSaleImagePort billOfSaleImagePort) {
 		super(storage);
 		this.storage = storage;
+		this.billOfSaleImagePort = billOfSaleImagePort;
 	}
 	
 	/**
@@ -84,6 +93,17 @@ final class BillOfSaleService extends BaseService<BillOfSale> {
 	
 	public BillOfSale update(BillOfSale changes, String id) {
 		return updateObject(changes, id, BusinessLogicExceptionFactory::billOfSaleNotFoundException);
+	}
+	
+	String readBillOfSaleImageAsString(BillOfSaleImage billOfSaleImage) {
+		if (billOfSaleImage.getImageAsBytes().length == 0) {
+			throw ioExceptionException("File as bytes cannot be empty.");
+		}
+		if (!AVAILABLE_IMAGE_CONTENT_TYPES.contains(billOfSaleImage.getContentType())) {
+			throw billOfSaleImageContentTypeException();
+		}
+		
+		return billOfSaleImagePort.readImageAsString(billOfSaleImage);
 	}
 	
 	@Override

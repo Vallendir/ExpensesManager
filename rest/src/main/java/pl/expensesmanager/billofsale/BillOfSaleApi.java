@@ -2,6 +2,7 @@ package pl.expensesmanager.billofsale;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.List;
@@ -39,5 +40,8 @@ interface BillOfSaleApi {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@DeleteMapping(value = "/billofsales/{id}")
 	void delete(@PathVariable("id") String id);
+	
+	@PostMapping(value = "/billofsales", headers = "action=upload-image")
+	BillOfSaleImageAsText uploadBillOfSaleAsImage(@RequestParam("file") MultipartFile file);
 	
 }
