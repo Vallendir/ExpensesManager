@@ -5,6 +5,7 @@ import pl.expensesmanager.billofsale.BillOfSale;
 import pl.expensesmanager.budget.Budget;
 import pl.expensesmanager.exception.business.ObjectNotFoundException;
 import pl.expensesmanager.exception.business.PassedValueIsInvalidException;
+import pl.expensesmanager.exception.internal.IOProblemException;
 import pl.expensesmanager.exception.validation.ValidateDateException;
 import pl.expensesmanager.exception.validation.ValidateNumberException;
 import pl.expensesmanager.exception.validation.ValidateObjectException;
@@ -150,6 +151,12 @@ public abstract class AbstractCoreTest {
 		ThrowingCallable throwable, String hasMessage, String errorCode
 	) {
 		assertException(PassedValueIsInvalidException.class, throwable, hasMessage, errorCode);
+	}
+	
+	protected void assertThatThrownByIOProblemException(
+		ThrowingCallable throwable, String hasMessage, String errorCode
+	) {
+		assertException(IOProblemException.class, throwable, hasMessage, errorCode);
 	}
 	
 	private void assertException(

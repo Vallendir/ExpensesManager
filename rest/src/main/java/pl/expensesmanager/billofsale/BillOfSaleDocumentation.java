@@ -1,6 +1,7 @@
 package pl.expensesmanager.billofsale;
 
 import io.swagger.annotations.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.List;
@@ -111,5 +112,15 @@ public interface BillOfSaleDocumentation {
 		"BillOfSale",
 	})
 	void delete(@ApiParam(value = "BillOfSale object which will be deleted.", required = true) String id);
+	
+	@ApiResponses(value = {
+		@ApiResponse(code = 201, message = "BillOfSale image was uploaded."),
+		@ApiResponse(code = 400, message = "BillOfSale image is empty."),
+		@ApiResponse(code = 500, message = "BillOfSale cannot be reproduced in system.")
+	})
+	@ApiOperation(value = "Upload image of bill of sale.", nickname = "uploadBillOfSaleAsImage", notes = "Method allow to upload an image of bill of sale.", httpMethod = "POST", code = 201, tags = {
+		"BillOfSale",
+	})
+	BillOfSaleImageAsText uploadBillOfSaleAsImage(@ApiParam(value = "Image of BillOfSale.", required = true) MultipartFile file);
 	
 }

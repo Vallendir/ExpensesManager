@@ -32,7 +32,7 @@ public interface BudgetDocumentation {
 		@ApiResponse(code = 404, message = "Budgets are not found.")
 	})
 	@ApiOperation(value = "Retrieve all budgets.", nickname = "searchAll", notes = "Method allow to find all budgets.", httpMethod = "GET", tags = {
-		"BillOfSale",
+		"Budget",
 	})
 	List<Budget> searchAll();
 	
