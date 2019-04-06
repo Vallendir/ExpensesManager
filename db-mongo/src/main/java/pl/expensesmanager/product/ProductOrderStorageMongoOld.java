@@ -9,14 +9,14 @@ import java.util.Optional;
 
 @Component
 @Profile("mongo")
-public class ProductOrderStorageMongo extends BaseMongoStorage<ProductOrderDocument, ProductOrder>
+public class ProductOrderStorageMongoOld extends BaseMongoStorage<ProductOrderDocument, ProductOrder>
 	implements ProductOrderStorePort {
 	
 	private final ProductOrderRepositoryMongo repository;
 	
-	private final ProductRepositoryMongo productRepository;
+	private final ProductRepositoryMongoOld productRepository;
 	
-	public ProductOrderStorageMongo(ProductOrderRepositoryMongo repository, ProductRepositoryMongo productRepository) {
+	public ProductOrderStorageMongoOld(ProductOrderRepositoryMongo repository, ProductRepositoryMongoOld productRepository) {
 		super(repository);
 		this.repository = repository;
 		this.productRepository = productRepository;
@@ -56,14 +56,14 @@ public class ProductOrderStorageMongo extends BaseMongoStorage<ProductOrderDocum
 	@Override
 	public ProductOrder save(ProductOrder object) {
 		return saveObject(() -> {
-			Optional<ProductDocument> product = productRepository.findByNameAndPrice(
+			Optional<ProductDocumentOld> product = productRepository.findByNameAndPrice(
 				object.getProduct()
 				      .getName(), object.getProduct()
 				                        .getPrice());
 			if (product.isPresent()) {
 				object.setProduct(map(product.get()));
 			} else {
-				ProductDocument saved = productRepository.save(map(object.getProduct()));
+				ProductDocumentOld saved = productRepository.save(map(object.getProduct()));
 				object.setProduct(map(saved));
 			}
 			

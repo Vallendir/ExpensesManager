@@ -1,15 +1,14 @@
-package pl.expensesmanager.product;
+package pl.expensesmanager.p;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Profile("mongo")
 @Repository
-public interface ProductRepositoryMongo extends MongoRepository<ProductDocument, String> {
+interface ProductRepositoryMongo extends MongoRepository<ProductDocument, String> {
 	
 	/**
 	 * Method to find products by name.
@@ -18,15 +17,6 @@ public interface ProductRepositoryMongo extends MongoRepository<ProductDocument,
 	 * @return found products list
 	 */
 	List<ProductDocument> findByName(String name);
-	
-	/**
-	 * Method to find product by name and price.
-	 *
-	 * @param name  - the name of product
-	 * @param price - the price of product
-	 * @return found product as optional
-	 */
-	Optional<ProductDocument> findByNameAndPrice(String name, Double price);
 	
 	/**
 	 * Method to find products by price.

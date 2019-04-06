@@ -44,13 +44,13 @@ public class BillOfSaleImageOpenCVTess4j implements BillOfSaleImagePort {
 		} catch (TesseractException e) {
 			throw ioExceptionException(
 				e,
-				"Cannot read from Mat to BufferedImage. Probably something went wrong with execute operations to read text from image."
+				"Cannot read from Mat to BufferedImage. Probably something went wrong of execute operations to read text from image."
 			);
 		}
 	}
 	
 	/**
-	 * Method to load native OpenCV library. There is needed to set Path variable with path to the OpenCV in system
+	 * Method to load native OpenCV library. There is needed to set Path variable of path to the OpenCV in system
 	 */
 	private void loadNativeLibrary() {
 		nu.pattern.OpenCV.loadShared();

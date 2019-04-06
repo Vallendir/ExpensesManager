@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import pl.expensesmanager.base.BaseMongoStorage;
 import pl.expensesmanager.product.ProductOrder;
-import pl.expensesmanager.product.ProductOrderStorageMongo;
+import pl.expensesmanager.product.ProductOrderStorageMongoOld;
 
 import java.time.Instant;
 import java.util.List;
@@ -18,9 +18,9 @@ public class BillOfSaleStorageMongo extends BaseMongoStorage<BillOfSaleDocument,
 	
 	private final BillOfSaleRepositoryMongo repository;
 	
-	private final ProductOrderStorageMongo orderStorage;
+	private final ProductOrderStorageMongoOld orderStorage;
 	
-	public BillOfSaleStorageMongo(BillOfSaleRepositoryMongo repository, ProductOrderStorageMongo orderStorage) {
+	public BillOfSaleStorageMongo(BillOfSaleRepositoryMongo repository, ProductOrderStorageMongoOld orderStorage) {
 		super(repository);
 		this.repository = repository;
 		this.orderStorage = orderStorage;

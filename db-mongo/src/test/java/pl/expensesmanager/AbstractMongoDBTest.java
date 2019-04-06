@@ -2,7 +2,7 @@ package pl.expensesmanager;
 
 import pl.expensesmanager.billofsale.BillOfSaleDocument;
 import pl.expensesmanager.budget.BudgetDocument;
-import pl.expensesmanager.product.ProductDocument;
+import pl.expensesmanager.product.ProductDocumentOld;
 import pl.expensesmanager.product.ProductOrderDocument;
 
 import java.time.Instant;
@@ -27,12 +27,12 @@ public abstract class AbstractMongoDBTest {
 	protected static final Double BUDGET_VALUE = 375.0;
 	
 	
-	protected ProductDocument createProduct() {
+	protected ProductDocumentOld createProduct() {
 		return createProduct(ID, PRODUCT_NAME, PRODUCT_PRICE);
 	}
 	
-	protected ProductDocument createProduct(String id, String name, Double price) {
-		ProductDocument expectedProduct = new ProductDocument();
+	protected ProductDocumentOld createProduct(String id, String name, Double price) {
+		ProductDocumentOld expectedProduct = new ProductDocumentOld();
 		expectedProduct.setId(id);
 		expectedProduct.setName(name);
 		expectedProduct.setPrice(price);
@@ -40,7 +40,7 @@ public abstract class AbstractMongoDBTest {
 		return expectedProduct;
 	}
 	
-	protected ProductDocument createProduct(Double price) {
+	protected ProductDocumentOld createProduct(Double price) {
 		return createProduct(ID, PRODUCT_NAME, price);
 	}
 	

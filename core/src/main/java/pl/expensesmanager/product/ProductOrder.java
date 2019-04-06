@@ -19,7 +19,7 @@ public final class ProductOrder extends BaseModel {
 	private Integer quanity;
 	
 	/**
-	 * Method to get the summary price of product with quanity.
+	 * Method to get the summary price of product of quanity.
 	 *
 	 * @return product summary price
 	 */

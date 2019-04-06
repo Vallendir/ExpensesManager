@@ -70,7 +70,7 @@ public class OpenCVOperations {
 	 *
 	 * @param source    image on which Gaussian blur will be applied
 	 * @param intensity intensity of Gaussian blur
-	 * @return mat object with image contain Gaussian blur
+	 * @return mat object of image contain Gaussian blur
 	 */
 	public Mat makeGaussianBlur(Mat source, Integer intensity) {
 		if (validateInteger(intensity) == 0) {
@@ -88,7 +88,7 @@ public class OpenCVOperations {
 	 * @param source              image on which threshold will be applied
 	 * @param blockSize           size of a pixel neighborhood that is used to calculate a threshold value for the pixel: 3, 5, 7, and so on
 	 * @param constantToSubstract constant subtracted from the mean or weighted mean, normally, it is positive but may be zero or negative as well.
-	 * @return mat object with image contain binary threshold
+	 * @return mat object of image contain binary threshold
 	 */
 	public Mat makeAdaptativeThreshold(Mat source, int blockSize, int constantToSubstract) {
 		Mat treshold = createMatCopyBasedOnAnotherParameters(source);

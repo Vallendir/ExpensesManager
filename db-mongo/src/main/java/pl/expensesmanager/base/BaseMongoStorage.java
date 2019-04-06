@@ -8,7 +8,7 @@ import pl.expensesmanager.billofsale.BillOfSaleDocument;
 import pl.expensesmanager.budget.Budget;
 import pl.expensesmanager.budget.BudgetDocument;
 import pl.expensesmanager.product.Product;
-import pl.expensesmanager.product.ProductDocument;
+import pl.expensesmanager.product.ProductDocumentOld;
 import pl.expensesmanager.product.ProductOrder;
 import pl.expensesmanager.product.ProductOrderDocument;
 
@@ -83,20 +83,20 @@ public abstract class BaseMongoStorage<MongoDocument, DomainObject> implements I
 		           .collect(Collectors.toList());
 	}
 	
-	protected ProductDocument map(Product product) {
-		return ProductDocument.builder()
-		                      .id(product.getId())
-		                      .name(product.getName())
-		                      .price(product.getPrice())
-		                      .build();
+	protected ProductDocumentOld map(Product product) {
+		return ProductDocumentOld.builder()
+		                         .id(product.getId())
+		                         .name(product.getName())
+		                         .price(product.getPrice())
+		                         .build();
 	}
 	
-	protected Product map(ProductDocument productDocument) {
+	protected Product map(ProductDocumentOld productDocumentOld) {
 		Product product = Product.builder()
-		                         .name(productDocument.getName())
-		                         .price(productDocument.getPrice())
+		                         .name(productDocumentOld.getName())
+		                         .price(productDocumentOld.getPrice())
 		                         .build();
-		product.setId(productDocument.getId());
+		product.setId(productDocumentOld.getId());
 		
 		return product;
 	}

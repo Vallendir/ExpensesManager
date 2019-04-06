@@ -15,7 +15,7 @@ public class ProductOrderDocument {
 	
 	private String id;
 	
-	private ProductDocument product;
+	private ProductDocumentOld product;
 	
 	private Integer quanity;
 	

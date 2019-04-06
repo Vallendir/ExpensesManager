@@ -127,7 +127,7 @@ public class BasicValidator {
 	/**
 	 * Validate if given id has valid format
 	 *
-	 * @param validator port with specific implementation of id validation
+	 * @param validator port of specific implementation of id validation
 	 * @param id        identificator to validate
 	 */
 	public static void checkIfGivenIdIsValid(IdValidatorPort validator, String id) {

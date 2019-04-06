@@ -108,7 +108,7 @@ public abstract class BaseService<T> {
 	 *
 	 * @param changes   object contains changes to original object update
 	 * @param id        identificator of object which will be updated
-	 * @param exception exception which will be thrown when something went wrong with trying to find original object by id
+	 * @param exception exception which will be thrown when something went wrong of trying to find original object by id
 	 * @return object which was updated
 	 */
 	public T updateObject(T changes, String id, Supplier<BusinessLogicException> exception) {

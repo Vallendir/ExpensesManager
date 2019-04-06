@@ -9,11 +9,11 @@ import java.util.Optional;
 
 @Component
 @Profile("mongo")
-class ProductStorageMongo extends BaseMongoStorage<ProductDocument, Product> implements ProductStorePort {
+class ProductStorageMongoOld extends BaseMongoStorage<ProductDocumentOld, Product> implements ProductStorePort {
 	
-	private final ProductRepositoryMongo repository;
+	private final ProductRepositoryMongoOld repository;
 	
-	ProductStorageMongo(ProductRepositoryMongo repository) {
+	ProductStorageMongoOld(ProductRepositoryMongoOld repository) {
 		super(repository);
 		this.repository = repository;
 	}

@@ -1,0 +1,64 @@
+package pl.expensesmanager.product;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Profile("mongo")
+@Repository
+public interface ProductRepositoryMongoOld extends MongoRepository<ProductDocumentOld, String> {
+	
+	/**
+	 * Method to find products by name.
+	 *
+	 * @param name - the name of product
+	 * @return found products list
+	 */
+	List<ProductDocumentOld> findByName(String name);
+	
+	/**
+	 * Method to find product by name and price.
+	 *
+	 * @param name  - the name of product
+	 * @param price - the price of product
+	 * @return found product as optional
+	 */
+	Optional<ProductDocumentOld> findByNameAndPrice(String name, Double price);
+	
+	/**
+	 * Method to find products by price.
+	 *
+	 * @param price - price
+	 * @return found product objects
+	 */
+	List<ProductDocumentOld> findByPrice(Double price);
+	
+	/**
+	 * Method to find product between price range.
+	 *
+	 * @param min - minimal price
+	 * @param max - maximal price
+	 * @return found product objects
+	 */
+	List<ProductDocumentOld> findByPriceBetween(Double min, Double max);
+	
+	/**
+	 * Method to find product more expensive than price.
+	 *
+	 * @param price - price
+	 * @return found product objects
+	 */
+	List<ProductDocumentOld> findByPriceGreaterThan(Double price);
+	
+	/**
+	 * Method to find product cheaper than price.
+	 *
+	 * @param price - price
+	 * @return found product objects
+	 */
+	List<ProductDocumentOld> findByPriceLessThan(Double price);
+	
+}
