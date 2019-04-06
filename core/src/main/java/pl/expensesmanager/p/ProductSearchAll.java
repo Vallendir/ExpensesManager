@@ -22,9 +22,6 @@ class ProductSearchAll implements EMQuery<List<Product>> {
 			case NAME:
 				var name = String.valueOf(filter.getParameters()[0]);
 				return query.findByName(name);
-			case PRICE:
-				var price = Double.valueOf(filter.getParameters()[0].toString());
-				return query.findByPrice(price);
 			case PRICE_RANGE:
 				var min = Double.valueOf(filter.getParameters()[0].toString());
 				var max = Double.valueOf(filter.getParameters()[1].toString());

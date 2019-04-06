@@ -8,7 +8,6 @@ class ProductFiltering {
 		ALL,
 		ID,
 		NAME,
-		PRICE,
 		PRICE_RANGE,
 		PRICE_CHEAPER,
 		PRICE_EXPENSIVE;

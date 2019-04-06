@@ -22,14 +22,6 @@ class ProductStorageQueryMongo implements ProductStoreQueryPort {
 	}
 	
 	@Override
-	public List<Product> findByPrice(Double price) {
-		return repository.findByPrice(price)
-		                 .stream()
-		                 .map(ProductDocument::from)
-		                 .collect(Collectors.toList());
-	}
-	
-	@Override
 	public List<Product> findByPriceBetween(Double min, Double max) {
 		return repository.findByPriceBetween(min, max)
 		                 .stream()

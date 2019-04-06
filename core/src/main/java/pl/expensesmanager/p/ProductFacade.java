@@ -44,10 +44,6 @@ public class ProductFacade {
 		return executeQueryAll(new ProductSearchAll(query, Filter.NAME.of(validateProductName(name))));
 	}
 	
-	public List<Product> findByPrice(double price) {
-		return executeQueryAll(new ProductSearchAll(query, Filter.PRICE.of(validateProductPrice(price))));
-	}
-	
 	public List<Product> findByPriceRange(double min, double max) {
 		validateMinMaxValue(validateProductPrice(min), validateProductPrice(max));
 		return executeQueryAll(new ProductSearchAll(query, Filter.PRICE_RANGE.of(min, max)));

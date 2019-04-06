@@ -15,14 +15,6 @@ interface ProductStoreQueryPort extends BaseStoreQuery<Product, String> {
 	List<Product> findByName(String name);
 	
 	/**
-	 * Method to find products by price.
-	 *
-	 * @param price - price
-	 * @return found product objects
-	 */
-	List<Product> findByPrice(Double price);
-	
-	/**
 	 * Method to find product between price range.
 	 *
 	 * @param min - minimal price
