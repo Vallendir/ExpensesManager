@@ -2,6 +2,8 @@ package pl.expensesmanager.p;
 
 import lombok.RequiredArgsConstructor;
 import pl.expensesmanager.b.EMCommand;
+import pl.expensesmanager.b.EMQuery;
+import pl.expensesmanager.util.MergeUtil;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -11,24 +13,20 @@ import static pl.expensesmanager.util.CoreValidator.validateProductName;
 import static pl.expensesmanager.util.CoreValidator.validateProductPrice;
 
 @RequiredArgsConstructor
-class ProductCreate implements EMCommand {
+class ProductUpdate implements EMCommand {
 	
-	private final ProductStoreCommandPort store;
+	private final ProductStoreCommandPort save;
 	
-	private final Product productToCreate;
+	private final Product changes;
+	
+	private final EMQuery<Product> query;
 	
 	@Override
 	public void executeCommand() {
-		if (Objects.isNull(productToCreate)) {
-			throw productException();
-		}
-		productToCreate.setName(validateProductName(productToCreate.getName()));
-		validateProductPrice(productToCreate.getPrice());
+		var found = query.executeQuery();
 		
-		var saved = store.save(productToCreate);
-		if(!saved.isPresent()) {
-			throw productException();
-		}
+		var update = new ProductCreate(save, MergeUtil.merge(found, changes));
+		update.executeCommand();
 	}
 	
 }

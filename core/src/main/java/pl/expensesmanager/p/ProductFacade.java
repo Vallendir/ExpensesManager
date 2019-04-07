@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import pl.expensesmanager.b.EMCommand;
 import pl.expensesmanager.b.EMQuery;
 import pl.expensesmanager.p.ProductFiltering.Filter;
-import pl.expensesmanager.util.MergeUtil;
 
 import java.util.List;
 
@@ -28,8 +27,7 @@ public class ProductFacade {
 	}
 	
 	public void update(String id, Product changes) {
-		var found = findById(id);
-		create(MergeUtil.merge(found, changes));
+		executeCommand(new ProductUpdate(command, changes, new ProductSearch(query, Filter.ID.of(id))));
 	}
 	
 	public void remove(String id) {
