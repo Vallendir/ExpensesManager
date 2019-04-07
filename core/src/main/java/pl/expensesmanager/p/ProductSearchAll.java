@@ -2,13 +2,14 @@ package pl.expensesmanager.p;
 
 import lombok.RequiredArgsConstructor;
 import pl.expensesmanager.b.EMQuery;
+import pl.expensesmanager.b.EMQueryList;
 import pl.expensesmanager.exception.BusinessLogicExceptionFactory;
 import pl.expensesmanager.p.ProductFiltering.Filter;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-class ProductSearchAll implements EMQuery<List<Product>> {
+class ProductSearchAll implements EMQueryList<Product> {
 	
 	private final ProductStoreQueryPort query;
 	
