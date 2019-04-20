@@ -3,7 +3,7 @@ package pl.expensesmanager.b;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseStoreQuery<T, I> {
+public interface BaseStoreQuery<T> extends IdValidationPort {
 	
 	/**
 	 * Method to find object by id.
@@ -11,7 +11,7 @@ public interface BaseStoreQuery<T, I> {
 	 * @param id - id of needed object
 	 * @return found object
 	 */
-	Optional<T> findById(I id);
+	Optional<T> findById(EmId id);
 	
 	/**
 	 * Method to find all objects.

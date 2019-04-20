@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static pl.expensesmanager.exception.ValidationExceptionFactory.productException;
+import static pl.expensesmanager.p.ProductExceptionFactory.productNotFounAndWontBeUpdatedException;
 import static pl.expensesmanager.util.CoreValidator.validateProductName;
 import static pl.expensesmanager.util.CoreValidator.validateProductPrice;
 
@@ -24,6 +25,9 @@ class ProductUpdate implements EMCommand {
 	@Override
 	public void executeCommand() {
 		var found = query.executeQuery();
+		if(Objects.isNull(found)) {
+			productNotFounAndWontBeUpdatedException();
+		}
 		
 		var update = new ProductCreate(save, MergeUtil.merge(found, changes));
 		update.executeCommand();

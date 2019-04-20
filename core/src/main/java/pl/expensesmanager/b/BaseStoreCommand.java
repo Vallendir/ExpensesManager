@@ -2,7 +2,7 @@ package pl.expensesmanager.b;
 
 import java.util.Optional;
 
-public interface BaseStoreCommand<T, I> {
+public interface BaseStoreCommand<T> extends IdValidationPort {
 	
 	/**
 	 * Method to store object.
@@ -18,6 +18,6 @@ public interface BaseStoreCommand<T, I> {
 	 * @param id - id of object which will be deleted
 	 * @return true if was deleted and false if not
 	 */
-	void deleteById(I id);
+	void deleteById(EmId id);
 	
 }

@@ -1,7 +1,9 @@
 package pl.expensesmanager.p;
 
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.context.annotation.Profile;
+import pl.expensesmanager.b.EmId;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +59,11 @@ class ProductStorageQueryMongo implements ProductStoreQueryPort {
 		                 .stream()
 		                 .map(ProductDocument::from)
 		                 .collect(Collectors.toList());
+	}
+	
+	@Override
+	public boolean isValid(EmId id) {
+		return ObjectId.isValid(id.getId());
 	}
 	
 }

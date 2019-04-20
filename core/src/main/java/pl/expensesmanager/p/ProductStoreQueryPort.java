@@ -4,7 +4,7 @@ import pl.expensesmanager.b.BaseStoreQuery;
 
 import java.util.List;
 
-interface ProductStoreQueryPort extends BaseStoreQuery<Product, String> {
+interface ProductStoreQueryPort extends BaseStoreQuery<Product> {
 	
 	/**
 	 * Method to find products by name.

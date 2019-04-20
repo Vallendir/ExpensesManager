@@ -1,7 +1,9 @@
 package pl.expensesmanager.p;
 
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.context.annotation.Profile;
+import pl.expensesmanager.b.EmId;
 
 import java.util.Optional;
 
@@ -19,8 +21,13 @@ class ProductStorageCommandMongo implements ProductStoreCommandPort {
 	}
 	
 	@Override
-	public void deleteById(String id) {
-		repository.deleteById(id);
+	public void deleteById(EmId id) {
+		repository.deleteById(id.getId());
+	}
+	
+	@Override
+	public boolean isValid(EmId id) {
+		return ObjectId.isValid(id.getId());
 	}
 	
 }

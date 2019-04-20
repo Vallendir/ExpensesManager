@@ -1,6 +1,7 @@
 package pl.expensesmanager.p;
 
 import lombok.*;
+import pl.expensesmanager.b.EmId;
 import pl.expensesmanager.base.BaseModel;
 
 /**
@@ -14,7 +15,7 @@ import pl.expensesmanager.base.BaseModel;
 @EqualsAndHashCode
 public class Product {
 	
-	private String id;
+	private EmId id;
 	
 	private String name;
 	

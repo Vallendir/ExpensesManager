@@ -2,13 +2,11 @@ package pl.expensesmanager.p;
 
 import lombok.RequiredArgsConstructor;
 import pl.expensesmanager.b.EMCommand;
+import pl.expensesmanager.b.Validator;
 
-import java.util.Objects;
-import java.util.Optional;
+import java.util.List;
 
-import static pl.expensesmanager.exception.ValidationExceptionFactory.productException;
-import static pl.expensesmanager.util.CoreValidator.validateProductName;
-import static pl.expensesmanager.util.CoreValidator.validateProductPrice;
+import static pl.expensesmanager.p.ProductExceptionFactory.productCannotBeCreatedException;
 
 @RequiredArgsConstructor
 class ProductCreate implements EMCommand {
@@ -17,17 +15,15 @@ class ProductCreate implements EMCommand {
 	
 	private final Product productToCreate;
 	
+	private List<Validator<Product>> validators = List.of(new ValidateProductName(), new ValidateProductPrice());
+	
 	@Override
 	public void executeCommand() {
-		if (Objects.isNull(productToCreate)) {
-			throw productException();
-		}
-		productToCreate.setName(validateProductName(productToCreate.getName()));
-		validateProductPrice(productToCreate.getPrice());
+		validators.forEach(validator -> validator.validate(productToCreate));
 		
 		var saved = store.save(productToCreate);
-		if(!saved.isPresent()) {
-			throw productException();
+		if (!saved.isPresent()) {
+			throw productCannotBeCreatedException();
 		}
 	}
 	
