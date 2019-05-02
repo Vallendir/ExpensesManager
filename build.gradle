@@ -24,7 +24,7 @@ buildscript {
         slf4jVersion = '1.7.25'
 
         /** Mapstruct **/
-        mapstructVersion = '1.1.0.Final'
+        mapstructVersion = '1.2.0.Final'
     }
 
     repositories {
