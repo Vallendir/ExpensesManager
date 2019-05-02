@@ -4,13 +4,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import pl.em.common.DomainID;
-import pl.em.product.ProductOrder;
+import pl.em.order.Order;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
-public interface BillOfSaleMongoMapper {
+interface BillOfSaleMongoMapper {
 	
 	@Mapping(source = "billId.id", target = "id")
 	@Mapping(source = "domain.ordersList", target = "ordersIdsList", qualifiedByName = "ordersToIds")
@@ -21,7 +21,7 @@ public interface BillOfSaleMongoMapper {
 	BillOfSale toDomain(BillOfSaleDocument document);
 	
 	@Named("ordersToIds")
-	default List<String> ordersToIds(List<ProductOrder> orders) {
+	default List<String> ordersToIds(List<Order> orders) {
 		return orders.stream()
 		             .map(order -> order.getOrderId()
 		                                .getId())
@@ -29,11 +29,11 @@ public interface BillOfSaleMongoMapper {
 	}
 	
 	@Named("idsToOrders")
-	default List<ProductOrder> idsToOrders(List<String> ids) {
+	default List<Order> idsToOrders(List<String> ids) {
 		return ids.stream()
-		          .map(order -> ProductOrder.builder()
-		                                    .orderId(new DomainID(order))
-		                                    .build())
+		          .map(order -> Order.builder()
+		                             .orderId(new DomainID(order))
+		                             .build())
 		          .collect(Collectors.toList());
 	}
 	

@@ -3,7 +3,7 @@ package pl.em.billofsale;
 import lombok.*;
 import pl.em.common.DomainID;
 import pl.em.common.DomainModel;
-import pl.em.product.ProductOrder;
+import pl.em.order.Order;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,12 +16,12 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-public class BillOfSale extends DomainModel {
+@EqualsAndHashCode(callSuper = false)
+public final class BillOfSale extends DomainModel {
 	
 	private DomainID billId;
 	
-	private List<ProductOrder> ordersList;
+	private List<Order> ordersList;
 	
 	private Instant boughtDate;
 	
@@ -34,7 +34,7 @@ public class BillOfSale extends DomainModel {
 	 */
 	public Double finalPrice() {
 		return ordersList.stream()
-		                  .mapToDouble(ProductOrder::summaryPrice)
+		                  .mapToDouble(Order::summaryPrice)
 		                  .summaryStatistics()
 		                  .getSum();
 	}

@@ -15,8 +15,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-public class Budget extends DomainModel {
+@EqualsAndHashCode(callSuper = false)
+public final class Budget extends DomainModel {
 	
 	private DomainID budgetId;
 	

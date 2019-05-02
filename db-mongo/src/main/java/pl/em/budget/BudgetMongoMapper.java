@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
-public interface BudgetMongoMapper {
+interface BudgetMongoMapper {
 	
 	@Mapping(source = "budgetId.id", target = "id")
 	@Mapping(source = "domain.billsOfSalseList", target = "billsIdsList", qualifiedByName = "billsToIds")

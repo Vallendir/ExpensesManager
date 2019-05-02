@@ -1,4 +1,4 @@
-package pl.em.product;
+package pl.em.order;
 
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "order")
-public class ProductOrderDocument {
+final class OrderDocument {
 	
 	private String id;
 	

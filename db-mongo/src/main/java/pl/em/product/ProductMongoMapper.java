@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface ProductMongoMapper {
+interface ProductMongoMapper {
 	
 	@Mapping(source = "productId.id", target = "id")
 	ProductDocument toEntity(Product domain);

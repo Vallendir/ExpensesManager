@@ -12,8 +12,8 @@ import pl.em.common.DomainModel;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-public class Product extends DomainModel {
+@EqualsAndHashCode(callSuper = false)
+public final class Product extends DomainModel {
 	
 	private DomainID productId;
 	

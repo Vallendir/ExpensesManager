@@ -1,8 +1,9 @@
-package pl.em.product;
+package pl.em.order;
 
 import lombok.*;
 import pl.em.common.DomainID;
 import pl.em.common.DomainModel;
+import pl.em.product.Product;
 
 /**
  * Representation of Product Order.
@@ -12,8 +13,8 @@ import pl.em.common.DomainModel;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-public class ProductOrder extends DomainModel {
+@EqualsAndHashCode(callSuper = false)
+public final class Order extends DomainModel {
 	
 	private DomainID orderId;
 	

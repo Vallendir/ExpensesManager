@@ -1,17 +1,17 @@
-package pl.em.product;
+package pl.em.order;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface ProductOrderMongoMapper {
+interface OrderMongoMapper {
 	
 	@Mapping(source = "orderId.id", target = "id")
 	@Mapping(source = "product.productId.id", target = "productId")
-	ProductOrderDocument toEntity(ProductOrder domain);
+	OrderDocument toEntity(Order domain);
 	
 	@Mapping(target = "orderId", expression = "java(new DomainID(document.getId()))")
 	@Mapping(target = "product", expression = "java(Product.builder().productId(new DomainID(document.getProductId())).build())")
-	ProductOrder toDomain(ProductOrderDocument document);
+	Order toDomain(OrderDocument document);
 	
 }

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class DomainID {
+public final class DomainID {
 	
 	private final String id;
 	

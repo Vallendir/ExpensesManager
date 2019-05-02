@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "budget")
-public class BudgetDocument {
+final class BudgetDocument {
 	
 	private String id;
 	
