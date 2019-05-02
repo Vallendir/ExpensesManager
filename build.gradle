@@ -6,6 +6,7 @@ buildscript {
         /** Spring **/
         springBootVersion = '2.1.+'
         springLoadedVersion = '1.2.8.RELEASE'
+        springContextVersion = '5.1.4.RELEASE'
 
         /** Mockito **/
         mockitoVersion = '2.23.0'
@@ -21,6 +22,9 @@ buildscript {
 
         /** Slf4j **/
         slf4jVersion = '1.7.25'
+
+        /** Mapstruct **/
+        mapstructVersion = '1.1.0.Final'
     }
 
     repositories {
@@ -57,11 +61,17 @@ subprojects {
 
     dependencies {
         /** Lombok **/
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
         implementation "org.projectlombok:lombok:$lombokVersion"
 
         /** Slf4j **/
         testImplementation "org.slf4j:slf4j-simple:$slf4jVersion"
         implementation "org.slf4j:slf4j-api:$slf4jVersion"
+
+        /** Mapstruct **/
+        annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+        implementation "org.mapstruct:mapstruct-jdk8:$mapstructVersion"
+        implementation "org.mapstruct:mapstruct:$mapstructVersion"
 
         /** JUnit **/
         testCompileOnly "org.junit.jupiter:junit-jupiter-api:$junitVersion"
@@ -85,4 +95,23 @@ subprojects {
 
     sourceCompatibility = projectJavaVersion
     targetCompatibility = projectJavaVersion
+
+    def generatedSources = "$buildDir/generated"
+    def generatedOutputDir = file("$generatedSources")
+
+    compileJava {
+        doFirst {
+            generatedOutputDir.exists() || generatedOutputDir.mkdirs()
+            options.compilerArgs = [
+                    '-s', "${generatedSources}"
+            ]
+        }
+    }
+
+    idea {
+        module {
+            downloadSources = true
+            sourceDirs += generatedOutputDir
+        }
+    }
 }

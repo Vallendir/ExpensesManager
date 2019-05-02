@@ -1,3 +1,12 @@
+apply plugin: 'org.springframework.boot'
+
 dependencies {
-    
+    /** Spring boot **/
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: 'org.mockito', module: 'mockito-core'
+    }
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-tomcat"
+
+    implementation project(':core')
 }

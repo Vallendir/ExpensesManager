@@ -2,7 +2,6 @@ rootProject.name = 'ExpensesManager'
 
 include 'core'
 include 'app-rest'
-include 'rest'
 include 'exception'
 include 'db-mongo'
 include 'image'
