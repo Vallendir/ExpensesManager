@@ -3,6 +3,7 @@ package pl.em.product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.em.common.CQRSHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -14,7 +15,8 @@ class ProductConfig {
 	ProductFacade productFacade() {
 		return new ProductFacade(
 			new ProductCommandMongoStorage(repository),
-			new ProductQueryMongoStorage(repository)
+			new ProductQueryMongoStorage(repository),
+			new CQRSHandler()
 		);
 	}
 	

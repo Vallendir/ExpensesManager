@@ -34,9 +34,9 @@ public final class BillOfSale extends DomainModel {
 	 */
 	public Double finalPrice() {
 		return ordersList.stream()
-		                  .mapToDouble(Order::summaryPrice)
-		                  .summaryStatistics()
-		                  .getSum();
+		                 .mapToDouble(Order::summaryPrice)
+		                 .summaryStatistics()
+		                 .getSum();
 	}
 	
 }
