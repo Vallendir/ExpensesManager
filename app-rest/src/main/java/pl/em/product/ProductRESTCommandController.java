@@ -1,9 +1,8 @@
 package pl.em.product;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.em.common.DomainID;
 
 @RestController
 @RequestMapping("/products")
@@ -12,19 +11,21 @@ class ProductRESTCommandController implements ProductApiCommandDocumentation {
 	
 	private final ProductFacade service;
 	
-	@GetMapping
+	private final ProductRESTMapper mapper;
+	
+	@PostMapping
 	@Override
-	public Product add(Product product) {
-		Product p = new Product();
-		p.setName("name ese");
-		p.setPrice(5.75);
+	public ResponseNewProduct add(RequestNewProduct product) {
+		var request = mapper.requestToDomain(product);
+		var response = service.createNew(request);
 		
-		return service.createNew(p);
+		return mapper.domainToResponse(response);
 	}
 	
+	@DeleteMapping("/{id}")
 	@Override
-	public void delete(String id) {
-	
+	public void delete(@PathVariable("id") String id) {
+		service.remove(new DomainID(id));
 	}
 	
 }

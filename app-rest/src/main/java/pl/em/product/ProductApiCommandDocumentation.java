@@ -14,8 +14,8 @@ interface ProductApiCommandDocumentation {
 	@ApiOperation(value = "Create product.", nickname = "add", notes = "Method allow to create a new product.", httpMethod = "POST", code = 201, tags = {
 		"Product Command",
 	})
-	Product add(
-		@ApiParam(value = "Product object which will be created.", required = true) Product product
+	ResponseNewProduct add(
+		@ApiParam(value = "Product object which will be created.", required = true) RequestNewProduct product
 	);
 	
 	@ApiResponses(value = {

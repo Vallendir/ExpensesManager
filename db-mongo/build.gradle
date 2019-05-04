@@ -4,6 +4,7 @@ dependencies {
     implementation "org.springframework.data:spring-data-mongodb"
 
     implementation project(':core')
+    implementation project(':exception')
 }
 
 bootJar {

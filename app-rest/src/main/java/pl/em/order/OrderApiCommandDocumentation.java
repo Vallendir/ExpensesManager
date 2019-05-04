@@ -8,21 +8,25 @@ import java.util.List;
 interface OrderApiCommandDocumentation {
 	
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Order was found."), @ApiResponse(code = 404, message = "Order not found."),
-		@ApiResponse(code = 409, message = "ID has invalid format.")
+		@ApiResponse(code = 201, message = "Order was created."),
+		@ApiResponse(code = 409, message = "Order cannot be null."),
+		@ApiResponse(code = 409, message = "Ordered product cannot be null."),
+		@ApiResponse(code = 409, message = "Order quanity cannot be null or is infinite.")
 	})
-	@ApiOperation(value = "Find Order by id.", nickname = "searchForId", notes = "Method allow to find a order by id.", httpMethod = "GET", tags = {
+	@ApiOperation(value = "Create order.", nickname = "add", notes = "Method allow to create a new order.", httpMethod = "POST", code = 201, tags = {
 		"Order Command",
 	})
-	Order searchForId(@ApiParam(value = "ID of Order to find.", required = true) String id);
+	ResponseNewOrder add(
+		@ApiParam(value = "Order object which will be created.", required = true) RequestNewOrder order
+	);
 	
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "Orders were found."),
-		@ApiResponse(code = 404, message = "Orders are not found.")
+		@ApiResponse(code = 204, message = "Order was removed."),
+		@ApiResponse(code = 409, message = "ID has invalid format.")
 	})
-	@ApiOperation(value = "Retrieve all product orders.", nickname = "searchAll", notes = "Method allow to find all product orders.", httpMethod = "GET", tags = {
+	@ApiOperation(value = "Remove order.", nickname = "deleteById", notes = "Method allow to remove an order by id.", httpMethod = "DELETE", code = 204, tags = {
 		"Order Command",
 	})
-	List<Order> searchAll();
+	void delete(@ApiParam(value = "Order object which will be deleted.", required = true) String id);
 	
 }
