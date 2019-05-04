@@ -1,5 +1,6 @@
 package pl.em.budget;
 
+import pl.em.billofsale.BillOfSaleMongoStorageProxy;
 import pl.em.common.DomainID;
 import pl.em.common.MongoStorage;
 
@@ -9,9 +10,12 @@ class BudgetCommandMongoStorage extends MongoStorage<BudgetDocument, Budget, Bud
 	
 	private final BudgetMongoRepository repository;
 	
-	BudgetCommandMongoStorage(BudgetMongoRepository repository) {
+	private final BillOfSaleMongoStorageProxy billProxy;
+	
+	BudgetCommandMongoStorage(BudgetMongoRepository repository, BillOfSaleMongoStorageProxy billProxy) {
 		super(new BudgetMapperMongo(), repository);
 		this.repository = repository;
+		this.billProxy = billProxy;
 	}
 	
 	@Override

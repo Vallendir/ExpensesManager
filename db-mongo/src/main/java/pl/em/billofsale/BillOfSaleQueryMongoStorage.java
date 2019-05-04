@@ -2,6 +2,7 @@ package pl.em.billofsale;
 
 import pl.em.common.DomainID;
 import pl.em.common.MongoStorage;
+import pl.em.order.OrderMongoStorageProxy;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,12 @@ class BillOfSaleQueryMongoStorage extends MongoStorage<BillOfSaleDocument, BillO
 	
 	private final BillOfSaleMongoRepository repository;
 	
-	BillOfSaleQueryMongoStorage(BillOfSaleMongoRepository repository) {
+	private final OrderMongoStorageProxy orderProxy;
+	
+	BillOfSaleQueryMongoStorage(BillOfSaleMongoRepository repository, OrderMongoStorageProxy orderProxy) {
 		super(new BillOfSaleMapperMongo(), repository);
 		this.repository = repository;
+		this.orderProxy = orderProxy;
 	}
 	
 	@Override

@@ -20,4 +20,12 @@ class ProductConfig {
 		);
 	}
 	
+	@Bean
+	ProductMongoStorageProxy productMongoStorageProxy() {
+		return new ProductMongoStorageProxy(
+			new ProductCommandMongoStorage(repository),
+			new ProductQueryMongoStorage(repository)
+		);
+	}
+	
 }

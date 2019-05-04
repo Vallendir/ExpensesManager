@@ -2,6 +2,7 @@ package pl.em.order;
 
 import pl.em.common.DomainID;
 import pl.em.common.MongoStorage;
+import pl.em.product.ProductMongoStorageProxy;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,12 @@ class OrderQueryMongoStorage extends MongoStorage<OrderDocument, Order, OrderMon
 	
 	private final OrderMongoRepository repository;
 	
-	OrderQueryMongoStorage(OrderMongoRepository repository) {
+	private final ProductMongoStorageProxy productProxy;
+	
+	OrderQueryMongoStorage(OrderMongoRepository repository, ProductMongoStorageProxy productProxy) {
 		super(new OrderMapperMongo(), repository);
 		this.repository = repository;
+		this.productProxy = productProxy;
 	}
 	
 	@Override
