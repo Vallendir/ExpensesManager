@@ -1,15 +1,19 @@
 package pl.em.order;
 
-import lombok.RequiredArgsConstructor;
 import pl.em.common.DomainID;
+import pl.em.common.MongoStorage;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
-class OrderQueryMongoStorage implements OrderQueryStorage {
+class OrderQueryMongoStorage extends MongoStorage<OrderDocument, Order, OrderMongoMapper, OrderMongoRepository> implements OrderQueryStorage {
 	
 	private final OrderMongoRepository repository;
+	
+	OrderQueryMongoStorage(OrderMongoRepository repository) {
+		super(new OrderMongoMapperImpl(), repository);
+		this.repository = repository;
+	}
 	
 	@Override
 	public Optional<Order> searchById(DomainID id) {

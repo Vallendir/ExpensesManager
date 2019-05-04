@@ -1,16 +1,17 @@
 package pl.em.common;
 
-import lombok.experimental.UtilityClass;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@UtilityClass
-public final class FieldsUtil {
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+final class FieldsUtil {
 	
-	public static <T> List<String> readAllNotNullFieldsNamesFromClass(T object) {
+	<T> List<String> readAllNotNullFieldsNamesFromClass(T object) {
 		return FieldUtils.getAllFieldsList(object.getClass())
 		                 .stream()
 		                 .filter(field -> !field.getName()
@@ -27,7 +28,7 @@ public final class FieldsUtil {
 		                 .collect(Collectors.toList());
 	}
 	
-	public static <T> String readFormatedNotNullFields(T object, String prefix) {
+	<T> String readFormatedNotNullFields(T object, String prefix) {
 		StringBuilder sb;
 		
 		if (prefix != null) {

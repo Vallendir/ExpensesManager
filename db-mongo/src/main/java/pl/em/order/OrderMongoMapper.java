@@ -2,9 +2,10 @@ package pl.em.order;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import pl.em.common.MongoMapper;
 
 @Mapper(componentModel = "spring")
-interface OrderMongoMapper {
+interface OrderMongoMapper extends MongoMapper<OrderDocument, Order> {
 	
 	@Mapping(source = "orderId.id", target = "id")
 	@Mapping(source = "product.productId.id", target = "productId")

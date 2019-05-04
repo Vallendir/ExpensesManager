@@ -1,15 +1,19 @@
 package pl.em.billofsale;
 
-import lombok.RequiredArgsConstructor;
 import pl.em.common.DomainID;
+import pl.em.common.MongoStorage;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
-class BillOfSaleQueryMongoStorage implements BillOfSaleQueryStorage {
+class BillOfSaleQueryMongoStorage extends MongoStorage<BillOfSaleDocument, BillOfSale, BillOfSaleMongoMapper, BillOfSaleMongoRepository> implements BillOfSaleQueryStorage {
 	
 	private final BillOfSaleMongoRepository repository;
+	
+	BillOfSaleQueryMongoStorage(BillOfSaleMongoRepository repository) {
+		super(new BillOfSaleMongoMapperImpl(), repository);
+		this.repository = repository;
+	}
 	
 	@Override
 	public Optional<BillOfSale> searchById(DomainID id) {

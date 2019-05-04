@@ -2,7 +2,7 @@ package pl.em.common;
 
 import java.util.Optional;
 
-public interface DomainStorageCommand<T> {
+public interface DomainStorageCommand<T> extends DomainStorage {
 	
 	/**
 	 * Method to create object.

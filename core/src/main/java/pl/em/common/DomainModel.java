@@ -7,7 +7,7 @@ public class DomainModel {
 	
 	@Override
 	public String toString() {
-		return FieldsUtil.readFormatedNotNullFields(this, String.format("%s::", getClass().getSimpleName()));
+		return CommonUtil.readFormatedNotNullFields(this, String.format("%s::", getClass().getSimpleName()));
 	}
 	
 }

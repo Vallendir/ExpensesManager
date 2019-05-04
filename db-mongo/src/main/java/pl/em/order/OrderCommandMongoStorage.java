@@ -1,23 +1,27 @@
 package pl.em.order;
 
-import lombok.RequiredArgsConstructor;
 import pl.em.common.DomainID;
+import pl.em.common.MongoStorage;
 
 import java.util.Optional;
 
-@RequiredArgsConstructor
-class OrderCommandMongoStorage implements OrderCommandStorage {
+class OrderCommandMongoStorage extends MongoStorage<OrderDocument, Order, OrderMongoMapper, OrderMongoRepository> implements OrderCommandStorage {
 	
 	private final OrderMongoRepository repository;
 	
+	OrderCommandMongoStorage(OrderMongoRepository repository) {
+		super(new OrderMongoMapperImpl(), repository);
+		this.repository = repository;
+	}
+	
 	@Override
-	public Optional<Order> create(Order object) {
-		return Optional.empty();
+	public Optional<Order> create(Order order) {
+		return Optional.of(store(order));
 	}
 	
 	@Override
 	public void remove(DomainID id) {
-	
+		delete(id.getId());
 	}
 	
 }

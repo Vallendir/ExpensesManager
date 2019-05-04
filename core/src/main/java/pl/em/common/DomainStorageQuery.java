@@ -3,7 +3,7 @@ package pl.em.common;
 import java.util.List;
 import java.util.Optional;
 
-public interface DomainStorageQuery<T> {
+public interface DomainStorageQuery<T> extends DomainStorage {
 	
 	/**
 	 * Method to find object by id.

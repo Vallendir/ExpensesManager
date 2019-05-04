@@ -4,13 +4,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import pl.em.common.DomainID;
+import pl.em.common.MongoMapper;
 import pl.em.order.Order;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
-interface BillOfSaleMongoMapper {
+interface BillOfSaleMongoMapper extends MongoMapper<BillOfSaleDocument, BillOfSale> {
 	
 	@Mapping(source = "billId.id", target = "id")
 	@Mapping(source = "domain.ordersList", target = "ordersIdsList", qualifiedByName = "ordersToIds")

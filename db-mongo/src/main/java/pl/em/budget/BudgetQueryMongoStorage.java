@@ -1,15 +1,19 @@
 package pl.em.budget;
 
-import lombok.RequiredArgsConstructor;
 import pl.em.common.DomainID;
+import pl.em.common.MongoStorage;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
-class BudgetQueryMongoStorage implements BudgetQueryStorage {
+class BudgetQueryMongoStorage extends MongoStorage<BudgetDocument, Budget, BudgetMongoMapper, BudgetMongoRepository> implements BudgetQueryStorage {
 	
 	private final BudgetMongoRepository repository;
+	
+	BudgetQueryMongoStorage(BudgetMongoRepository repository) {
+		super(new BudgetMongoMapperImpl(), repository);
+		this.repository = repository;
+	}
 	
 	@Override
 	public Optional<Budget> searchById(DomainID id) {

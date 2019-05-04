@@ -36,6 +36,9 @@ public final class ProductFacade {
 			throw idIsNull();
 		}
 		
+		var idToRemoveBy = id.getId();
+		command.isIdValid(idToRemoveBy);
+		
 		handler.executeCommand(
 			new RemoveProduct(command::remove, id)
 		);

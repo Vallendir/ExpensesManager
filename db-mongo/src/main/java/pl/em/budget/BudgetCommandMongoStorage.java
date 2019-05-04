@@ -1,23 +1,27 @@
 package pl.em.budget;
 
-import lombok.RequiredArgsConstructor;
 import pl.em.common.DomainID;
+import pl.em.common.MongoStorage;
 
 import java.util.Optional;
 
-@RequiredArgsConstructor
-class BudgetCommandMongoStorage implements BudgetCommandStorage {
+class BudgetCommandMongoStorage extends MongoStorage<BudgetDocument, Budget, BudgetMongoMapper, BudgetMongoRepository> implements BudgetCommandStorage {
 	
 	private final BudgetMongoRepository repository;
 	
+	BudgetCommandMongoStorage(BudgetMongoRepository repository) {
+		super(new BudgetMongoMapperImpl(), repository);
+		this.repository = repository;
+	}
+	
 	@Override
-	public Optional<Budget> create(Budget object) {
-		return Optional.empty();
+	public Optional<Budget> create(Budget budget) {
+		return Optional.of(store(budget));
 	}
 	
 	@Override
 	public void remove(DomainID id) {
-	
+		delete(id.getId());
 	}
 	
 }

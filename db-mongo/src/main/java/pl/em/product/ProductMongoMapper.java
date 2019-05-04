@@ -2,9 +2,10 @@ package pl.em.product;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import pl.em.common.MongoMapper;
 
 @Mapper(componentModel = "spring")
-interface ProductMongoMapper {
+interface ProductMongoMapper extends MongoMapper<ProductDocument, Product> {
 	
 	@Mapping(source = "productId.id", target = "id")
 	ProductDocument toEntity(Product domain);
