@@ -2,9 +2,8 @@ package pl.em.product;
 
 import lombok.RequiredArgsConstructor;
 import pl.em.common.CQRSHandler;
+import pl.em.common.CommonValidator;
 import pl.em.common.DomainID;
-
-import java.util.Objects;
 
 import static pl.em.common.CommonExceptionFactory.idIsNull;
 import static pl.em.product.ProductExceptionFactory.productIsNull;
@@ -19,28 +18,26 @@ public final class ProductFacade {
 	private final CQRSHandler handler;
 	
 	public Product createNew(Product product) {
-		if (Objects.isNull(product)) {
-			throw productIsNull();
-		}
+		CommonValidator.validateNullObject(product, productIsNull());
 		
 		return handler.executeCommand(
 			new CreateNewProduct(
 				command::create,
 				product,
-				new ProductValidator(product))
+				new ProductValidator(product)
+			)
 		);
 	}
 	
 	public void remove(DomainID id) {
-		if (Objects.isNull(id)) {
-			throw idIsNull();
-		}
-		
-		var idToRemoveBy = id.getId();
-		command.isIdValid(idToRemoveBy);
+		CommonValidator.validateNullObject(id, idIsNull());
+		CommonValidator.validateId(command::isIdValid, id);
 		
 		handler.executeCommand(
-			new RemoveProduct(command::remove, id)
+			new RemoveProduct(
+				command::remove,
+				id
+			)
 		);
 	}
 	

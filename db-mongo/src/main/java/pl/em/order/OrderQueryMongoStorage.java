@@ -11,7 +11,7 @@ class OrderQueryMongoStorage extends MongoStorage<OrderDocument, Order, OrderMon
 	private final OrderMongoRepository repository;
 	
 	OrderQueryMongoStorage(OrderMongoRepository repository) {
-		super(new OrderMongoMapperImpl(), repository);
+		super(new OrderMapperMongo(), repository);
 		this.repository = repository;
 	}
 	

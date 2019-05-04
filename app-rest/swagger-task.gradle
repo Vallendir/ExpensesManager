@@ -1,0 +1,82 @@
+/** Create file swagger.json with basic project informations **/
+swagger {
+    apiSource {
+        springmvc = true
+        locations = ['pl.em']
+        schemes = ['https']
+        host = 'localhost:8080'
+        basePath = '/'
+
+        info {
+            title = project.property('pl.expensesmanager.project.title')
+            description = project.property('pl.expensesmanager.project.description')
+            version = project.property('pl.expensesmanager.project.version')
+
+            license {
+                name = 'Proprietary'
+            }
+        }
+
+        swaggerDirectory = "$pathToSwaggerJson"
+        attachSwaggerArtifact = true
+    }
+}
+
+/** Convert swagger.json to asciidoc files '.adoc' **/
+convertSwagger2markup {
+    dependsOn generateSwaggerDocumentation
+
+    swaggerInput "$pathToSwaggerJson/swagger.json"
+    outputDir pathToAsciidoc
+    config = [
+            'swagger2markup.outputLanguage'                          : 'EN',
+            'swagger2markup.pathsGroupedBy'                          : 'TAGS',
+            'swagger2markup.extensions.springRestDocs.snippetBaseUri': pathToSnippets.getAbsolutePath(),
+            'swagger2markup.generatedExamplesEnabled'                : true,
+            'swagger2markup.pageBreakLocations'                      : ['AFTER_OPERATION']
+    ]
+}
+
+task(cleanOldDocumentation, type: Delete) {
+    delete("$pathToBuildDocumentation/doc/")
+}
+
+clean.dependsOn(cleanOldDocumentation)
+
+/** Generate documentation files in specific formats from asciidoc files(html&pdf) **/
+asciidoctor {
+    dependsOn clean
+    dependsOn convertSwagger2markup
+
+    sourceDir file("$pathToRootDocumentation")
+
+    sources {
+        include 'index.adoc'
+    }
+
+    resources {
+        from(sourceDir) {
+            include 'images/**'
+        }
+    }
+
+    outputDir = file("$pathToRootDocumentation/doc")
+
+    backends = ['html5', 'pdf']
+
+    attributes = [
+            doctype    : 'book',
+            toc        : 'left',
+            toclevels  : '3',
+            numbered   : '',
+            sectlinks  : '',
+            sectanchors: '',
+            hardbreaks : '',
+            generated  : pathToAsciidoc
+    ]
+}
+
+test {
+    systemProperty 'io.springfox.staticdocs.outputDir', pathToSwaggerJson
+    systemProperty 'io.springfox.staticdocs.pathToSnippets', pathToSnippets
+}

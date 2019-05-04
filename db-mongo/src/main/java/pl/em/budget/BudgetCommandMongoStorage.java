@@ -10,7 +10,7 @@ class BudgetCommandMongoStorage extends MongoStorage<BudgetDocument, Budget, Bud
 	private final BudgetMongoRepository repository;
 	
 	BudgetCommandMongoStorage(BudgetMongoRepository repository) {
-		super(new BudgetMongoMapperImpl(), repository);
+		super(new BudgetMapperMongo(), repository);
 		this.repository = repository;
 	}
 	

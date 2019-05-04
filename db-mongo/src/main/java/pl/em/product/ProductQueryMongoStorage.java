@@ -11,7 +11,7 @@ class ProductQueryMongoStorage extends MongoStorage<ProductDocument, Product, Pr
 	private final ProductMongoRepository repository;
 	
 	ProductQueryMongoStorage(ProductMongoRepository repository) {
-		super(new ProductMongoMapperImpl(), repository);
+		super(new ProductMapperMongo(), repository);
 		this.repository = repository;
 	}
 	

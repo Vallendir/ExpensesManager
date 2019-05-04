@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import pl.em.common.MongoMapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(implementationName = "ProductMapperMongo", componentModel = "spring")
 interface ProductMongoMapper extends MongoMapper<ProductDocument, Product> {
 	
 	@Mapping(source = "productId.id", target = "id")

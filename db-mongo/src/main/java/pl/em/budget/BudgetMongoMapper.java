@@ -10,7 +10,7 @@ import pl.em.common.MongoMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
+@Mapper(implementationName = "BudgetMapperMongo", componentModel = "spring")
 interface BudgetMongoMapper extends MongoMapper<BudgetDocument, Budget> {
 	
 	@Mapping(source = "budgetId.id", target = "id")

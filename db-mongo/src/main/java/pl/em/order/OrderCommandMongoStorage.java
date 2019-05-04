@@ -10,7 +10,7 @@ class OrderCommandMongoStorage extends MongoStorage<OrderDocument, Order, OrderM
 	private final OrderMongoRepository repository;
 	
 	OrderCommandMongoStorage(OrderMongoRepository repository) {
-		super(new OrderMongoMapperImpl(), repository);
+		super(new OrderMapperMongo(), repository);
 		this.repository = repository;
 	}
 	

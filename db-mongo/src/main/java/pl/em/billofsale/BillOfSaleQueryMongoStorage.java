@@ -11,7 +11,7 @@ class BillOfSaleQueryMongoStorage extends MongoStorage<BillOfSaleDocument, BillO
 	private final BillOfSaleMongoRepository repository;
 	
 	BillOfSaleQueryMongoStorage(BillOfSaleMongoRepository repository) {
-		super(new BillOfSaleMongoMapperImpl(), repository);
+		super(new BillOfSaleMapperMongo(), repository);
 		this.repository = repository;
 	}
 	

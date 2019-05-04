@@ -8,17 +8,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
-class ProductRESTController implements ProductApiDocumentation {
+class ProductRESTCommandController implements ProductApiCommandDocumentation {
 	
 	private final ProductFacade service;
 	
 	@GetMapping
-	Product s() {
+	@Override
+	public Product add(Product product) {
 		Product p = new Product();
 		p.setName("name ese");
 		p.setPrice(5.75);
 		
 		return service.createNew(p);
+	}
+	
+	@Override
+	public void delete(String id) {
+	
 	}
 	
 }

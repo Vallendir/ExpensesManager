@@ -2,9 +2,8 @@ package pl.em.order;
 
 import lombok.RequiredArgsConstructor;
 import pl.em.common.CQRSHandler;
+import pl.em.common.CommonValidator;
 import pl.em.common.DomainID;
-
-import java.util.Objects;
 
 import static pl.em.common.CommonExceptionFactory.idIsNull;
 import static pl.em.order.OrderExceptionFactory.orderIsNull;
@@ -19,25 +18,26 @@ public final class OrderFacade {
 	private final CQRSHandler handler;
 	
 	public Order createNew(Order order) {
-		if (Objects.isNull(order)) {
-			throw orderIsNull();
-		}
+		CommonValidator.validateNullObject(order, orderIsNull());
 		
 		return handler.executeCommand(
 			new CreateNewOrder(
 				command::create,
 				order,
-				new OrderValidator(order))
+				new OrderValidator(order)
+			)
 		);
 	}
 	
 	public void remove(DomainID id) {
-		if (Objects.isNull(id)) {
-			throw idIsNull();
-		}
+		CommonValidator.validateNullObject(id, idIsNull());
+		CommonValidator.validateId(command::isIdValid, id);
 		
 		handler.executeCommand(
-			new RemoveOrder(command::remove, id)
+			new RemoveOrder(
+				command::remove,
+				id
+			)
 		);
 	}
 }

@@ -11,7 +11,7 @@ class BudgetQueryMongoStorage extends MongoStorage<BudgetDocument, Budget, Budge
 	private final BudgetMongoRepository repository;
 	
 	BudgetQueryMongoStorage(BudgetMongoRepository repository) {
-		super(new BudgetMongoMapperImpl(), repository);
+		super(new BudgetMapperMongo(), repository);
 		this.repository = repository;
 	}
 	

@@ -10,7 +10,7 @@ import pl.em.order.Order;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
+@Mapper(implementationName = "BillOfSaleMapperMongo", componentModel = "spring")
 interface BillOfSaleMongoMapper extends MongoMapper<BillOfSaleDocument, BillOfSale> {
 	
 	@Mapping(source = "billId.id", target = "id")

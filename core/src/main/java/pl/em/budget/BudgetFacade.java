@@ -2,9 +2,8 @@ package pl.em.budget;
 
 import lombok.RequiredArgsConstructor;
 import pl.em.common.CQRSHandler;
+import pl.em.common.CommonValidator;
 import pl.em.common.DomainID;
-
-import java.util.Objects;
 
 import static pl.em.budget.BudgetExceptionFactory.budgetIsNull;
 import static pl.em.common.CommonExceptionFactory.idIsNull;
@@ -19,25 +18,26 @@ public final class BudgetFacade {
 	private final CQRSHandler handler;
 	
 	public Budget createNew(Budget budget) {
-		if (Objects.isNull(budget)) {
-			throw budgetIsNull();
-		}
+		CommonValidator.validateNullObject(budget, budgetIsNull());
 		
 		return handler.executeCommand(
 			new CreateNewBudget(
 				command::create,
 				budget,
-				new BudgetValidator(budget))
+				new BudgetValidator(budget)
+			)
 		);
 	}
 	
 	public void remove(DomainID id) {
-		if (Objects.isNull(id)) {
-			throw idIsNull();
-		}
+		CommonValidator.validateNullObject(id, idIsNull());
+		CommonValidator.validateId(command::isIdValid, id);
 		
 		handler.executeCommand(
-			new RemoveBudget(command::remove, id)
+			new RemoveBudget(
+				command::remove,
+				id
+			)
 		);
 	}
 

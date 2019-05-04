@@ -10,7 +10,7 @@ class ProductCommandMongoStorage extends MongoStorage<ProductDocument, Product, 
 	private final ProductMongoRepository repository;
 	
 	ProductCommandMongoStorage(ProductMongoRepository repository) {
-		super(new ProductMongoMapperImpl(), repository);
+		super(new ProductMapperMongo(), repository);
 		this.repository = repository;
 	}
 	

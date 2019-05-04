@@ -2,9 +2,8 @@ package pl.em.billofsale;
 
 import lombok.RequiredArgsConstructor;
 import pl.em.common.CQRSHandler;
+import pl.em.common.CommonValidator;
 import pl.em.common.DomainID;
-
-import java.util.Objects;
 
 import static pl.em.billofsale.BillOfSaleExceptionFactory.billOfSaleIsNull;
 import static pl.em.common.CommonExceptionFactory.idIsNull;
@@ -19,25 +18,26 @@ public final class BillOfSaleFacade {
 	private final CQRSHandler handler;
 	
 	public BillOfSale createNew(BillOfSale billOfSale) {
-		if (Objects.isNull(billOfSale)) {
-			throw billOfSaleIsNull();
-		}
+		CommonValidator.validateNullObject(billOfSale, billOfSaleIsNull());
 		
 		return handler.executeCommand(
 			new CreateNewBillOfSale(
 				command::create,
 				billOfSale,
-				new BillOfSaleValidator(billOfSale))
+				new BillOfSaleValidator(billOfSale)
+			)
 		);
 	}
 	
 	public void remove(DomainID id) {
-		if (Objects.isNull(id)) {
-			throw idIsNull();
-		}
+		CommonValidator.validateNullObject(id, idIsNull());
+		CommonValidator.validateId(command::isIdValid, id);
 		
 		handler.executeCommand(
-			new RemoveBillOfSale(command::remove, id)
+			new RemoveBillOfSale(
+				command::remove,
+				id
+			)
 		);
 	}
 

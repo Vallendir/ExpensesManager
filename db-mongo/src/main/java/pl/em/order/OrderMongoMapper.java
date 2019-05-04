@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import pl.em.common.MongoMapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(implementationName = "OrderMapperMongo", componentModel = "spring")
 interface OrderMongoMapper extends MongoMapper<OrderDocument, Order> {
 	
 	@Mapping(source = "orderId.id", target = "id")
